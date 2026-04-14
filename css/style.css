@@ -4238,7 +4238,7 @@ img {
 .csr-partner-banner__image {
     width: 480px;
     min-width: 480px;
-    height: 280px;
+    align-self: stretch;
     background: #374151;
 }
 
