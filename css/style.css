@@ -4238,8 +4238,11 @@ img {
 .csr-partner-banner__image {
     width: 480px;
     min-width: 480px;
-    height: 280px;
-    background: #374151;
+    align-self: stretch;
+    background-color: #374151;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 /* CSR Charity Grid (Section 3) */
