@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель — ВСА</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f0f2f5;
+            color: #1E2530;
+            min-height: 100vh;
+        }
+
+        /* ===== LOGIN SCREEN ===== */
+        .login-screen {
+            position: fixed;
+            inset: 0;
+            background: #1E2530;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .login-screen.hidden {
+            display: none;
+        }
+
+        .login-card {
+            background: #2a3240;
+            border-radius: 16px;
+            padding: 48px 40px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+
+        .login-logo {
+            font-size: 48px;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: 6px;
+            margin-bottom: 8px;
+        }
+
+        .login-subtitle {
+            color: #8a93a1;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 36px;
+        }
+
+        .login-field {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .login-field input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 2px solid #3a4452;
+            border-radius: 10px;
+            background: #1E2530;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .login-field input::placeholder {
+            color: #5a6370;
+        }
+
+        .login-field input:focus {
+            border-color: #A01830;
+        }
+
+        .login-error {
+            color: #e74c3c;
+            font-size: 13px;
+            margin-bottom: 16px;
+            min-height: 20px;
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 14px;
+            background: #A01830;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .login-btn:hover {
+            background: #8a1428;
+        }
+
+        .login-btn:active {
+            background: #721020;
+        }
+
+        /* ===== DASHBOARD ===== */
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+        }
+
+        .dashboard.active {
+            display: block;
+        }
+
+        /* Header */
+        .admin-header {
+            background: #1E2530;
+            padding: 0 32px;
+            height: 64px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .admin-header-logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 3px;
+        }
+
+        .admin-header-logo span {
+            color: #A01830;
+            font-weight: 500;
+            font-size: 14px;
+            letter-spacing: 1px;
+            margin-left: 10px;
+        }
+
+        .btn-logout {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 20px;
+            background: transparent;
+            border: 1px solid #3a4452;
+            color: #8a93a1;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-logout:hover {
+            border-color: #A01830;
+            color: #fff;
+        }
+
+        /* Main content */
+        .admin-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 32px;
+        }
+
+        /* Stats bar */
+        .stats-bar {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 16px;
+            margin-bottom: 28px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 12px;
+            padding: 20px 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+        }
+
+        .stat-card__label {
+            font-size: 12px;
+            font-weight: 600;
+            color: #8a93a1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-card__value {
+            font-size: 32px;
+            font-weight: 700;
+            color: #1E2530;
+        }
+
+        .stat-card--published .stat-card__value { color: #27ae60; }
+        .stat-card--draft .stat-card__value { color: #f39c12; }
+        .stat-card--closed .stat-card__value { color: #8a93a1; }
+
+        /* Action bar */
+        .action-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .btn-add {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            background: #A01830;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .btn-add:hover {
+            background: #8a1428;
+        }
+
+        .search-input {
+            padding: 10px 16px 10px 40px;
+            border: 2px solid #dde0e4;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            width: 320px;
+            outline: none;
+            background: #fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='18' height='18' viewBox='0 0 24 24' fill='none' stroke='%238a93a1' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.3-4.3'/%3E%3C/svg%3E") 12px center no-repeat;
+            transition: border-color 0.2s;
+        }
+
+        .search-input:focus {
+            border-color: #A01830;
+        }
+
+        /* Table */
+        .vacancies-table {
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+            overflow: hidden;
+        }
+
+        .vacancies-table table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .vacancies-table th {
+            background: #f7f8fa;
+            padding: 14px 16px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #8a93a1;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+        }
+
+        .vacancies-table td {
+            padding: 14px 16px;
+            font-size: 14px;
+            border-bottom: 1px solid #f0f0f0;
+            vertical-align: middle;
+        }
+
+        .vacancies-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .vacancies-table tr:hover td {
+            background: #fafbfc;
+        }
+
+        .td-order {
+            width: 50px;
+            color: #8a93a1;
+            font-weight: 600;
+            font-size: 13px;
+        }
+
+        .td-title {
+            font-weight: 600;
+        }
+
+        .td-subtitle {
+            color: #6b7280;
+            font-size: 13px;
+        }
+
+        .td-date {
+            color: #8a93a1;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        /* Status badges */
+        .badge {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .badge--published {
+            background: #e8f8ef;
+            color: #1e8449;
+        }
+
+        .badge--draft {
+            background: #fef9e7;
+            color: #b7950b;
+        }
+
+        .badge--closed {
+            background: #eef0f2;
+            color: #6b7280;
+        }
+
+        /* Action buttons */
+        .actions {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .btn-action {
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            border-radius: 8px;
+            background: transparent;
+            color: #8a93a1;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-action:hover {
+            background: #f0f2f5;
+            color: #1E2530;
+        }
+
+        .btn-action--delete:hover {
+            background: #fde8e8;
+            color: #c0392b;
+        }
+
+        .btn-action--status:hover {
+            background: #e8f8ef;
+            color: #1e8449;
+        }
+
+        .empty-state {
+            padding: 60px 20px;
+            text-align: center;
+            color: #8a93a1;
+        }
+
+        .empty-state i {
+            margin-bottom: 16px;
+        }
+
+        .empty-state p {
+            font-size: 15px;
+        }
+
+        /* ===== MODAL ===== */
+        .modal-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-overlay.active {
+            display: flex;
+        }
+
+        .modal {
+            background: #fff;
+            border-radius: 16px;
+            width: 640px;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 0 24px 80px rgba(0,0,0,0.2);
+        }
+
+        .modal-header {
+            padding: 24px 28px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .modal-header h2 {
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: #f0f2f5;
+            border-radius: 8px;
+            cursor: pointer;
+            color: #6b7280;
+            transition: all 0.15s;
+        }
+
+        .modal-close:hover {
+            background: #e0e2e5;
+            color: #1E2530;
+        }
+
+        .modal-body {
+            padding: 24px 28px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            color: #4a5568;
+            margin-bottom: 6px;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px 14px;
+            border: 2px solid #dde0e4;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.2s;
+            background: #fff;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #A01830;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .sections-list {
+            border: 2px solid #eee;
+            border-radius: 10px;
+            padding: 12px;
+            margin-top: 6px;
+        }
+
+        .section-item {
+            background: #f7f8fa;
+            border-radius: 8px;
+            padding: 14px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .section-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .section-item input,
+        .section-item textarea {
+            width: 100%;
+            padding: 8px 12px;
+            border: 1px solid #dde0e4;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            outline: none;
+            background: #fff;
+        }
+
+        .section-item input {
+            margin-bottom: 8px;
+        }
+
+        .section-item textarea {
+            resize: vertical;
+            min-height: 60px;
+        }
+
+        .btn-remove-section {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 26px;
+            height: 26px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: transparent;
+            color: #c0392b;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        .btn-remove-section:hover {
+            background: #fde8e8;
+        }
+
+        .btn-add-section {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-top: 10px;
+            padding: 8px 14px;
+            background: transparent;
+            border: 1px dashed #aaa;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            color: #6b7280;
+            cursor: pointer;
+            transition: all 0.15s;
+        }
+
+        .btn-add-section:hover {
+            border-color: #A01830;
+            color: #A01830;
+        }
+
+        .modal-footer {
+            padding: 0 28px 24px;
+            display: flex;
+            justify-content: flex-end;
+            gap: 12px;
+        }
+
+        .btn-cancel {
+            padding: 10px 24px;
+            background: #f0f2f5;
+            color: #4a5568;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e2e5;
+        }
+
+        .btn-save {
+            padding: 10px 28px;
+            background: #A01830;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-save:hover {
+            background: #8a1428;
+        }
+
+        /* ===== TOAST ===== */
+        .toast-container {
+            position: fixed;
+            top: 80px;
+            right: 24px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .toast {
+            padding: 14px 20px;
+            border-radius: 10px;
+            font-size: 14px;
+            font-weight: 500;
+            color: #fff;
+            min-width: 280px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            animation: toastIn 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .toast--success { background: #27ae60; }
+        .toast--error { background: #c0392b; }
+        .toast--info { background: #2c3e50; }
+
+        .toast.removing {
+            animation: toastOut 0.3s ease forwards;
+        }
+
+        @keyframes toastIn {
+            from { opacity: 0; transform: translateX(40px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes toastOut {
+            from { opacity: 1; transform: translateX(0); }
+            to { opacity: 0; transform: translateX(40px); }
+        }
+
+        /* ===== CONFIRM DIALOG ===== */
+        .confirm-overlay {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.45);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+
+        .confirm-overlay.active {
+            display: flex;
+        }
+
+        .confirm-dialog {
+            background: #fff;
+            border-radius: 14px;
+            padding: 32px;
+            width: 400px;
+            text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+        }
+
+        .confirm-dialog h3 {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .confirm-dialog p {
+            font-size: 14px;
+            color: #6b7280;
+            margin-bottom: 24px;
+        }
+
+        .confirm-actions {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .confirm-actions button {
+            padding: 10px 28px;
+            border: none;
+            border-radius: 8px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .btn-confirm-cancel {
+            background: #f0f2f5;
+            color: #4a5568;
+        }
+
+        .btn-confirm-cancel:hover {
+            background: #e0e2e5;
+        }
+
+        .btn-confirm-delete {
+            background: #c0392b;
+            color: #fff;
+        }
+
+        .btn-confirm-delete:hover {
+            background: #a93226;
+        }
+
+        /* Scrollbar styling */
+        .modal::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .modal::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .modal::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===== LOGIN SCREEN ===== -->
+    <div class="login-screen" id="loginScreen">
+        <div class="login-card">
+            <div class="login-logo">ВСА</div>
+            <div class="login-subtitle">Панель администратора</div>
+            <form id="loginForm">
+                <div class="login-field">
+                    <input type="password" id="loginPassword" placeholder="Введите пароль" autocomplete="current-password">
+                </div>
+                <div class="login-error" id="loginError"></div>
+                <button type="submit" class="login-btn">Войти</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- ===== DASHBOARD ===== -->
+    <div class="dashboard" id="dashboard">
+        <!-- Header -->
+        <header class="admin-header">
+            <div class="admin-header-logo">ВСА <span>Админ</span></div>
+            <button class="btn-logout" id="btnLogout">
+                <i data-lucide="log-out" style="width:16px;height:16px;"></i>
+                Выйти
+            </button>
+        </header>
+
+        <div class="admin-content">
+            <!-- Stats -->
+            <div class="stats-bar">
+                <div class="stat-card">
+                    <div class="stat-card__label">Всего вакансий</div>
+                    <div class="stat-card__value" id="statTotal">0</div>
+                </div>
+                <div class="stat-card stat-card--published">
+                    <div class="stat-card__label">Опубликовано</div>
+                    <div class="stat-card__value" id="statPublished">0</div>
+                </div>
+                <div class="stat-card stat-card--draft">
+                    <div class="stat-card__label">Черновики</div>
+                    <div class="stat-card__value" id="statDraft">0</div>
+                </div>
+                <div class="stat-card stat-card--closed">
+                    <div class="stat-card__label">Закрыто</div>
+                    <div class="stat-card__value" id="statClosed">0</div>
+                </div>
+            </div>
+
+            <!-- Action bar -->
+            <div class="action-bar">
+                <button class="btn-add" id="btnAdd">
+                    <i data-lucide="plus" style="width:18px;height:18px;"></i>
+                    Добавить вакансию
+                </button>
+                <input type="text" class="search-input" id="searchInput" placeholder="Поиск по названию...">
+            </div>
+
+            <!-- Table -->
+            <div class="vacancies-table">
+                <table>
+                    <thead>
+                        <tr>
+                            <th style="width:50px">#</th>
+                            <th>Название</th>
+                            <th>Подзаголовок</th>
+                            <th>Город</th>
+                            <th>Статус</th>
+                            <th>Дата</th>
+                            <th style="width:200px">Действия</th>
+                        </tr>
+                    </thead>
+                    <tbody id="vacanciesBody">
+                    </tbody>
+                </table>
+                <div class="empty-state" id="emptyState" style="display:none;">
+                    <i data-lucide="inbox" style="width:48px;height:48px;color:#ccc;"></i>
+                    <p>Вакансий пока нет</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== ADD/EDIT MODAL ===== -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="modalTitle">Добавить вакансию</h2>
+                <button class="modal-close" id="modalClose">
+                    <i data-lucide="x" style="width:18px;height:18px;"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Название</label>
+                    <input type="text" id="formTitle" placeholder="Например: Инженер-проектировщик">
+                </div>
+                <div class="form-group">
+                    <label>Подзаголовок</label>
+                    <input type="text" id="formSubtitle" placeholder="Краткое описание позиции">
+                </div>
+                <div class="form-group">
+                    <label>Город</label>
+                    <input type="text" id="formCity" placeholder="Например: Москва">
+                </div>
+                <div class="form-group">
+                    <label>Секции</label>
+                    <div class="sections-list" id="sectionsList"></div>
+                    <button class="btn-add-section" id="btnAddSection">
+                        <i data-lucide="plus" style="width:14px;height:14px;"></i>
+                        Добавить секцию
+                    </button>
+                </div>
+                <div class="form-group">
+                    <label>Теги (через запятую)</label>
+                    <input type="text" id="formTags" placeholder="Проектирование, Инженерия, Офис">
+                </div>
+                <div class="form-group">
+                    <label>Статус</label>
+                    <select id="formStatus">
+                        <option value="published">Опубликована</option>
+                        <option value="draft">Черновик</option>
+                        <option value="closed">Закрыта</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="btnCancel">Отмена</button>
+                <button class="btn-save" id="btnSave">Сохранить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== CONFIRM DIALOG ===== -->
+    <div class="confirm-overlay" id="confirmOverlay">
+        <div class="confirm-dialog">
+            <h3>Удалить вакансию?</h3>
+            <p id="confirmText">Это действие нельзя отменить.</p>
+            <div class="confirm-actions">
+                <button class="btn-confirm-cancel" id="confirmCancel">Отмена</button>
+                <button class="btn-confirm-delete" id="confirmDelete">Удалить</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===== TOAST CONTAINER ===== -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <script>
+        // ===================== STATE =====================
+        let vacancies = [];
+        let editingId = null;
+        let deleteId = null;
+        let searchQuery = '';
+
+        // ===================== DOM =====================
+        const loginScreen = document.getElementById('loginScreen');
+        const dashboard = document.getElementById('dashboard');
+        const loginForm = document.getElementById('loginForm');
+        const loginPassword = document.getElementById('loginPassword');
+        const loginError = document.getElementById('loginError');
+        const btnLogout = document.getElementById('btnLogout');
+        const btnAdd = document.getElementById('btnAdd');
+        const searchInput = document.getElementById('searchInput');
+        const vacanciesBody = document.getElementById('vacanciesBody');
+        const emptyState = document.getElementById('emptyState');
+        const modalOverlay = document.getElementById('modalOverlay');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalClose = document.getElementById('modalClose');
+        const formTitle = document.getElementById('formTitle');
+        const formSubtitle = document.getElementById('formSubtitle');
+        const formCity = document.getElementById('formCity');
+        const sectionsList = document.getElementById('sectionsList');
+        const btnAddSection = document.getElementById('btnAddSection');
+        const formTags = document.getElementById('formTags');
+        const formStatus = document.getElementById('formStatus');
+        const btnCancel = document.getElementById('btnCancel');
+        const btnSave = document.getElementById('btnSave');
+        const confirmOverlay = document.getElementById('confirmOverlay');
+        const confirmCancel = document.getElementById('confirmCancel');
+        const confirmDelete = document.getElementById('confirmDelete');
+        const confirmText = document.getElementById('confirmText');
+        const toastContainer = document.getElementById('toastContainer');
+
+        // Stats
+        const statTotal = document.getElementById('statTotal');
+        const statPublished = document.getElementById('statPublished');
+        const statDraft = document.getElementById('statDraft');
+        const statClosed = document.getElementById('statClosed');
+
+        // ===================== TOAST =====================
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast--${type}`;
+            const iconName = type === 'success' ? 'check-circle' : type === 'error' ? 'alert-circle' : 'info';
+            toast.innerHTML = `<i data-lucide="${iconName}" style="width:18px;height:18px;flex-shrink:0;"></i> ${message}`;
+            toastContainer.appendChild(toast);
+            lucide.createIcons({ nodes: [toast] });
+            setTimeout(() => {
+                toast.classList.add('removing');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        // ===================== API HELPERS =====================
+        async function api(url, options = {}) {
+            try {
+                const res = await fetch(url, {
+                    headers: { 'Content-Type': 'application/json' },
+                    credentials: 'include',
+                    ...options
+                });
+                if (res.status === 401) {
+                    showLogin();
+                    throw new Error('Unauthorized');
+                }
+                if (!res.ok) {
+                    const data = await res.json().catch(() => ({}));
+                    throw new Error(data.message || `Ошибка ${res.status}`);
+                }
+                const text = await res.text();
+                return text ? JSON.parse(text) : {};
+            } catch (err) {
+                if (err.message !== 'Unauthorized') {
+                    showToast(err.message || 'Ошибка сети', 'error');
+                }
+                throw err;
+            }
+        }
+
+        // ===================== AUTH =====================
+        function showLogin() {
+            loginScreen.classList.remove('hidden');
+            dashboard.classList.remove('active');
+        }
+
+        function showDashboard() {
+            loginScreen.classList.add('hidden');
+            dashboard.classList.add('active');
+            lucide.createIcons();
+            loadVacancies();
+        }
+
+        async function checkAuth() {
+            try {
+                await api('/api/auth/check');
+                showDashboard();
+            } catch {
+                showLogin();
+            }
+        }
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            loginError.textContent = '';
+            const password = loginPassword.value.trim();
+            if (!password) {
+                loginError.textContent = 'Введите пароль';
+                return;
+            }
+            try {
+                await api('/api/login', {
+                    method: 'POST',
+                    body: JSON.stringify({ password })
+                });
+                loginPassword.value = '';
+                showDashboard();
+            } catch (err) {
+                loginError.textContent = 'Неверный пароль';
+            }
+        });
+
+        btnLogout.addEventListener('click', async () => {
+            try {
+                await api('/api/logout', { method: 'POST' });
+            } catch {}
+            showLogin();
+        });
+
+        // ===================== VACANCIES =====================
+        async function loadVacancies() {
+            try {
+                const data = await api('/api/admin/vacancies');
+                vacancies = Array.isArray(data) ? data : (data.vacancies || []);
+                updateStats();
+                renderTable();
+            } catch {}
+        }
+
+        function updateStats() {
+            statTotal.textContent = vacancies.length;
+            statPublished.textContent = vacancies.filter(v => v.status === 'published').length;
+            statDraft.textContent = vacancies.filter(v => v.status === 'draft').length;
+            statClosed.textContent = vacancies.filter(v => v.status === 'closed').length;
+        }
+
+        function getStatusBadge(status) {
+            const map = {
+                published: { label: 'Опубликована', cls: 'badge--published' },
+                draft: { label: 'Черновик', cls: 'badge--draft' },
+                closed: { label: 'Закрыта', cls: 'badge--closed' }
+            };
+            const s = map[status] || map.draft;
+            return `<span class="badge ${s.cls}">${s.label}</span>`;
+        }
+
+        function formatDate(dateStr) {
+            if (!dateStr) return '—';
+            const d = new Date(dateStr);
+            return d.toLocaleDateString('ru-RU', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+
+        function nextStatus(status) {
+            const cycle = { published: 'closed', closed: 'draft', draft: 'published' };
+            return cycle[status] || 'published';
+        }
+
+        function renderTable() {
+            const query = searchQuery.toLowerCase();
+            const filtered = vacancies.filter(v =>
+                !query || (v.title || '').toLowerCase().includes(query)
+            );
+
+            if (filtered.length === 0) {
+                vacanciesBody.innerHTML = '';
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+            vacanciesBody.innerHTML = filtered.map((v, i) => `
+                <tr>
+                    <td class="td-order">${v.order ?? (i + 1)}</td>
+                    <td class="td-title">${escapeHtml(v.title || '')}</td>
+                    <td class="td-subtitle">${escapeHtml(v.subtitle || '')}</td>
+                    <td class="td-city">${escapeHtml(v.city || '—')}</td>
+                    <td>${getStatusBadge(v.status)}</td>
+                    <td class="td-date">${formatDate(v.createdAt || v.created_at || v.date)}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn-action" title="Редактировать" onclick="openEdit('${v._id || v.id}')">
+                                <i data-lucide="pencil" style="width:16px;height:16px;"></i>
+                            </button>
+                            <button class="btn-action" title="Вверх" onclick="reorder('${v._id || v.id}','up')">
+                                <i data-lucide="arrow-up" style="width:16px;height:16px;"></i>
+                            </button>
+                            <button class="btn-action" title="Вниз" onclick="reorder('${v._id || v.id}','down')">
+                                <i data-lucide="arrow-down" style="width:16px;height:16px;"></i>
+                            </button>
+                            <button class="btn-action btn-action--status" title="Сменить статус" onclick="toggleStatus('${v._id || v.id}','${v.status}')">
+                                <i data-lucide="refresh-cw" style="width:16px;height:16px;"></i>
+                            </button>
+                            <button class="btn-action btn-action--delete" title="Удалить" onclick="confirmDeleteVacancy('${v._id || v.id}','${escapeHtml(v.title || '')}')">
+                                <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        function escapeHtml(str) {
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
+        // ===================== SEARCH =====================
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderTable();
+        });
+
+        // ===================== REORDER =====================
+        async function reorder(id, direction) {
+            try {
+                await api(`/api/admin/vacancies/${id}/reorder`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ direction })
+                });
+                showToast('Порядок обновлён', 'success');
+                await loadVacancies();
+            } catch {}
+        }
+
+        // ===================== STATUS TOGGLE =====================
+        async function toggleStatus(id, currentStatus) {
+            const newStatus = nextStatus(currentStatus);
+            try {
+                await api(`/api/admin/vacancies/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ status: newStatus })
+                });
+                const labels = { published: 'Опубликована', draft: 'Черновик', closed: 'Закрыта' };
+                showToast(`Статус: ${labels[newStatus]}`, 'success');
+                await loadVacancies();
+            } catch {}
+        }
+
+        // ===================== DELETE =====================
+        function confirmDeleteVacancy(id, title) {
+            deleteId = id;
+            confirmText.textContent = `Вакансия "${title}" будет удалена. Это действие нельзя отменить.`;
+            confirmOverlay.classList.add('active');
+        }
+
+        confirmCancel.addEventListener('click', () => {
+            confirmOverlay.classList.remove('active');
+            deleteId = null;
+        });
+
+        confirmDelete.addEventListener('click', async () => {
+            confirmOverlay.classList.remove('active');
+            if (!deleteId) return;
+            try {
+                await api(`/api/admin/vacancies/${deleteId}`, { method: 'DELETE' });
+                showToast('Вакансия удалена', 'success');
+                deleteId = null;
+                await loadVacancies();
+            } catch {}
+        });
+
+        // ===================== MODAL: SECTIONS =====================
+        let sections = [];
+
+        function renderSections() {
+            sectionsList.innerHTML = sections.map((s, i) => `
+                <div class="section-item">
+                    <button class="btn-remove-section" onclick="removeSection(${i})">
+                        <i data-lucide="x" style="width:14px;height:14px;"></i>
+                    </button>
+                    <input type="text" placeholder="Заголовок секции" value="${escapeHtml(s.title || '')}" onchange="updateSection(${i},'title',this.value)">
+                    <textarea placeholder="Содержимое секции" onchange="updateSection(${i},'body',this.value)">${escapeHtml(s.body || '')}</textarea>
+                </div>
+            `).join('');
+            if (sections.length === 0) {
+                sectionsList.innerHTML = '<div style="color:#aaa;font-size:13px;padding:8px;text-align:center;">Нет секций</div>';
+            }
+            lucide.createIcons();
+        }
+
+        function addSection() {
+            sections.push({ title: '', body: '' });
+            renderSections();
+        }
+
+        function removeSection(index) {
+            sections.splice(index, 1);
+            renderSections();
+        }
+
+        function updateSection(index, field, value) {
+            sections[index][field] = value;
+        }
+
+        btnAddSection.addEventListener('click', addSection);
+
+        // ===================== MODAL: OPEN/CLOSE =====================
+        function openModal() {
+            modalOverlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modalOverlay.classList.remove('active');
+            editingId = null;
+            formTitle.value = '';
+            formSubtitle.value = '';
+            formCity.value = '';
+            formTags.value = '';
+            formStatus.value = 'published';
+            sections = [];
+            renderSections();
+        }
+
+        btnAdd.addEventListener('click', () => {
+            editingId = null;
+            modalTitle.textContent = 'Добавить вакансию';
+            formTitle.value = '';
+            formSubtitle.value = '';
+            formCity.value = '';
+            formTags.value = '';
+            formStatus.value = 'published';
+            sections = [{ title: '', body: '' }];
+            renderSections();
+            openModal();
+        });
+
+        function openEdit(id) {
+            const v = vacancies.find(x => (x._id || x.id) === id);
+            if (!v) return;
+            editingId = id;
+            modalTitle.textContent = 'Редактировать вакансию';
+            formTitle.value = v.title || '';
+            formSubtitle.value = v.subtitle || '';
+            formCity.value = v.city || '';
+            formTags.value = Array.isArray(v.tags) ? v.tags.join(', ') : (v.tags || '');
+            formStatus.value = v.status || 'draft';
+            sections = Array.isArray(v.sections) ? v.sections.map(s => ({ ...s })) : [];
+            renderSections();
+            openModal();
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        btnCancel.addEventListener('click', closeModal);
+
+        modalOverlay.addEventListener('click', (e) => {
+            if (e.target === modalOverlay) closeModal();
+        });
+
+        confirmOverlay.addEventListener('click', (e) => {
+            if (e.target === confirmOverlay) {
+                confirmOverlay.classList.remove('active');
+                deleteId = null;
+            }
+        });
+
+        // ===================== MODAL: SAVE =====================
+        btnSave.addEventListener('click', async () => {
+            const title = formTitle.value.trim();
+            if (!title) {
+                showToast('Укажите название вакансии', 'error');
+                formTitle.focus();
+                return;
+            }
+
+            // Read sections from DOM to capture latest input
+            const sectionEls = sectionsList.querySelectorAll('.section-item');
+            const currentSections = [];
+            sectionEls.forEach(el => {
+                const inp = el.querySelector('input');
+                const ta = el.querySelector('textarea');
+                if (inp && ta) {
+                    currentSections.push({ title: inp.value, body: ta.value });
+                }
+            });
+
+            const payload = {
+                title,
+                subtitle: formSubtitle.value.trim(),
+                city: formCity.value.trim(),
+                sections: currentSections,
+                tags: formTags.value.split(',').map(t => t.trim()).filter(Boolean),
+                status: formStatus.value
+            };
+
+            try {
+                if (editingId) {
+                    await api(`/api/admin/vacancies/${editingId}`, {
+                        method: 'PUT',
+                        body: JSON.stringify(payload)
+                    });
+                    showToast('Вакансия обновлена', 'success');
+                } else {
+                    await api('/api/admin/vacancies', {
+                        method: 'POST',
+                        body: JSON.stringify(payload)
+                    });
+                    showToast('Вакансия создана', 'success');
+                }
+                closeModal();
+                await loadVacancies();
+            } catch {}
+        });
+
+        // ===================== INIT =====================
+        checkAuth();
+    </script>
+</body>
+</html>

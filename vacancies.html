@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Вакансии — ВСА ВолгаСвязьАвтоматика</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="page-vacancies">
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="header header--scrolled-init" id="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <svg class="logo-svg" viewBox="0 0 255.12 121.89" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs>
+                        <radialGradient id="g1" cx="48.67" cy="63.12" r="10.94" gradientUnits="userSpaceOnUse"><stop offset=".18" stop-color="#8c1913"/><stop offset=".68" stop-color="#8c1913" stop-opacity="0"/></radialGradient>
+                        <radialGradient id="g2" cx="79.44" cy="63.39" r="13.64" xlink:href="#g1"/>
+                    </defs>
+                    <g class="logo-text">
+                        <text class="logo-title" font-family="GothamPro-Bold, 'Gotham Pro', Inter, sans-serif" font-size="55.33" font-weight="700" transform="translate(98.67 76.66)"><tspan x="0" y="0">В</tspan><tspan x="39.95" y="0">С</tspan><tspan x="79.12" y="0">А</tspan></text>
+                        <text class="logo-subtitle" font-family="GothamPro-Medium, 'Gotham Pro', Inter, sans-serif" font-size="8.08" font-weight="500" transform="translate(103.25 91.33)"><tspan x="0" y="0">ВОЛГАСВЯЗЬАВТОМАТИКА</tspan></text>
+                    </g>
+                    <g class="logo-icon">
+                        <path fill="#fff" d="M64.28,93.43c-.63,0-1.25-.16-1.8-.47l-25.11-14.13c-1.14-.64-1.86-1.85-1.87-3.16l-.32-28.81c-.01-1.31.68-2.53,1.8-3.2l24.8-14.68c.57-.34,1.21-.51,1.87-.51s1.25.16,1.8.47l25.11,14.13c1.14.64,1.86,1.85,1.87,3.16l.32,28.81c.01,1.31-.68,2.54-1.8,3.2l-24.8,14.68c-.57.34-1.21.51-1.87.51h0Z"/>
+                        <path fill="#4b4b4a" d="M63.65,30.03c.36,0,.72.09,1.03.27l25.11,14.13c.65.37,1.07,1.06,1.07,1.81l.32,28.81c0,.75-.39,1.45-1.03,1.84l-24.8,14.68c-.32.19-.7.29-1.07.29s-.72-.09-1.03-.27l-25.11-14.13c-.65-.37-1.07-1.06-1.07-1.81l-.32-28.81c0-.75.39-1.45,1.03-1.84l24.8-14.68c.32-.19.7-.29,1.07-.29M63.65,26.89c-.92,0-1.85.24-2.67.73l-24.8,14.68c-1.61.95-2.59,2.7-2.57,4.57l.32,28.81c.02,1.87,1.04,3.59,2.67,4.51l25.11,14.13c.8.45,1.69.67,2.57.67s1.85-.24,2.67-.73l24.8-14.68c1.61-.95,2.59-2.7,2.57-4.57l-.32-28.81c-.02-1.87-1.04-3.59-2.67-4.51l-25.11-14.13c-.8-.45-1.69-.67-2.57-.67h0Z"/>
+                        <path fill="#b01738" d="M88.6,58.51h-6.3s-3.73-.01-3.73-.01v-1.32h-2.9v1.42h-.19v.02c-1.67,0-3.35,0-5.02-.01-.01,0-.03,0-.04,0h-12.83s-.08.01-.12.01c-1.62,0-3.24,0-4.86,0v-1.43h-3.09v1.32h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.4,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.33c1.67,1.13,10.71,7.12,14.16,7.12s12.57-5.99,14.29-7.12h4.03c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79Z"/>
+                        <polygon fill="#b01738" points="70.55 57.03 70.55 53.42 57.57 53.42 57.57 53.41 57.54 53.41 57.54 57.03 58.9 57.03 58.9 57.04 69.19 57.04 69.19 57.03 70.55 57.03"/>
+                        <path fill="#b01738" d="M60.17,50.02v2.43h7.75v-2.43h-2.87v-1.98h4.53c.42,0,.75-.34.75-.75v-1.41c0-.42-.34-.75-.75-.75h-4.53v-.6h-2.01v.6h-4.53c-.42,0-.75.34-.75.75v1.41c0,.42.34.75.75.75h4.53v1.98h-2.87Z"/>
+                        <path fill="url(#g1)" d="M49.53,58.5h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.41,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.03v-9.42Z"/>
+                        <path fill="url(#g2)" d="M82.44,58.51h-.14s-3.73-.01-3.73-.01v9.42h3.73c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79h-6.16Z"/>
+                    </g>
+                </svg>
+            </a>
+            <nav class="nav">
+                <a href="about.html" class="nav-link">О КОМПАНИИ</a>
+                <a href="services.html" class="nav-link">УСЛУГИ</a>
+                <a href="projects.html" class="nav-link">ПРОЕКТЫ</a>
+                <a href="partners.html" class="nav-link">ПАРТНЁРЫ</a>
+                <a href="vacancies.html" class="nav-link nav-link--active">ВАКАНСИИ</a>
+                <a href="csr.html" class="nav-link">КСО</a>
+                <a href="contacts.html" class="nav-link">КОНТАКТЫ</a>
+            </nav>
+            <div class="header-right">
+                <div class="lang-switch">
+                    <span class="lang-active">RU</span>
+                    <span class="lang-sep">/</span>
+                    <span class="lang-inactive">EN</span>
+                </div>
+                <a href="contacts.html" class="btn-cta">СВЯЗАТЬСЯ</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== PAGE HERO ==================== -->
+    <section class="page-hero">
+        <div class="page-hero__bg" style="background-image: url('images/vacancies-hero.png'); background-position: center 20%; background-size: cover;"></div>
+        <div class="page-hero__overlay"></div>
+        <div class="page-hero__content">
+            <nav class="breadcrumb hero-intro" data-intro-delay="200">
+                <a href="index.html" class="breadcrumb__link">Главная</a>
+                <span class="breadcrumb__sep">/</span>
+                <span class="breadcrumb__current">Вакансии</span>
+            </nav>
+            <h1 class="page-hero__title hero-intro" data-intro-delay="400">Вакансии</h1>
+            <div class="page-hero__accent-line hero-intro" data-intro-delay="600"></div>
+            <p class="page-hero__subtitle hero-intro" data-intro-delay="600">Присоединяйтесь к команде профессионалов</p>
+        </div>
+    </section>
+
+    <!-- ==================== VACANCIES CONTENT ==================== -->
+    <section class="vacancies-content">
+
+        <!-- Intro Row -->
+        <div class="vacancies-intro" data-animate="fade-up">
+            <div class="vacancies-intro__left">
+                <div class="about-content__label">
+                    <span class="about-content__label-line"></span>
+                    <span class="about-content__label-text">ОТКРЫТЫЕ ПОЗИЦИИ</span>
+                </div>
+                <div class="vacancies-intro__accent-line"></div>
+                <h2 class="vacancies-intro__heading">Требуются специалисты для реализации масштабного проекта</h2>
+            </div>
+            <div class="vacancies-intro__badge">
+                <span class="vacancies-intro__badge-count">7</span>
+                <span class="vacancies-intro__badge-label">вакансий</span>
+            </div>
+        </div>
+
+        <!-- Vacancy List — fallback HTML (shown when server is off) -->
+        <div class="vacancy-list" id="vacancyList">
+
+            <div class="vacancy-card vacancy-card--odd" data-animate="fade-up">
+                <div class="vacancy-card__top">
+                    <div class="vacancy-card__info">
+                        <span class="vacancy-card__city">Усть-Луга</span>
+                        <h3 class="vacancy-card__title">Электромонтажник</h3>
+                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Оформление по ТК РФ &middot; Проживание и питание</p>
+                    </div>
+                    <button class="vacancy-card__btn">Подробнее</button>
+                </div>
+                <div class="vacancy-card__details">
+                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Монтаж кабельных линий и электрооборудования на промышленных объектах. Прокладка и подключение силовых и контрольных кабелей. Монтаж щитового оборудования. Работа по проектной документации.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Разряд от 4-го. Опыт работы от 2 лет. Умение читать электрические схемы. Группа допуска по электробезопасности.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахтовый метод 60/30. Оформление по ТК РФ. Проживание и питание за счёт компании. Достойная заработная плата.</p></div></div>
+                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Электромонтажник')">Откликнуться</button>
+                </div>
+            </div>
+
+            <div class="vacancy-card vacancy-card--even" data-animate="fade-up" data-delay="100">
+                <div class="vacancy-card__top">
+                    <div class="vacancy-card__info">
+                        <span class="vacancy-card__city">Усть-Луга</span>
+                        <h3 class="vacancy-card__title">Монтажник ТТ</h3>
+                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Опыт от 1 года &middot; Проживание и питание</p>
+                    </div>
+                    <button class="vacancy-card__btn">Подробнее</button>
+                </div>
+                <div class="vacancy-card__details">
+                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Монтаж трубных трасс КИПиА. Установка и обвязка первичных датчиков. Монтаж импульсных линий. Опрессовка и испытание смонтированных систем.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Опыт от 1 года в монтаже КИП. Знание нормативной документации. Умение работать с чертежами.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахта 60/30. Проживание и питание. Официальное оформление.</p></div></div>
+                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Монтажник ТТ')">Откликнуться</button>
+                </div>
+            </div>
+
+            <div class="vacancy-card vacancy-card--odd" data-animate="fade-up" data-delay="200">
+                <div class="vacancy-card__top">
+                    <div class="vacancy-card__info">
+                        <span class="vacancy-card__city">Усть-Луга</span>
+                        <h3 class="vacancy-card__title">Электросварщик</h3>
+                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Действующий НАКС &middot; Сварка трубопроводов</p>
+                    </div>
+                    <button class="vacancy-card__btn">Подробнее</button>
+                </div>
+                <div class="vacancy-card__details">
+                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Сварка технологических трубопроводов. Аргонодуговая сварка. Работа с различными марками стали. Контроль качества сварных соединений.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Действующие удостоверения НАКС. Опыт сварки трубопроводов. Разряд от 5-го.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахта 60/30. Конкурентная оплата. Проживание и питание за счёт работодателя.</p></div></div>
+                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Электросварщик')">Откликнуться</button>
+                </div>
+            </div>
+
+            <div class="vacancy-card vacancy-card--even" data-animate="fade-up" data-delay="300">
+                <div class="vacancy-card__top">
+                    <div class="vacancy-card__info">
+                        <span class="vacancy-card__city">Усть-Луга</span>
+                        <h3 class="vacancy-card__title">Инженер ПТО</h3>
+                        <p class="vacancy-card__subtitle">Подготовка документации &middot; Опыт в нефтегазовой отрасли</p>
+                    </div>
+                    <button class="vacancy-card__btn">Подробнее</button>
+                </div>
+                <div class="vacancy-card__details">
+                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">&bull; Подготовка исполнительной и рабочей документации<br>&bull; Контроль сроков и качества выполнения работ<br>&bull; Составление отчётов о ходе строительства<br>&bull; Взаимодействие с заказчиком и подрядчиками</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">&bull; Высшее техническое образование<br>&bull; Опыт работы в нефтегазовой отрасли от 3 лет<br>&bull; Знание нормативной документации (СНиП, ГОСТ)<br>&bull; Уверенное владение AutoCAD, MS Office</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">&bull; Оформление по ТК РФ<br>&bull; Конкурентная заработная плата<br>&bull; Возможность профессионального роста</p></div></div>
+                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Инженер ПТО')">Откликнуться</button>
+                </div>
+            </div>
+
+            <div class="vacancy-card vacancy-card--odd" data-animate="fade-up" data-delay="400">
+                <div class="vacancy-card__top">
+                    <div class="vacancy-card__info">
+                        <span class="vacancy-card__city">Усть-Луга</span>
+                        <h3 class="vacancy-card__title">Инженер входного контроля</h3>
+                        <p class="vacancy-card__subtitle">Проверка МТР &middot; Знание нормативной базы &middot; АИС НСК</p>
+                    </div>
+                    <button class="vacancy-card__btn">Подробнее</button>
+                </div>
+                <div class="vacancy-card__details">
+                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">&bull; Входной контроль поступающих МТР<br>&bull; Проверка соответствия сертификатов и паспортов качества<br>&bull; Оформление актов входного контроля<br>&bull; Ведение учёта и документации в АИС НСК</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">&bull; Высшее или среднее техническое образование<br>&bull; Знание нормативной базы (ГОСТ, ТУ)<br>&bull; Опыт работы с АИС НСК<br>&bull; Внимательность к деталям</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">&bull; Оформление по ТК РФ<br>&bull; Стабильная заработная плата<br>&bull; Профессиональное развитие и обучение</p></div></div>
+                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Инженер входного контроля')">Откликнуться</button>
+                </div>
+            </div>
+
+            <div class="vacancy-card vacancy-card--even" data-animate="fade-up" data-delay="500">
+                <div class="vacancy-card__top">
+                    <div class="vacancy-card__info">
+                        <span class="vacancy-card__city">Усть-Луга</span>
+                        <h3 class="vacancy-card__title">Наладчик КИПиА</h3>
+                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Опыт от 3 лет &middot; Нефтегазовые объекты</p>
+                    </div>
+                    <button class="vacancy-card__btn">Подробнее</button>
+                </div>
+                <div class="vacancy-card__details">
+                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Пусконаладочные работы систем КИПиА. Настройка и калибровка приборов. Диагностика и устранение неисправностей.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Опыт от 3 лет. Знание систем АСУ ТП. Высшее или среднее техническое образование.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахта 60/30. Оформление по ТК РФ. Проживание и питание.</p></div></div>
+                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Наладчик КИПиА')">Откликнуться</button>
+                </div>
+            </div>
+
+            <div class="vacancy-card vacancy-card--odd" data-animate="fade-up" data-delay="600">
+                <div class="vacancy-card__top">
+                    <div class="vacancy-card__info">
+                        <span class="vacancy-card__city">Усть-Луга</span>
+                        <h3 class="vacancy-card__title">Слесарь КИПиА</h3>
+                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Разряд от 4-го &middot; Промышленные объекты</p>
+                    </div>
+                    <button class="vacancy-card__btn">Подробнее</button>
+                </div>
+                <div class="vacancy-card__details">
+                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Монтаж и обслуживание контрольно-измерительных приборов. Замена и ремонт датчиков. Работа с документацией.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Разряд от 4-го. Опыт работы от 1 года. Знание принципов работы КИП.</p></div></div>
+                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахта 60/30. Проживание и питание. Официальное оформление.</p></div></div>
+                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Слесарь КИПиА')">Откликнуться</button>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- ==================== APPLY MODAL ==================== -->
+    <div class="apply-modal" id="applyModal">
+        <div class="apply-modal__overlay" onclick="closeApplyModal()"></div>
+        <div class="apply-modal__card">
+            <button class="apply-modal__close" onclick="closeApplyModal()">&times;</button>
+            <h2 class="apply-modal__title">Откликнуться на вакансию</h2>
+            <p class="apply-modal__vacancy" id="applyVacancyName"></p>
+            <form class="apply-modal__form" id="applyForm" onsubmit="submitApply(event)">
+                <div class="apply-modal__field">
+                    <label class="apply-modal__label">ФИО *</label>
+                    <input class="apply-modal__input" type="text" name="name" required placeholder="Иванов Иван Иванович">
+                </div>
+                <div class="apply-modal__field">
+                    <label class="apply-modal__label">Контактный телефон *</label>
+                    <input class="apply-modal__input" type="tel" name="phone" required placeholder="+7 (___) ___-__-__">
+                </div>
+                <div class="apply-modal__field">
+                    <label class="apply-modal__label">Email</label>
+                    <input class="apply-modal__input" type="email" name="email" placeholder="example@mail.ru">
+                </div>
+                <div class="apply-modal__field">
+                    <label class="apply-modal__label">Ссылка на резюме или доп. информация</label>
+                    <textarea class="apply-modal__textarea" name="info" rows="3" placeholder="Ссылка на hh.ru, опыт работы или другая информация"></textarea>
+                </div>
+                <div class="apply-modal__consent">
+                    <input type="checkbox" id="applyConsent" name="consent" required>
+                    <label for="applyConsent">Я согласен с <a href="privacy.html" class="apply-modal__link">политикой конфиденциальности</a> и даю согласие на обработку персональных данных</label>
+                </div>
+                <button type="submit" class="apply-modal__submit">Отправить отклик</button>
+            </form>
+            <div class="apply-modal__success" id="applySuccess" style="display:none;">
+                <div class="apply-modal__success-icon">&#10003;</div>
+                <h3>Отклик отправлен!</h3>
+                <p>Мы свяжемся с вами в ближайшее время</p>
+                <button class="apply-modal__submit" onclick="closeApplyModal()">Закрыть</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    function openApplyModal(vacancyName) {
+        document.getElementById('applyVacancyName').textContent = vacancyName;
+        document.getElementById('applyModal').classList.add('is-open');
+        document.getElementById('applyForm').style.display = '';
+        document.getElementById('applySuccess').style.display = 'none';
+        document.getElementById('applyForm').reset();
+        document.body.style.overflow = 'hidden';
+    }
+
+    function closeApplyModal() {
+        document.getElementById('applyModal').classList.remove('is-open');
+        document.body.style.overflow = '';
+    }
+
+    function submitApply(e) {
+        e.preventDefault();
+        const form = document.getElementById('applyForm');
+        const vacancy = document.getElementById('applyVacancyName').textContent;
+        const name = form.querySelector('[name="name"]').value.trim();
+        const phone = form.querySelector('[name="phone"]').value.trim();
+        const email = form.querySelector('[name="email"]').value.trim();
+        const info = form.querySelector('[name="info"]').value.trim();
+
+        const subject = encodeURIComponent('Отклик на вакансию: ' + vacancy);
+        const body = encodeURIComponent(
+            'Вакансия: ' + vacancy + '\n' +
+            'ФИО: ' + name + '\n' +
+            'Телефон: ' + phone + '\n' +
+            'Email: ' + (email || 'не указан') + '\n' +
+            'Доп. информация: ' + (info || 'нет') + '\n'
+        );
+
+        window.location.href = 'mailto:hr_vsa@ooovsa.ru?subject=' + subject + '&body=' + body;
+
+        form.style.display = 'none';
+        document.getElementById('applySuccess').style.display = 'flex';
+    }
+    </script>
+
+    <script>
+    // Try to load vacancies from API. If server is running — replace fallback HTML.
+    // If server is off — fallback HTML stays as is.
+    (function() {
+        const list = document.getElementById('vacancyList');
+        const badge = document.querySelector('.vacancies-intro__badge-count');
+
+        fetch('/api/vacancies')
+            .then(r => { if (!r.ok) throw new Error(); return r.json(); })
+            .then(vacancies => {
+                if (badge) badge.textContent = vacancies.length;
+                if (!vacancies.length) {
+                    list.innerHTML = '<p style="color:#6B7280;text-align:center;padding:40px;">Нет открытых вакансий</p>';
+                    return;
+                }
+                list.innerHTML = vacancies.map((v, i) => {
+                    const mod = i % 2 === 0 ? 'vacancy-card--odd' : 'vacancy-card--even';
+                    const sectionsHtml = v.sections.map(s => `
+                        <div class="vacancy-card__section">
+                            <div class="vacancy-card__dot"></div>
+                            <div class="vacancy-card__section-content">
+                                <span class="vacancy-card__section-title">${s.title}</span>
+                                <p class="vacancy-card__section-body">${s.body.replace(/\n/g, '<br>')}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                    return `
+                        <div class="vacancy-card ${mod}">
+                            <div class="vacancy-card__top">
+                                <div class="vacancy-card__info">
+                                    ${v.city ? `<span class="vacancy-card__city">${v.city}</span>` : ''}
+                                    <h3 class="vacancy-card__title">${v.title}</h3>
+                                    <p class="vacancy-card__subtitle">${v.subtitle}</p>
+                                </div>
+                                <button class="vacancy-card__btn">Подробнее</button>
+                            </div>
+                            <div class="vacancy-card__details">
+                                <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
+                                ${sectionsHtml}
+                                <button class="vacancy-card__apply-btn" data-vacancy-title="${v.title.replace(/"/g, '&quot;').replace(/</g, '&lt;')}" onclick="openApplyModal(this.dataset.vacancyTitle)">Откликнуться</button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+                initAccordion();
+            })
+            .catch(() => {
+                // Server not available — keep fallback HTML, just init accordion
+                initAccordion();
+            });
+
+        function initAccordion() {
+            document.querySelectorAll('.vacancy-card').forEach(card => {
+                const btn = card.querySelector('.vacancy-card__btn');
+                const details = card.querySelector('.vacancy-card__details');
+                if (!btn || !details) return;
+
+                let isOpen = false;
+                btn.addEventListener('click', () => {
+                    isOpen = !isOpen;
+                    if (isOpen) {
+                        details.style.display = 'block';
+                        details.classList.add('is-open');
+                        btn.textContent = 'Скрыть';
+                    } else {
+                        details.classList.remove('is-open');
+                        details.style.display = 'none';
+                        btn.textContent = 'Подробнее';
+                    }
+                });
+            });
+        }
+    })();
+    </script>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <svg class="footer-logo-svg" viewBox="0 0 255.12 121.89" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <defs>
+                            <radialGradient id="fg1" cx="48.67" cy="63.12" r="10.94" gradientUnits="userSpaceOnUse"><stop offset=".18" stop-color="#8c1913"/><stop offset=".68" stop-color="#8c1913" stop-opacity="0"/></radialGradient>
+                            <radialGradient id="fg2" cx="79.44" cy="63.39" r="13.64" xlink:href="#fg1"/>
+                        </defs>
+                        <g>
+                            <text fill="#FFFFFF" font-family="GothamPro-Bold, 'Gotham Pro', Inter, sans-serif" font-size="55.33" font-weight="700" transform="translate(98.67 76.66)"><tspan x="0" y="0">В</tspan><tspan x="39.95" y="0">С</tspan><tspan x="79.12" y="0">А</tspan></text>
+                            <text fill="#FFFFFF" font-family="GothamPro-Medium, 'Gotham Pro', Inter, sans-serif" font-size="8.08" font-weight="500" transform="translate(103.25 91.33)"><tspan x="0" y="0">ВОЛГАСВЯЗЬАВТОМАТИКА</tspan></text>
+                        </g>
+                        <g>
+                            <path fill="#fff" d="M64.28,93.43c-.63,0-1.25-.16-1.8-.47l-25.11-14.13c-1.14-.64-1.86-1.85-1.87-3.16l-.32-28.81c-.01-1.31.68-2.53,1.8-3.2l24.8-14.68c.57-.34,1.21-.51,1.87-.51s1.25.16,1.8.47l25.11,14.13c1.14.64,1.86,1.85,1.87,3.16l.32,28.81c.01,1.31-.68,2.54-1.8,3.2l-24.8,14.68c-.57.34-1.21.51-1.87.51h0Z"/>
+                            <path fill="#ffffff33" d="M63.65,30.03c.36,0,.72.09,1.03.27l25.11,14.13c.65.37,1.07,1.06,1.07,1.81l.32,28.81c0,.75-.39,1.45-1.03,1.84l-24.8,14.68c-.32.19-.7.29-1.07.29s-.72-.09-1.03-.27l-25.11-14.13c-.65-.37-1.07-1.06-1.07-1.81l-.32-28.81c0-.75.39-1.45,1.03-1.84l24.8-14.68c.32-.19.7-.29,1.07-.29M63.65,26.89c-.92,0-1.85.24-2.67.73l-24.8,14.68c-1.61.95-2.59,2.7-2.57,4.57l.32,28.81c.02,1.87,1.04,3.59,2.67,4.51l25.11,14.13c.8.45,1.69.67,2.57.67s1.85-.24,2.67-.73l24.8-14.68c1.61-.95,2.59-2.7,2.57-4.57l-.32-28.81c-.02-1.87-1.04-3.59-2.67-4.51l-25.11-14.13c-.8-.45-1.69-.67-2.57-.67h0Z"/>
+                            <path fill="#b01738" d="M88.6,58.51h-6.3s-3.73-.01-3.73-.01v-1.32h-2.9v1.42h-.19v.02c-1.67,0-3.35,0-5.02-.01-.01,0-.03,0-.04,0h-12.83s-.08.01-.12.01c-1.62,0-3.24,0-4.86,0v-1.43h-3.09v1.32h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.4,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.33c1.67,1.13,10.71,7.12,14.16,7.12s12.57-5.99,14.29-7.12h4.03c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79Z"/>
+                            <polygon fill="#b01738" points="70.55 57.03 70.55 53.42 57.57 53.42 57.57 53.41 57.54 53.41 57.54 57.03 58.9 57.03 58.9 57.04 69.19 57.04 69.19 57.03 70.55 57.03"/>
+                            <path fill="#b01738" d="M60.17,50.02v2.43h7.75v-2.43h-2.87v-1.98h4.53c.42,0,.75-.34.75-.75v-1.41c0-.42-.34-.75-.75-.75h-4.53v-.6h-2.01v.6h-4.53c-.42,0-.75.34-.75.75v1.41c0,.42.34.75.75.75h4.53v1.98h-2.87Z"/>
+                            <path fill="url(#fg1)" d="M49.53,58.5h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.41,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.03v-9.42Z"/>
+                            <path fill="url(#fg2)" d="M82.44,58.51h-.14s-3.73-.01-3.73-.01v9.42h3.73c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79h-6.16Z"/>
+                        </g>
+                    </svg>
+                    <p class="footer-logo__text">Надёжная поддержка вашего производства</p>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">КОМПАНИЯ</h4>
+                    <a href="about.html" class="footer-link">О компании</a>
+                    <a href="index.html#projects" class="footer-link">Проекты</a>
+                    <a href="services.html" class="footer-link">Компетенции</a>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">УСЛУГИ</h4>
+                    <a href="services.html" class="footer-link">Пусконаладка</a>
+                    <a href="services.html" class="footer-link">Проектирование</a>
+                    <a href="services.html" class="footer-link">Производство</a>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">КОНТАКТЫ</h4>
+                    <a href="tel:+78633200358" class="footer-link">+7 (863) 320-03-58</a>
+                    <a href="mailto:info@ooovsa.ru" class="footer-link">info@ooovsa.ru</a>
+                    <a href="https://ooovsa.ru" class="footer-link">ooovsa.ru</a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2016–2025 ООО &laquo;ВСА&raquo; ВолгаСвязьАвтоматика. Все права защищены.</p>
+                <p class="footer-address">Москва, 2-й Верхний Михайловский проезд, д. 9, стр. 5</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html>

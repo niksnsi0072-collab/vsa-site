@@ -1,0 +1,398 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВСА — Полный цикл реализации инженерных систем</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <!-- ==================== PRELOADER ==================== -->
+    <div class="preloader" id="preloader">
+        <div class="preloader-inner">
+            <svg class="preloader-logo" viewBox="0 0 255.12 121.89" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                <defs>
+                    <radialGradient id="pg1" cx="48.67" cy="63.12" r="10.94" gradientUnits="userSpaceOnUse"><stop offset=".18" stop-color="#8c1913"/><stop offset=".68" stop-color="#8c1913" stop-opacity="0"/></radialGradient>
+                    <radialGradient id="pg2" cx="79.44" cy="63.39" r="13.64" xlink:href="#pg1"/>
+                </defs>
+                <g>
+                    <text fill="#FFFFFF" font-family="GothamPro-Bold, 'Gotham Pro', Inter, sans-serif" font-size="55.33" font-weight="700" transform="translate(98.67 76.66)"><tspan x="0" y="0">В</tspan><tspan x="39.95" y="0">С</tspan><tspan x="79.12" y="0">А</tspan></text>
+                    <text fill="#FFFFFF" font-family="GothamPro-Medium, 'Gotham Pro', Inter, sans-serif" font-size="8.08" font-weight="500" transform="translate(103.25 91.33)"><tspan x="0" y="0">ВОЛГАСВЯЗЬАВТОМАТИКА</tspan></text>
+                </g>
+                <g>
+                    <path fill="#fff" d="M64.28,93.43c-.63,0-1.25-.16-1.8-.47l-25.11-14.13c-1.14-.64-1.86-1.85-1.87-3.16l-.32-28.81c-.01-1.31.68-2.53,1.8-3.2l24.8-14.68c.57-.34,1.21-.51,1.87-.51s1.25.16,1.8.47l25.11,14.13c1.14.64,1.86,1.85,1.87,3.16l.32,28.81c.01,1.31-.68,2.54-1.8,3.2l-24.8,14.68c-.57.34-1.21.51-1.87.51h0Z"/>
+                    <path fill="#ffffff33" d="M63.65,30.03c.36,0,.72.09,1.03.27l25.11,14.13c.65.37,1.07,1.06,1.07,1.81l.32,28.81c0,.75-.39,1.45-1.03,1.84l-24.8,14.68c-.32.19-.7.29-1.07.29s-.72-.09-1.03-.27l-25.11-14.13c-.65-.37-1.07-1.06-1.07-1.81l-.32-28.81c0-.75.39-1.45,1.03-1.84l24.8-14.68c.32-.19.7-.29,1.07-.29M63.65,26.89c-.92,0-1.85.24-2.67.73l-24.8,14.68c-1.61.95-2.59,2.7-2.57,4.57l.32,28.81c.02,1.87,1.04,3.59,2.67,4.51l25.11,14.13c.8.45,1.69.67,2.57.67s1.85-.24,2.67-.73l24.8-14.68c1.61-.95,2.59-2.7,2.57-4.57l-.32-28.81c-.02-1.87-1.04-3.59-2.67-4.51l-25.11-14.13c-.8-.45-1.69-.67-2.57-.67h0Z"/>
+                    <path fill="#b01738" d="M88.6,58.51h-6.3s-3.73-.01-3.73-.01v-1.32h-2.9v1.42h-.19v.02c-1.67,0-3.35,0-5.02-.01-.01,0-.03,0-.04,0h-12.83s-.08.01-.12.01c-1.62,0-3.24,0-4.86,0v-1.43h-3.09v1.32h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.4,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.33c1.67,1.13,10.71,7.12,14.16,7.12s12.57-5.99,14.29-7.12h4.03c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79Z"/>
+                    <polygon fill="#b01738" points="70.55 57.03 70.55 53.42 57.57 53.42 57.57 53.41 57.54 53.41 57.54 57.03 58.9 57.03 58.9 57.04 69.19 57.04 69.19 57.03 70.55 57.03"/>
+                    <path fill="#b01738" d="M60.17,50.02v2.43h7.75v-2.43h-2.87v-1.98h4.53c.42,0,.75-.34.75-.75v-1.41c0-.42-.34-.75-.75-.75h-4.53v-.6h-2.01v.6h-4.53c-.42,0-.75.34-.75.75v1.41c0,.42.34.75.75.75h4.53v1.98h-2.87Z"/>
+                    <path fill="url(#pg1)" d="M49.53,58.5h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.41,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.03v-9.42Z"/>
+                    <path fill="url(#pg2)" d="M82.44,58.51h-.14s-3.73-.01-3.73-.01v9.42h3.73c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79h-6.16Z"/>
+                </g>
+            </svg>
+            <div class="preloader-bar">
+                <div class="preloader-progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== HEADER ==================== -->
+    <header class="header" id="header">
+        <div class="header-inner">
+            <a href="index.html" class="logo">
+                <svg class="logo-svg" viewBox="0 0 255.12 121.89" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                    <defs>
+                        <radialGradient id="g1" cx="48.67" cy="63.12" r="10.94" gradientUnits="userSpaceOnUse"><stop offset=".18" stop-color="#8c1913"/><stop offset=".68" stop-color="#8c1913" stop-opacity="0"/></radialGradient>
+                        <radialGradient id="g2" cx="79.44" cy="63.39" r="13.64" xlink:href="#g1"/>
+                    </defs>
+                    <g class="logo-text">
+                        <text class="logo-title" font-family="GothamPro-Bold, 'Gotham Pro', Inter, sans-serif" font-size="55.33" font-weight="700" transform="translate(98.67 76.66)"><tspan x="0" y="0">В</tspan><tspan x="39.95" y="0">С</tspan><tspan x="79.12" y="0">А</tspan></text>
+                        <text class="logo-subtitle" font-family="GothamPro-Medium, 'Gotham Pro', Inter, sans-serif" font-size="8.08" font-weight="500" transform="translate(103.25 91.33)"><tspan x="0" y="0">ВОЛГАСВЯЗЬАВТОМАТИКА</tspan></text>
+                    </g>
+                    <g class="logo-icon">
+                        <path fill="#fff" d="M64.28,93.43c-.63,0-1.25-.16-1.8-.47l-25.11-14.13c-1.14-.64-1.86-1.85-1.87-3.16l-.32-28.81c-.01-1.31.68-2.53,1.8-3.2l24.8-14.68c.57-.34,1.21-.51,1.87-.51s1.25.16,1.8.47l25.11,14.13c1.14.64,1.86,1.85,1.87,3.16l.32,28.81c.01,1.31-.68,2.54-1.8,3.2l-24.8,14.68c-.57.34-1.21.51-1.87.51h0Z"/>
+                        <path fill="#4b4b4a" d="M63.65,30.03c.36,0,.72.09,1.03.27l25.11,14.13c.65.37,1.07,1.06,1.07,1.81l.32,28.81c0,.75-.39,1.45-1.03,1.84l-24.8,14.68c-.32.19-.7.29-1.07.29s-.72-.09-1.03-.27l-25.11-14.13c-.65-.37-1.07-1.06-1.07-1.81l-.32-28.81c0-.75.39-1.45,1.03-1.84l24.8-14.68c.32-.19.7-.29,1.07-.29M63.65,26.89c-.92,0-1.85.24-2.67.73l-24.8,14.68c-1.61.95-2.59,2.7-2.57,4.57l.32,28.81c.02,1.87,1.04,3.59,2.67,4.51l25.11,14.13c.8.45,1.69.67,2.57.67s1.85-.24,2.67-.73l24.8-14.68c1.61-.95,2.59-2.7,2.57-4.57l-.32-28.81c-.02-1.87-1.04-3.59-2.67-4.51l-25.11-14.13c-.8-.45-1.69-.67-2.57-.67h0Z"/>
+                        <path fill="#b01738" d="M88.6,58.51h-6.3s-3.73-.01-3.73-.01v-1.32h-2.9v1.42h-.19v.02c-1.67,0-3.35,0-5.02-.01-.01,0-.03,0-.04,0h-12.83s-.08.01-.12.01c-1.62,0-3.24,0-4.86,0v-1.43h-3.09v1.32h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.4,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.33c1.67,1.13,10.71,7.12,14.16,7.12s12.57-5.99,14.29-7.12h4.03c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79Z"/>
+                        <polygon fill="#b01738" points="70.55 57.03 70.55 53.42 57.57 53.42 57.57 53.41 57.54 53.41 57.54 57.03 58.9 57.03 58.9 57.04 69.19 57.04 69.19 57.03 70.55 57.03"/>
+                        <path fill="#b01738" d="M60.17,50.02v2.43h7.75v-2.43h-2.87v-1.98h4.53c.42,0,.75-.34.75-.75v-1.41c0-.42-.34-.75-.75-.75h-4.53v-.6h-2.01v.6h-4.53c-.42,0-.75.34-.75.75v1.41c0,.42.34.75.75.75h4.53v1.98h-2.87Z"/>
+                        <path fill="url(#g1)" d="M49.53,58.5h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.41,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.03v-9.42Z"/>
+                        <path fill="url(#g2)" d="M82.44,58.51h-.14s-3.73-.01-3.73-.01v9.42h3.73c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79h-6.16Z"/>
+                    </g>
+                </svg>
+            </a>
+            <nav class="nav">
+                <a href="#about" class="nav-link">О КОМПАНИИ</a>
+                <a href="services.html" class="nav-link">УСЛУГИ</a>
+                <a href="projects.html" class="nav-link">ПРОЕКТЫ</a>
+                <a href="partners.html" class="nav-link">ПАРТНЁРЫ</a>
+                <a href="vacancies.html" class="nav-link">ВАКАНСИИ</a>
+                <a href="csr.html" class="nav-link">КСО</a>
+                <a href="contacts.html" class="nav-link">КОНТАКТЫ</a>
+            </nav>
+            <div class="header-right">
+                <div class="lang-switch">
+                    <span class="lang-active">RU</span>
+                    <span class="lang-sep">/</span>
+                    <span class="lang-inactive">EN</span>
+                </div>
+                <a href="contacts.html" class="btn-cta">СВЯЗАТЬСЯ</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="hero" id="hero">
+        <video class="hero-video" autoplay loop muted playsinline preload="auto" id="hero-video">
+            <source src="images/footer-video.mp4" type="video/mp4">
+        </video>
+        <div class="hero-overlay"></div>
+
+        <!-- Decorative plus marks -->
+        <div class="hero-plus" style="top: 90px; left: 60px;"></div>
+        <div class="hero-plus" style="bottom: 170px; right: 190px;"></div>
+        <div class="hero-cross" style="top: 200px; right: 134px;"></div>
+        <div class="hero-cross" style="bottom: 70px; left: 200px;"></div>
+
+        <div class="hero-content">
+            <h1 class="hero-title" data-animate="split-text">Полный цикл реализации<br>инженерных систем<br>для ключевых отраслей экономики</h1>
+            <p class="hero-services">Проектирование · Монтаж · Пусконаладка · Обслуживание</p>
+            <div class="hero-buttons">
+                <a href="about.html" class="btn btn--hero-primary">О КОМПАНИИ</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== ABOUT SECTION ==================== -->
+    <section class="about" id="about">
+        <div class="about-bg"></div>
+        <div class="about-content" data-animate="fade-up">
+            <div class="about-label">
+                <span class="about-label__line"></span>
+                <span class="about-label__text">О КОМПАНИИ</span>
+            </div>
+            <h2 class="about-title">Профессиональный подход<br>и техническая экспертиза - фундамент успешной реализации проекта</h2>
+            <p class="about-desc">Компания создавалась и развивалась по направлению с основной специализацией на проведение строительно-монтажных и пусконаладочных работ на объектах газотранспортной системы, газопереработки и нефтегазохимии. Накопленный опыт позволил перейти на следующую ступень развития, а именно стать инжиниринговой компанией для выполнения работ на ключевых объектах нефтегазовой отрасли РФ. Применяемые технологические решения соответствуют российским и мировым стандартам. Совокупность компетенций позволяет реализовывать высокотехнологичные проекты в масштабах страны</p>
+            <a href="about.html" class="btn btn--primary about-btn">Подробнее о компании <span class="arrow">→</span></a>
+        </div>
+        <div class="about-photo" data-animate="fade-left">
+            <img src="images/about-photo.png" alt="Команда ВСА">
+            <div class="about-photo__border"></div>
+        </div>
+        <div class="about-dots"></div>
+    </section>
+
+    <!-- ==================== GEOGRAPHY SECTION ==================== -->
+    <section class="geography" id="geography">
+        <div class="geo-accent"></div>
+        <div class="geo-columns">
+            <!-- Left Column -->
+            <div class="geo-left" data-animate="fade-up">
+                <div class="geo-header-block">
+                    <div class="section-label-row" data-animate="fade-up">
+                        <span class="section-label-line section-label-line--light"></span>
+                        <span class="section-label-text section-label-text--light">ГЕОГРАФИЯ ПРИСУТСТВИЯ</span>
+                    </div>
+                    <h2 class="section-title section-title--light" data-animate="fade-up" data-delay="100">От Балтики до Сахалина</h2>
+                    <p class="geo-desc" data-animate="fade-up" data-delay="200">Наши команды работают на крупнейших объектах «Газпрома», «РусХимАльянса» и других лидеров отрасли. Более 10 регионов присутствия, сотни проектов по всей России.</p>
+                </div>
+                <div class="geo-stats" data-animate="fade-up" data-delay="250">
+                    <div class="geo-stat">
+                        <div class="geo-stat__top">
+                            <span class="geo-stat__number" data-count="10">0</span>
+                        </div>
+                        <span class="geo-stat__label">регионов</span>
+                    </div>
+                    <div class="geo-stat">
+                        <div class="geo-stat__top">
+                            <span class="geo-stat__number" data-count="300">0</span><span class="geo-stat__plus">+</span>
+                        </div>
+                        <span class="geo-stat__label">проектов</span>
+                    </div>
+                </div>
+                <div class="geo-tags" data-animate="fade-up" data-delay="300">
+                    <div class="geo-tags-row">
+                        <button class="city-tag" data-city="moscow">Москва</button>
+                        <button class="city-tag" data-city="ustluga">Усть-Луга</button>
+                    </div>
+                    <div class="geo-tags-row">
+                        <button class="city-tag" data-city="urengoy">Новый Уренгой</button>
+                        <button class="city-tag" data-city="bryansk">Брянск</button>
+                    </div>
+                    <div class="geo-tags-row">
+                        <button class="city-tag" data-city="sakhalin">Сахалин</button>
+                        <button class="city-tag" data-city="astrakhan">Астрахань</button>
+                    </div>
+                    <div class="geo-tags-row">
+                        <button class="city-tag" data-city="ukhta">Ухта</button>
+                        <button class="city-tag" data-city="yugorsk">Югорск</button>
+                    </div>
+                    <div class="geo-tags-row">
+                        <button class="city-tag" data-city="orenburg">Оренбург</button>
+                        <button class="city-tag" data-city="rostov">Ростов-на-Дону</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right — Map -->
+            <div class="geo-map-wrapper" data-animate="fade-up" data-delay="200">
+                <img src="images/right-map.png" alt="Карта присутствия ВСА в России" class="geo-map-img">
+                <span class="map-glow" data-city="ustluga" style="top:60.6%;left:12.6%"></span>
+                <span class="map-glow" data-city="moscow" style="top:64.5%;left:14.4%"></span>
+                <span class="map-glow" data-city="bryansk" style="top:67.2%;left:10.2%"></span>
+                <span class="map-glow" data-city="astrakhan" style="top:80.8%;left:11.8%"></span>
+                <span class="map-glow" data-city="orenburg" style="top:77.2%;left:20.6%"></span>
+                <span class="map-glow" data-city="ukhta" style="top:67%;left:31.7%"></span>
+                <span class="map-glow" data-city="yugorsk" style="top:61.5%;left:29%"></span>
+                <span class="map-glow" data-city="urengoy" style="top:67.2%;left:39%"></span>
+                <span class="map-glow" data-city="sakhalin" style="top:72.5%;left:84.1%"></span>
+                <span class="map-glow" data-city="rostov" style="top:73.1%;left:10.6%"></span>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== PROJECTS SECTION ==================== -->
+    <section class="projects" id="projects">
+        <div class="projects-inner">
+            <div class="projects-header">
+                <div class="section-label-row" data-animate="fade-up">
+                    <span class="section-label-line"></span>
+                    <span class="section-label-text">РЕАЛИЗОВАННЫЕ ПРОЕКТЫ</span>
+                </div>
+                <h2 class="section-title" data-animate="fade-up" data-delay="100">Наши ключевые заказчики</h2>
+                <p class="projects-subtitle" data-animate="fade-up" data-delay="200">Мы реализуем масштабные проекты для крупнейших компаний нефтегазовой отрасли</p>
+            </div>
+
+            <div class="projects-grid">
+                <a href="projects-gazprom.html" class="project-card" data-animate="fade-up" data-delay="200">
+                    <div class="project-card__bg" style="background-image: url('images/zavod.png');"></div>
+                    <div class="project-card__overlay"></div>
+                    <div class="project-card__content">
+                        <span class="project-card__tag">ЗАКАЗЧИК</span>
+                        <h3 class="project-card__title">ПАО &laquo;ГАЗПРОМ&raquo;</h3>
+                        <p class="project-card__desc">Комплексные пусконаладочные и строительно-монтажные работы для объектов газотранспортной системы</p>
+                    </div>
+                    <span class="project-card__arrow"><i data-lucide="arrow-right"></i></span>
+                </a>
+
+                <a href="projects-rushim.html" class="project-card" data-animate="fade-up" data-delay="350">
+                    <div class="project-card__bg" style="background-image: url('images/zavod2.png');"></div>
+                    <div class="project-card__overlay"></div>
+                    <div class="project-card__content">
+                        <span class="project-card__tag">ЗАКАЗЧИК</span>
+                        <h3 class="project-card__title">ООО &laquo;РусХимАльянс&raquo;</h3>
+                        <p class="project-card__desc">Строительно-монтажные и пусконаладочные работы для газоперерабатывающего комплекса в Усть-Луге</p>
+                    </div>
+                    <span class="project-card__arrow"><i data-lucide="arrow-right"></i></span>
+                </a>
+            </div>
+
+            <a href="projects.html" class="btn btn--outline-dark projects-btn" data-animate="fade-up" data-delay="500">Все реализованные проекты <span class="arrow">→</span></a>
+        </div>
+    </section>
+
+    <!-- ==================== CSR SECTION ==================== -->
+    <section class="kso" id="csr">
+        <div class="kso__header" data-animate="fade-up">
+            <div class="kso__label">
+                <span class="kso__label-line"></span>
+                <span class="kso__label-text">КОРПОРАТИВНАЯ ОТВЕТСТВЕННОСТЬ</span>
+            </div>
+            <h2 class="kso__title" data-animate="fade-up" data-delay="100">Ответственный подход к бизнесу</h2>
+            <p class="kso__desc" data-animate="fade-up" data-delay="200">ООО «ВСА» придерживается высоких стандартов корпоративного управления, обеспечивая безопасность сотрудников, заботу об окружающей среде и профессиональное развитие команды.</p>
+        </div>
+        <div class="kso__grid">
+            <div class="kso__card" data-animate="fade-up" data-delay="100">
+                <div class="kso__card-img">
+                    <img src="images/ohrana-truda.png" alt="Охрана труда и безопасность">
+                </div>
+                <div class="kso__card-body">
+                    <div class="kso__card-icon"><i data-lucide="shield-check"></i></div>
+                    <h3 class="kso__card-title">Охрана труда и безопасность</h3>
+                    <p class="kso__card-text">Строгое соблюдение стандартов промышленной безопасности. Регулярные инструктажи и аттестация персонала.</p>
+                </div>
+            </div>
+            <div class="kso__card" data-animate="fade-up" data-delay="200">
+                <div class="kso__card-img">
+                    <img src="images/ecology.png" alt="Экологическая ответственность">
+                </div>
+                <div class="kso__card-body">
+                    <div class="kso__card-icon"><i data-lucide="leaf"></i></div>
+                    <h3 class="kso__card-title">Экологическая ответственность</h3>
+                    <p class="kso__card-text">Минимизация воздействия на окружающую среду. Соблюдение экологических норм на объектах ТЭК.</p>
+                </div>
+            </div>
+            <div class="kso__card" data-animate="fade-up" data-delay="300">
+                <div class="kso__card-img">
+                    <img src="https://images.unsplash.com/photo-1758518731706-be5d5230e5a5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&q=80&w=1080" alt="Развитие персонала">
+                </div>
+                <div class="kso__card-body">
+                    <div class="kso__card-icon"><i data-lucide="users"></i></div>
+                    <h3 class="kso__card-title">Развитие персонала</h3>
+                    <p class="kso__card-text">Инвестиции в обучение и повышение квалификации. Программы наставничества для молодых специалистов.</p>
+                </div>
+            </div>
+        </div>
+        <div class="kso__link-wrap" data-animate="fade-up" data-delay="400">
+            <a href="csr.html" class="kso__link">Подробнее о КСО <span>&rarr;</span></a>
+        </div>
+    </section>
+
+    <!-- ==================== PARTNERS SECTION ==================== -->
+    <section class="partners" id="partners">
+        <div class="partners-header">
+            <span class="section-label" data-animate="fade-up">ПРОДУКЦИЯ ПАРТНЁРОВ</span>
+            <div class="section-label-line section-label-line--center" data-animate="fade-up"></div>
+            <h2 class="section-title" data-animate="fade-up" data-delay="100">Заводы-изготовители и партнёры</h2>
+            <p class="partners-desc" data-animate="fade-up" data-delay="200">Мы сотрудничаем с ведущими российскими производителями средств измерений и автоматизации</p>
+        </div>
+
+        <div class="marquee" data-animate="fade-up" data-delay="300">
+            <div class="marquee-track">
+                <div class="marquee-slide">
+                    <img src="images/partners/vip-izmerenie.png" alt="ВИП Измерение">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/termopribor.png" alt="Термоприбор">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/manatom.png" alt="Манотомь">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/meteospetspribor.png" alt="Метеоспецприбор">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/ngm-massomer.png" alt="НГМ-Массомер">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/ktm.png" alt="КТМ">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/hromos.png" alt="ХРОМОС">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/satel.png" alt="САТЕЛ">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/arman.png" alt="АРМАН">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/vympel.png" alt="Вымпел">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/pascal-solution.png" alt="Паскаль">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/invard.jpg" alt="ИНВАРД">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/baks.png" alt="БАКС">
+                </div>
+                <div class="marquee-slide">
+                    <img src="images/partners/tehnekon.jpg" alt="Технекон">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== FOOTER ==================== -->
+    <footer class="footer" id="footer">
+        <div class="footer-content">
+            <div class="footer-top">
+                <div class="footer-logo">
+                    <svg class="footer-logo-svg" viewBox="0 0 255.12 121.89" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+                        <defs>
+                            <radialGradient id="fg1" cx="48.67" cy="63.12" r="10.94" gradientUnits="userSpaceOnUse"><stop offset=".18" stop-color="#8c1913"/><stop offset=".68" stop-color="#8c1913" stop-opacity="0"/></radialGradient>
+                            <radialGradient id="fg2" cx="79.44" cy="63.39" r="13.64" xlink:href="#fg1"/>
+                        </defs>
+                        <g>
+                            <text fill="#FFFFFF" font-family="GothamPro-Bold, 'Gotham Pro', Inter, sans-serif" font-size="55.33" font-weight="700" transform="translate(98.67 76.66)"><tspan x="0" y="0">В</tspan><tspan x="39.95" y="0">С</tspan><tspan x="79.12" y="0">А</tspan></text>
+                            <text fill="#FFFFFF" font-family="GothamPro-Medium, 'Gotham Pro', Inter, sans-serif" font-size="8.08" font-weight="500" transform="translate(103.25 91.33)"><tspan x="0" y="0">ВОЛГАСВЯЗЬАВТОМАТИКА</tspan></text>
+                        </g>
+                        <g>
+                            <path fill="#fff" d="M64.28,93.43c-.63,0-1.25-.16-1.8-.47l-25.11-14.13c-1.14-.64-1.86-1.85-1.87-3.16l-.32-28.81c-.01-1.31.68-2.53,1.8-3.2l24.8-14.68c.57-.34,1.21-.51,1.87-.51s1.25.16,1.8.47l25.11,14.13c1.14.64,1.86,1.85,1.87,3.16l.32,28.81c.01,1.31-.68,2.54-1.8,3.2l-24.8,14.68c-.57.34-1.21.51-1.87.51h0Z"/>
+                            <path fill="#ffffff33" d="M63.65,30.03c.36,0,.72.09,1.03.27l25.11,14.13c.65.37,1.07,1.06,1.07,1.81l.32,28.81c0,.75-.39,1.45-1.03,1.84l-24.8,14.68c-.32.19-.7.29-1.07.29s-.72-.09-1.03-.27l-25.11-14.13c-.65-.37-1.07-1.06-1.07-1.81l-.32-28.81c0-.75.39-1.45,1.03-1.84l24.8-14.68c.32-.19.7-.29,1.07-.29M63.65,26.89c-.92,0-1.85.24-2.67.73l-24.8,14.68c-1.61.95-2.59,2.7-2.57,4.57l.32,28.81c.02,1.87,1.04,3.59,2.67,4.51l25.11,14.13c.8.45,1.69.67,2.57.67s1.85-.24,2.67-.73l24.8-14.68c1.61-.95,2.59-2.7,2.57-4.57l-.32-28.81c-.02-1.87-1.04-3.59-2.67-4.51l-25.11-14.13c-.8-.45-1.69-.67-2.57-.67h0Z"/>
+                            <path fill="#b01738" d="M88.6,58.51h-6.3s-3.73-.01-3.73-.01v-1.32h-2.9v1.42h-.19v.02c-1.67,0-3.35,0-5.02-.01-.01,0-.03,0-.04,0h-12.83s-.08.01-.12.01c-1.62,0-3.24,0-4.86,0v-1.43h-3.09v1.32h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.4,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.33c1.67,1.13,10.71,7.12,14.16,7.12s12.57-5.99,14.29-7.12h4.03c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79Z"/>
+                            <polygon fill="#b01738" points="70.55 57.03 70.55 53.42 57.57 53.42 57.57 53.41 57.54 53.41 57.54 57.03 58.9 57.03 58.9 57.04 69.19 57.04 69.19 57.03 70.55 57.03"/>
+                            <path fill="#b01738" d="M60.17,50.02v2.43h7.75v-2.43h-2.87v-1.98h4.53c.42,0,.75-.34.75-.75v-1.41c0-.42-.34-.75-.75-.75h-4.53v-.6h-2.01v.6h-4.53c-.42,0-.75.34-.75.75v1.41c0,.42.34.75.75.75h4.53v1.98h-2.87Z"/>
+                            <path fill="url(#fg1)" d="M49.53,58.5h-4.35v-5.03c0-2.4,1.51-4.44,3.63-5.24.51-.41,1.07-.8,1.71-1.19,2.81-1.7,5.71-3.27,8.47-5.04,2.94-1.9,5.82-1.93,8.81-.21,2.92,1.67,5.89,3.26,8.79,4.97,4.73,2.78,6.14,2.71,10.87-.82-.16-.18-.28-.4-.48-.51-6.56-3.73-13.13-7.46-19.71-11.16-2.54-1.43-5.11-1.12-7.51.27-5.41,3.12-10.78,6.29-16.11,9.54-2.15,1.31-4.01,3.08-4.06,5.82-.05,3.34-.07,5.93-.07,8.6h-.02v9.42h10.03v-9.42Z"/>
+                            <path fill="url(#fg2)" d="M82.44,58.51h-.14s-3.73-.01-3.73-.01v9.42h3.73c-.02,2.33-1.46,4.32-3.5,5.15-.09.05-.17.11-.27.16-3.77,2.01-7.42,4.23-11.05,6.49-2.27,1.41-4.43,1.5-6.72.18-3.2-1.84-6.56-3.45-9.6-5.52-3.9-2.65-7.44-2.35-11.21.61,7,3.98,13.78,7.81,20.54,11.69,2.45,1.41,4.88,1.34,7.25-.04,5.82-3.38,11.62-6.8,17.41-10.25,1.91-1.14,3.41-2.69,3.41-5.08,0-4.25.09-8.38.04-12.79h-6.16Z"/>
+                        </g>
+                    </svg>
+                    <p class="footer-logo__text">Надёжная поддержка вашего производства</p>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">КОМПАНИЯ</h4>
+                    <a href="#about" class="footer-link">О компании</a>
+                    <a href="#projects" class="footer-link">Проекты</a>
+                    <a href="contacts.html" class="footer-link">Контакты</a>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">УСЛУГИ</h4>
+                    <a href="services.html" class="footer-link">Пусконаладка</a>
+                    <a href="services.html" class="footer-link">Проектирование</a>
+                    <a href="services.html" class="footer-link">Производство</a>
+                </div>
+                <div class="footer-col">
+                    <h4 class="footer-col__title">КОНТАКТЫ</h4>
+                    <a href="tel:+78633200358" class="footer-link">+7 (863) 320-03-58</a>
+                    <a href="mailto:info@ooovsa.ru" class="footer-link">info@ooovsa.ru</a>
+                    <a href="https://ooovsa.ru" class="footer-link">ooovsa.ru</a>
+                </div>
+            </div>
+            <div class="footer-divider"></div>
+            <div class="footer-bottom">
+                <p class="footer-copyright">&copy; 2016–2025 ООО &laquo;ВСА&raquo; ВолгаСвязьАвтоматика. Все права защищены.</p>
+                <p class="footer-address">Москва, 2-й Верхний Михайловский проезд, д. 9, стр. 5</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+
+
+</body>
+</html>
