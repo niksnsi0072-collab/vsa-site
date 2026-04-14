@@ -4236,11 +4236,11 @@ img {
 }
 
 .csr-partner-banner__image {
-    width: 380px;
-    min-width: 380px;
+    width: 220px;
+    min-width: 220px;
     align-self: stretch;
     background-color: #1E2530;
-    background-size: contain;
+    background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
