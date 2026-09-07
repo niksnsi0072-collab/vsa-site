@@ -22,7 +22,7 @@
             min-height: 100vh;
         }
 
-        /* ===== LOGIN SCREEN ===== */
+        /* Login screen */
         .login-screen {
             position: fixed;
             inset: 0;
@@ -116,7 +116,7 @@
             background: #721020;
         }
 
-        /* ===== DASHBOARD ===== */
+        /* Dashboard */
         .dashboard {
             display: none;
             min-height: 100vh;
@@ -397,7 +397,7 @@
             font-size: 15px;
         }
 
-        /* ===== MODAL ===== */
+        /* Modal */
         .modal-overlay {
             position: fixed;
             inset: 0;
@@ -615,7 +615,7 @@
             background: #8a1428;
         }
 
-        /* ===== TOAST ===== */
+        /* Toast */
         .toast-container {
             position: fixed;
             top: 80px;
@@ -658,7 +658,7 @@
             to { opacity: 0; transform: translateX(40px); }
         }
 
-        /* ===== CONFIRM DIALOG ===== */
+        /* Confirm dialog */
         .confirm-overlay {
             position: fixed;
             inset: 0;
@@ -745,7 +745,7 @@
 </head>
 <body>
 
-    <!-- ===== LOGIN SCREEN ===== -->
+    <!-- Login screen -->
     <div class="login-screen" id="loginScreen">
         <div class="login-card">
             <div class="login-logo">ВСА</div>
@@ -760,7 +760,7 @@
         </div>
     </div>
 
-    <!-- ===== DASHBOARD ===== -->
+    <!-- Dashboard -->
     <div class="dashboard" id="dashboard">
         <!-- Header -->
         <header class="admin-header">
@@ -826,7 +826,7 @@
         </div>
     </div>
 
-    <!-- ===== ADD/EDIT MODAL ===== -->
+    <!-- Add/edit modal -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal">
             <div class="modal-header">
@@ -876,7 +876,7 @@
         </div>
     </div>
 
-    <!-- ===== CONFIRM DIALOG ===== -->
+    <!-- Confirm dialog -->
     <div class="confirm-overlay" id="confirmOverlay">
         <div class="confirm-dialog">
             <h3>Удалить вакансию?</h3>
@@ -888,17 +888,17 @@
         </div>
     </div>
 
-    <!-- ===== TOAST CONTAINER ===== -->
+    <!-- Toast container -->
     <div class="toast-container" id="toastContainer"></div>
 
     <script>
-        // ===================== STATE =====================
+        // State
         let vacancies = [];
         let editingId = null;
         let deleteId = null;
         let searchQuery = '';
 
-        // ===================== DOM =====================
+        // DOM
         const loginScreen = document.getElementById('loginScreen');
         const dashboard = document.getElementById('dashboard');
         const loginForm = document.getElementById('loginForm');
@@ -933,7 +933,7 @@
         const statDraft = document.getElementById('statDraft');
         const statClosed = document.getElementById('statClosed');
 
-        // ===================== TOAST =====================
+        // Toast
         function showToast(message, type = 'info') {
             const toast = document.createElement('div');
             toast.className = `toast toast--${type}`;
@@ -947,7 +947,7 @@
             }, 3000);
         }
 
-        // ===================== API HELPERS =====================
+        // API helpers
         async function api(url, options = {}) {
             try {
                 const res = await fetch(url, {
@@ -973,7 +973,7 @@
             }
         }
 
-        // ===================== AUTH =====================
+        // Auth
         function showLogin() {
             loginScreen.classList.remove('hidden');
             dashboard.classList.remove('active');
@@ -1022,7 +1022,7 @@
             showLogin();
         });
 
-        // ===================== VACANCIES =====================
+        // Vacancies
         async function loadVacancies() {
             try {
                 const data = await api('/api/admin/vacancies');
@@ -1112,13 +1112,13 @@
             return div.innerHTML;
         }
 
-        // ===================== SEARCH =====================
+        // Search
         searchInput.addEventListener('input', (e) => {
             searchQuery = e.target.value;
             renderTable();
         });
 
-        // ===================== REORDER =====================
+        // Reorder
         async function reorder(id, direction) {
             try {
                 await api(`/api/admin/vacancies/${id}/reorder`, {
@@ -1130,7 +1130,7 @@
             } catch {}
         }
 
-        // ===================== STATUS TOGGLE =====================
+        // Status toggle
         async function toggleStatus(id, currentStatus) {
             const newStatus = nextStatus(currentStatus);
             try {
@@ -1144,7 +1144,7 @@
             } catch {}
         }
 
-        // ===================== DELETE =====================
+        // Delete
         function confirmDeleteVacancy(id, title) {
             deleteId = id;
             confirmText.textContent = `Вакансия "${title}" будет удалена. Это действие нельзя отменить.`;
@@ -1167,7 +1167,7 @@
             } catch {}
         });
 
-        // ===================== MODAL: SECTIONS =====================
+        // Modal: sections
         let sections = [];
 
         function renderSections() {
@@ -1202,7 +1202,7 @@
 
         btnAddSection.addEventListener('click', addSection);
 
-        // ===================== MODAL: OPEN/CLOSE =====================
+        // Modal: open/close
         function openModal() {
             modalOverlay.classList.add('active');
         }
@@ -1261,7 +1261,7 @@
             }
         });
 
-        // ===================== MODAL: SAVE =====================
+        // Modal: save
         btnSave.addEventListener('click', async () => {
             const title = formTitle.value.trim();
             if (!title) {
@@ -1309,7 +1309,7 @@
             } catch {}
         });
 
-        // ===================== INIT =====================
+        // Init
         checkAuth();
     </script>
 </body>

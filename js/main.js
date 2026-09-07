@@ -1,4 +1,4 @@
-/* ==================== PRELOADER ==================== */
+/* Preloader */
 const preloader = document.getElementById('preloader');
 if (preloader) {
     const progress = document.querySelector('.preloader-progress');
@@ -26,7 +26,7 @@ if (preloader) {
     }
 }
 
-/* ==================== STICKY HEADER ==================== */
+/* Sticky header */
 const header = document.getElementById('header');
 
 if (header) {
@@ -39,7 +39,7 @@ if (header) {
     });
 }
 
-/* ==================== HERO TEXT ANIMATION ==================== */
+/* Hero text animation */
 function initHeroAnimation() {
     const title = document.querySelector('.hero-title');
     const html = title.innerHTML;
@@ -73,7 +73,7 @@ function initHeroAnimation() {
     }, 600);
 }
 
-/* ==================== HERO SCROLL EFFECT ==================== */
+/* Hero scroll effect */
 const heroSection = document.querySelector('.hero');
 if (heroSection) {
     const heroContent = document.querySelector('.hero-content');
@@ -95,13 +95,13 @@ if (heroSection) {
     });
 }
 
-/* ==================== HERO INTRO (instant on load) ==================== */
+/* Hero intro (instant on load) */
 document.querySelectorAll('.hero-intro').forEach(el => {
     const delay = parseInt(el.dataset.introDelay) || 0;
     setTimeout(() => el.classList.add('hero-visible'), delay);
 });
 
-/* ==================== PAGE HERO PARALLAX ==================== */
+/* Page hero parallax */
 const pageHeroBg = document.querySelector('.page-hero__bg');
 if (pageHeroBg) {
     window.addEventListener('scroll', () => {
@@ -113,7 +113,7 @@ if (pageHeroBg) {
     pageHeroBg.style.transform = 'scale(1.1)';
 }
 
-/* ==================== SCROLL ANIMATIONS ==================== */
+/* Scroll animations */
 const animatedElements = document.querySelectorAll('[data-animate]');
 
 const observer = new IntersectionObserver((entries) => {
@@ -133,7 +133,7 @@ const observer = new IntersectionObserver((entries) => {
 
 animatedElements.forEach(el => observer.observe(el));
 
-/* ==================== COUNTER ANIMATION ==================== */
+/* Counter animation */
 function animateCounter(el) {
     const target = parseInt(el.dataset.count);
     const duration = Math.min(800 + target * 8, 2000);
@@ -167,14 +167,14 @@ const counterObserver = new IntersectionObserver((entries) => {
 
 counters.forEach(c => counterObserver.observe(c));
 
-/* ==================== MARQUEE DUPLICATION ==================== */
+/* Marquee duplication */
 const marqueeTrack = document.querySelector('.marquee-track');
 if (marqueeTrack) {
     const slides = marqueeTrack.innerHTML;
     marqueeTrack.innerHTML = slides + slides;
 }
 
-/* ==================== SMOOTH SCROLL ==================== */
+/* Smooth scroll */
 document.querySelectorAll('a[href^="#"]').forEach(link => {
     link.addEventListener('click', (e) => {
         e.preventDefault();
@@ -187,7 +187,7 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
     });
 });
 
-/* ==================== CITY TAGS HOVER ==================== */
+/* City tags hover */
 const cityTags = document.querySelectorAll('.city-tag');
 const mapGlows = document.querySelectorAll('.map-glow');
 
@@ -231,7 +231,7 @@ mapGlows.forEach(glow => {
     });
 });
 
-/* ==================== HERO VIDEO AUTOPLAY ==================== */
+/* Hero video autoplay */
 const heroVideo = document.getElementById('hero-video');
 if (heroVideo) {
     heroVideo.play().catch(() => {
@@ -239,7 +239,7 @@ if (heroVideo) {
     });
 }
 
-/* ==================== CERT CAROUSEL (marquee) ==================== */
+/* Cert carousel (marquee) */
 (() => {
     const track = document.querySelector('.cert-carousel__track');
     if (!track) return;
@@ -252,7 +252,7 @@ if (heroVideo) {
     });
 })();
 
-/* ==================== PARTNERS FILTER ==================== */
+/* Partners filter */
 const filterTabs = document.querySelectorAll('.partners-filters__tab[data-filter]');
 const partnerCards = document.querySelectorAll('.partner-card[data-category]');
 
@@ -278,7 +278,7 @@ if (filterTabs.length && partnerCards.length) {
 }
 
 
-/* ==================== LUCIDE ICONS ==================== */
+/* Lucide icons */
 if (typeof lucide !== 'undefined') {
     lucide.createIcons();
 }

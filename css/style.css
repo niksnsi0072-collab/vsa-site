@@ -1,4 +1,4 @@
-/* ==================== VARIABLES ==================== */
+/* Variables */
 :root {
     --red: #A01830;
     --red-dark: #8B1428;
@@ -17,7 +17,7 @@
     --font: 'Inter', sans-serif;
 }
 
-/* ==================== RESET ==================== */
+/* Reset */
 *, *::before, *::after {
     margin: 0;
     padding: 0;
@@ -51,7 +51,7 @@ img {
     display: block;
 }
 
-/* ==================== PRELOADER ==================== */
+/* Preloader */
 .preloader {
     position: fixed;
     top: 0;
@@ -105,7 +105,7 @@ img {
 }
 
 
-/* ==================== HEADER ==================== */
+/* Header */
 .header {
     position: fixed;
     top: 0;
@@ -242,7 +242,7 @@ img {
     box-shadow: 0 4px 16px rgba(160, 24, 48, 0.4);
 }
 
-/* ==================== BUTTONS ==================== */
+/* Buttons */
 .btn {
     display: inline-flex;
     align-items: center;
@@ -351,7 +351,7 @@ img {
     transform: translateY(-2px);
 }
 
-/* ==================== SECTION COMMON ==================== */
+/* Section common */
 /* Unified label row: line + text */
 .section-label-row {
     display: flex;
@@ -409,7 +409,7 @@ img {
     color: var(--white);
 }
 
-/* ==================== HERO SECTION ==================== */
+/* Hero section */
 .hero {
     position: relative;
     height: 100vh;
@@ -623,7 +623,7 @@ img {
     width: 100%;
 }
 
-/* ==================== ABOUT SECTION ==================== */
+/* About section */
 .about {
     position: relative;
     height: 696px;
@@ -727,8 +727,7 @@ img {
     background-size: 12px 12px;
 }
 
-/* ==================== GEOGRAPHY SECTION ==================== */
-/* ── Geography Section ── */
+/* Geography section */
 .geography {
     position: relative;
     background: linear-gradient(180deg, #1A2230 0%, #2D3440 35%, #2D3440 70%, #232B38 100%);
@@ -862,7 +861,7 @@ img {
     50% { box-shadow: 0 0 30px 14px rgba(255, 48, 80, 0.7); }
 }
 
-/* City tags — oval buttons */
+/* City tags - oval buttons */
 .geo-tags {
     display: flex;
     flex-direction: column;
@@ -927,7 +926,7 @@ img {
     }
 }
 
-/* ==================== PROJECTS SECTION ==================== */
+/* Projects section */
 .projects {
     background: var(--white);
     padding: 80px 0;
@@ -1082,7 +1081,7 @@ img {
     box-shadow: 0 4px 16px rgba(160, 24, 48, 0.5);
 }
 
-/* ==================== PARTNERS SECTION ==================== */
+/* Partners section */
 .partners {
     background: var(--white);
     padding: 60px 80px;
@@ -1173,7 +1172,7 @@ img {
     100% { transform: translateX(-50%); }
 }
 
-/* ==================== KSO SECTION ==================== */
+/* КСО section */
 .kso {
     background: #F8F9FA;
     padding: 80px 40px;
@@ -1353,7 +1352,7 @@ img {
     }
 }
 
-/* ==================== FOOTER ==================== */
+/* Footer */
 .footer {
     background: #1E2530;
     min-height: 350px;
@@ -1436,7 +1435,7 @@ img {
     color: var(--gray-500);
 }
 
-/* ==================== ANIMATIONS ==================== */
+/* Animations */
 [data-animate] {
     opacity: 0;
     transform: translateY(30px);
@@ -1600,7 +1599,7 @@ img {
     transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* ==================== ABOUT PAGE — PAGE HERO ==================== */
+/* About page - page hero */
 .page-hero {
     position: relative;
     height: 360px;
@@ -1688,7 +1687,7 @@ img {
     font-weight: 500;
 }
 
-/* Header scrolled init — for inner pages without hero video */
+/* Header scrolled init - for inner pages without hero video */
 .header--scrolled-init {
     background: rgba(255, 255, 255, 0.97);
     box-shadow: 0 2px 20px rgba(0, 0, 0, 0.08);
@@ -1721,7 +1720,7 @@ img {
     width: 100% !important;
 }
 
-/* ==================== ABOUT CONTENT SECTION ==================== */
+/* About content section */
 .about-content-section {
     max-width: 1440px;
     margin: 0 auto;
@@ -1922,7 +1921,7 @@ img {
     margin-bottom: 0;
 }
 
-/* ==================== STATS BAR ==================== */
+/* Stats bar */
 .stats-bar {
     background: linear-gradient(135deg, #7A0F24 0%, #A01830 50%, #7A0F24 100%);
     padding: 40px 0;
@@ -1985,7 +1984,7 @@ img {
     background: rgba(255, 255, 255, 0.2);
 }
 
-/* ==================== DIRECTIONS ==================== */
+/* Directions */
 .directions {
     background: #fff;
     padding: 80px 0;
@@ -2077,7 +2076,7 @@ img {
     line-height: 1.6;
 }
 
-/* ==================== LICENSES ==================== */
+/* Licenses */
 .licenses {
     background: #2D3440;
     padding: 80px 0;
@@ -2473,7 +2472,7 @@ img {
     line-height: 1.6;
 }
 
-/* ==================== SERVICES PAGE ==================== */
+/* Services page */
 
 /* Catalog Section */
 .services-catalog {
@@ -2558,7 +2557,7 @@ img {
     transform: translateY(0);
 }
 
-/* Content wrapper — all text + badge inside */
+/* Content wrapper - all text + badge inside */
 .service-card__content {
     position: absolute;
     bottom: 0;
@@ -2601,7 +2600,7 @@ img {
 .service-card:hover .service-card__bullets    { opacity: 1; transform: translateY(0); transition-delay: 0.25s; }
 .service-card:hover .service-card__desc       { opacity: 1; transform: translateY(0); transition-delay: 0.3s; }
 
-/* Badge — pinned to bottom, moves up with content on hover */
+/* Badge - pinned to bottom, moves up with content on hover */
 .service-card__badge {
     display: inline-flex;
     align-items: center;
@@ -2711,7 +2710,7 @@ img {
 
 /* Service Card Hover */
 
-/* ==================== WORKS SECTION ==================== */
+/* Works section */
 .works-section {
     background: var(--dark-mid);
     padding: 60px;
@@ -2793,7 +2792,7 @@ img {
     margin-top: 40px;
 }
 
-/* ==================== PARTNERS PAGE ==================== */
+/* Partners page */
 
 /* Partners hero height override */
 
@@ -2963,7 +2962,7 @@ img {
     transform: scaleX(1);
 }
 
-/* Logo zone — enlarged, centered with divider */
+/* Logo zone - enlarged, centered with divider */
 .partner-card__logo {
     height: 132px;
     width: 100%;
@@ -2979,7 +2978,7 @@ img {
     transform: scale(1.05);
 }
 
-/* Logos with heavy internal padding — render larger */
+/* Logos with heavy internal padding - render larger */
 .partner-card__logo--lg {
     padding: 20px 30px 16px;
     transform: scale(1.28);
@@ -3139,7 +3138,7 @@ img {
     background: rgba(255, 255, 255, 0.1);
 }
 
-/* ==================== VACANCIES PAGE ==================== */
+/* Vacancies page */
 
 .vacancies-content {
     padding: 80px 60px;
@@ -3563,7 +3562,7 @@ img {
     margin: 0;
 }
 
-/* ==================== CONTACTS PAGE ==================== */
+/* Contacts page */
 
 /* Contact Cards */
 .contact-cards {
@@ -3752,7 +3751,7 @@ img {
     transform: translateY(-2px);
 }
 
-/* ==================== PROJECTS PAGE ==================== */
+/* Projects page */
 .projects-content {
     background: #F8F9FA;
     padding: 60px 80px;
@@ -3921,7 +3920,7 @@ img {
     z-index: 1;
 }
 
-/* ==================== GAZPROM PROJECT PAGE ==================== */
+/* Gazprom project page */
 .gazprom-content {
     background: #F8F9FA;
     padding: 60px 80px;
@@ -4000,7 +3999,7 @@ img {
     line-height: 1.5;
 }
 
-/* ==================== CSR PAGE ==================== */
+/* CSR page */
 
 .csr-content {
     background: #F8F9FA;
@@ -4052,7 +4051,7 @@ img {
     margin: 0;
 }
 
-/* CSR Cards Grid (Section 1) */
+/* CSR Cards Grid */
 .csr-cards-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -4119,7 +4118,7 @@ img {
     margin: 0;
 }
 
-/* CSR Principles Grid (Section 2) */
+/* CSR Principles Grid */
 .csr-principles-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -4182,7 +4181,7 @@ img {
     margin: 0;
 }
 
-/* CSR Partner Banner (Section 3) */
+/* CSR Partner Banner */
 .csr-partner-banner {
     background: #1E2530;
     border-radius: 12px;
@@ -4289,7 +4288,7 @@ img {
     background: #374151;
 }
 
-/* CSR Charity Grid (Section 3) */
+/* CSR Charity Grid */
 .csr-charity-grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
