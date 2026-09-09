@@ -15,6 +15,10 @@
     --gray-700: #3D4550;
     --text-light: #B0B8C4;
     --font: 'Inter', sans-serif;
+    /* Единая ширина контентной колонки для всех секций */
+    --page-max: 1440px;
+    /* Боковое поле, которое добирается на экранах шире --page-max */
+    --gutter: calc((100% - min(100%, var(--page-max))) / 2);
 }
 
 /* Reset */
@@ -123,7 +127,7 @@ img {
 }
 
 .header-inner {
-    max-width: 1440px;
+    max-width: var(--page-max);
     margin: 0 auto;
     padding: 0 40px;
     height: 100%;
@@ -417,6 +421,8 @@ img {
     display: flex;
     align-items: flex-end;
     padding-bottom: 80px;
+    padding-left: var(--gutter);
+    padding-right: var(--gutter);
 }
 
 .hero-video {
@@ -639,7 +645,7 @@ img {
 
 .about-content {
     position: absolute;
-    left: 40px;
+    left: calc(var(--gutter) + 40px);
     top: 90px;
     width: 540px;
     display: flex;
@@ -689,7 +695,7 @@ img {
 
 .about-photo {
     position: absolute;
-    right: 60px;
+    right: calc(var(--gutter) + 60px);
     top: 70px;
     width: 680px;
     height: 580px;
@@ -744,7 +750,7 @@ img {
     display: flex;
     gap: 30px;
     align-items: flex-start;
-    max-width: 1440px;
+    max-width: var(--page-max);
     margin: 0 auto;
     padding: 30px 0 0 40px;
 }
@@ -933,7 +939,7 @@ img {
 }
 
 .projects-inner {
-    max-width: 1440px;
+    max-width: var(--page-max);
     margin: 0 auto;
     padding: 0 40px;
     display: flex;
@@ -1084,7 +1090,7 @@ img {
 /* Partners section */
 .partners {
     background: var(--white);
-    padding: 60px 80px;
+    padding: 60px calc(var(--gutter) + 80px);
     overflow: hidden;
 }
 
@@ -1175,7 +1181,7 @@ img {
 /* КСО section */
 .kso {
     background: #F8F9FA;
-    padding: 80px 40px;
+    padding: 80px calc(var(--gutter) + 40px);
     display: flex;
     flex-direction: column;
     gap: 40px;
@@ -1359,7 +1365,7 @@ img {
 }
 
 .footer-content {
-    max-width: 1440px;
+    max-width: var(--page-max);
     margin: 0 auto;
     padding: 48px 40px;
     display: flex;
@@ -1629,7 +1635,7 @@ img {
 .page-hero__content {
     position: relative;
     z-index: 2;
-    max-width: 1440px;
+    max-width: var(--page-max);
     width: 100%;
     padding: 0 60px 48px;
 }
@@ -1722,7 +1728,7 @@ img {
 
 /* About content section */
 .about-content-section {
-    max-width: 1440px;
+    max-width: var(--page-max);
     margin: 0 auto;
     padding: 80px 60px;
 }
@@ -1938,7 +1944,7 @@ img {
 
 .stats-bar__inner {
     position: relative;
-    max-width: 1440px;
+    max-width: var(--page-max);
     margin: 0 auto;
     padding: 0 180px;
     display: flex;
@@ -1991,7 +1997,7 @@ img {
 }
 
 .directions__inner {
-    max-width: 1440px;
+    max-width: var(--page-max);
     margin: 0 auto;
     padding: 0 60px;
 }
@@ -2083,7 +2089,7 @@ img {
 }
 
 .licenses__inner {
-    max-width: 1440px;
+    max-width: var(--page-max);
     margin: 0 auto;
     padding: 0 60px;
 }
@@ -2477,7 +2483,8 @@ img {
 /* Catalog Section */
 .services-catalog {
     padding: 60px;
-    max-width: 1440px;
+    max-width: var(--page-max);
+    margin: 0 auto;
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -2713,7 +2720,7 @@ img {
 /* Works section */
 .works-section {
     background: var(--dark-mid);
-    padding: 60px;
+    padding: 60px calc(var(--gutter) + 60px);
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -2848,7 +2855,7 @@ img {
 /* Partners content section */
 .partners-content {
     background: #F8F9FA;
-    padding: 60px 80px;
+    padding: 60px calc(var(--gutter) + 80px);
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -3141,7 +3148,7 @@ img {
 /* Vacancies page */
 
 .vacancies-content {
-    padding: 80px 60px;
+    padding: 80px calc(var(--gutter) + 60px);
     background: #fff;
 }
 
@@ -3754,7 +3761,7 @@ img {
 /* Projects page */
 .projects-content {
     background: #F8F9FA;
-    padding: 60px 80px;
+    padding: 60px calc(var(--gutter) + 80px);
 }
 
 .projects-intro {
@@ -3923,7 +3930,7 @@ img {
 /* Gazprom project page */
 .gazprom-content {
     background: #F8F9FA;
-    padding: 60px 80px;
+    padding: 60px calc(var(--gutter) + 80px);
     display: flex;
     flex-direction: column;
     gap: 48px;
@@ -4003,7 +4010,7 @@ img {
 
 .csr-content {
     background: #F8F9FA;
-    padding: 60px 80px;
+    padding: 60px calc(var(--gutter) + 80px);
     display: flex;
     flex-direction: column;
     gap: 60px;
