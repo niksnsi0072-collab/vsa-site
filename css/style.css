@@ -4189,18 +4189,44 @@ img {
 }
 
 /* CSR Partner Banner */
+/* Тёплая полоса-ступень: смягчает переход от холодного фона сайта к цветам фонда */
+.csr-partner-band {
+    position: relative;
+    margin: 0 calc(-1 * (var(--gutter) + 80px)) 32px;
+    padding: 44px calc(var(--gutter) + 80px) 48px;
+    background: #FAF7F2;
+}
+
 .csr-partner-banner {
-    background: #1E2530;
-    border-radius: 12px;
+    position: relative;
+    background: #D5C5B0;
+    border-radius: 14px;
     display: flex;
     flex-direction: row;
+    align-items: center;
     overflow: hidden;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
-    margin-bottom: 32px;
+    border: 1px solid rgba(164, 115, 67, 0.28);
+    box-shadow: 0 2px 14px rgba(118, 95, 65, 0.1);
+}
+
+/* Лента с фирменным паттерном фонда по верхнему краю */
+.csr-partner-banner::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 56px;
+    background-image: url('../images/love-eyes-pattern.png');
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    background-position: left center;
+    opacity: 0.24;
+    pointer-events: none;
 }
 
 .csr-partner-banner__content {
-    padding: 40px 48px;
+    padding: 74px 48px 40px;
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -4217,136 +4243,403 @@ img {
 .csr-partner-banner__label svg {
     width: 24px;
     height: 24px;
-    color: #A01830;
-    stroke: #A01830;
+    color: #6B5335;
+    stroke: #6B5335;
 }
 
 .csr-partner-banner__label span {
     font-size: 12px;
     font-weight: 700;
-    color: #A01830;
+    color: #6B5335;
     letter-spacing: 2px;
 }
 
 .csr-partner-banner__title {
     font-size: 28px;
     font-weight: 800;
-    color: #fff;
+    color: #3F3122;
     margin: 0;
 }
 
 .csr-partner-banner__desc {
     font-size: 15px;
-    color: rgba(255, 255, 255, 0.73);
+    color: #5A4835;
     line-height: 1.6;
     margin: 0;
+}
+
+.csr-partner-banner__desc + .csr-partner-banner__desc {
+    margin-top: -8px;
 }
 
 .csr-partner-banner__links {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 12px;
     flex-wrap: wrap;
+    margin-top: 4px;
 }
 
 .csr-partner-banner__link {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 8px;
+    padding: 11px 20px;
+    border-radius: 8px;
     text-decoration: none;
-    transition: transform 0.25s ease, color 0.25s ease;
+    border: 1.5px solid transparent;
+    transition: background 0.25s ease, border-color 0.25s ease, color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
     cursor: pointer;
-}
-
-.csr-partner-banner__link:hover {
-    transform: scale(1.1);
-}
-
-.csr-partner-banner__link:hover i,
-.csr-partner-banner__link:hover svg {
-    color: #A01830;
-    stroke: #A01830;
-}
-
-.csr-partner-banner__link:hover span {
-    color: #A01830;
 }
 
 .csr-partner-banner__link i,
 .csr-partner-banner__link svg {
     width: 16px;
     height: 16px;
-    color: rgba(255, 255, 255, 0.67);
-    stroke: rgba(255, 255, 255, 0.67);
     transition: color 0.25s ease, stroke 0.25s ease;
 }
 
 .csr-partner-banner__link span {
     font-size: 14px;
-    font-weight: 500;
+    font-weight: 600;
+    letter-spacing: 0.2px;
     transition: color 0.25s ease;
-    color: rgba(255, 255, 255, 0.67);
 }
 
-.csr-partner-banner__image {
-    width: 480px;
-    min-width: 480px;
-    align-self: stretch;
-    background: #374151;
+/* Основная кнопка — Telegram */
+.csr-partner-banner__link--primary {
+    background: #765F41;
+    border-color: #765F41;
+    box-shadow: 0 2px 8px rgba(118, 95, 65, 0.25);
 }
 
-/* CSR Charity Grid */
-.csr-charity-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 24px;
+.csr-partner-banner__link--primary span {
+    color: #fff;
 }
 
-.csr-charity-card {
+.csr-partner-banner__link--primary i,
+.csr-partner-banner__link--primary svg {
+    color: #fff;
+    stroke: #fff;
+}
+
+.csr-partner-banner__link--primary:hover {
+    background: #5E4B33;
+    border-color: #5E4B33;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(118, 95, 65, 0.32);
+}
+
+/* Вторичная кнопка — сайт фонда */
+.csr-partner-banner__link--outline {
     background: #fff;
-    border-radius: 8px;
-    border: 1px solid #E5E7EB;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-    overflow: hidden;
+    border-color: rgba(164, 115, 67, 0.35);
+}
+
+.csr-partner-banner__link--outline span {
+    color: #5A4835;
+}
+
+.csr-partner-banner__link--outline i,
+.csr-partner-banner__link--outline svg {
+    color: #765F41;
+    stroke: #765F41;
+}
+
+.csr-partner-banner__link--outline:hover {
+    border-color: #765F41;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(118, 95, 65, 0.18);
+}
+
+.csr-partner-banner__link--outline:hover span {
+    color: #3F3122;
+}
+
+.csr-partner-banner__logos {
+    flex: 0 0 600px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-evenly;
+    gap: 18px;
+    margin: 32px 32px 32px 0;
+    padding: 22px 18px 20px;
+    background: #fff;
+    border-radius: 10px;
+}
+
+.csr-fund-logo {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin: 0;
+    flex: 1 1 0;
+    min-width: 0;
+}
+
+.csr-fund-logo__photo {
+    display: block;
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 2px;
+}
+
+.csr-fund-logo__img {
+    display: block;
+    height: 48px;
+    width: auto;
+}
+
+.csr-fund-logo__caption {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-align: center;
+    line-height: 1.3;
+}
+
+.csr-fund-logo__caption--blue {
+    color: #00B3E3;
+}
+
+.csr-fund-logo__caption--pink {
+    color: #F03A74;
+}
+
+.csr-fund-logo__caption--red {
+    color: #B71B32;
+}
+
+/* Направления помощи БФ «Око Любви» */
+.csr-directions {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 28px;
+}
+
+.csr-dir {
+    --dir-accent: #A47343;
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    border: 1px solid rgba(164, 115, 67, 0.2);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 10px rgba(118, 95, 65, 0.08);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.csr-charity-card:hover {
+.csr-dir--children {
+    --dir-accent: #F03A74;
+}
+
+.csr-dir--disabled {
+    --dir-accent: #00B3E3;
+}
+
+.csr-dir--svo {
+    --dir-accent: #B71B32;
+}
+
+.csr-dir--church {
+    --dir-accent: #A47343;
+}
+
+.csr-dir:hover {
     transform: translateY(-4px);
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 14px 30px rgba(118, 95, 65, 0.18);
 }
 
-.csr-charity-card__image {
-    height: 180px;
-    background: #ddd;
+.csr-dir__media {
+    position: relative;
+    overflow: hidden;
 }
 
-.csr-charity-card__body {
-    padding: 20px 24px 24px 24px;
+.csr-dir__media::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 4px;
+    background: var(--dir-accent);
+}
+
+.csr-dir__photo {
+    display: block;
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    object-position: center 42%;
+    transition: transform 0.5s ease;
+}
+
+.csr-dir:hover .csr-dir__photo {
+    transform: scale(1.04);
+}
+
+.csr-dir__body {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 28px 32px 30px;
+}
+
+.csr-dir__kicker {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.csr-dir__swallow {
+    display: block;
+    width: 22px;
+    height: auto;
+}
+
+.csr-dir__kicker span {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.2px;
+    text-transform: uppercase;
+    color: #A47343;
+}
+
+.csr-dir__title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 800;
+    line-height: 1.22;
+    color: #3F3122;
+    display: flex;
+    flex-direction: column;
+}
+
+.csr-dir__title::after {
+    content: "";
+    display: block;
+    width: 44px;
+    height: 3px;
+    margin-top: 14px;
+    border-radius: 2px;
+    background: var(--dir-accent);
+}
+
+.csr-dir__desc {
+    margin: 0;
+    font-size: 15px;
+    line-height: 1.6;
+    color: #5A4835;
+}
+
+.csr-dir__facts {
+    margin: 0;
+    padding: 0;
+    list-style: none;
     display: flex;
     flex-direction: column;
     gap: 10px;
 }
 
-.csr-charity-card__title {
-    font-size: 18px;
-    font-weight: 700;
-    color: #1E2530;
-    margin: 0;
-}
-
-.csr-charity-card__desc {
+.csr-dir__facts li {
+    position: relative;
+    padding-left: 20px;
     font-size: 14px;
-    color: #6B7280;
-    line-height: 1.5;
-    margin: 0;
+    line-height: 1.55;
+    color: #6B5A45;
 }
 
-.csr-charity-card__date {
-    font-size: 12px;
-    font-weight: 600;
-    color: #A01830;
+.csr-dir__facts li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 7px;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--dir-accent);
 }
 
+@media (max-width: 1100px) {
+    .csr-directions {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .csr-dir__photo {
+        height: 220px;
+    }
+}
+
+@media (max-width: 760px) {
+    .csr-dir__body {
+        padding: 22px 20px 24px;
+    }
+
+    .csr-dir__photo {
+        height: 180px;
+    }
+
+    .csr-dir__title {
+        font-size: 20px;
+    }
+}
+
+/* Баннер БФ «Око Любви» — адаптив */
+@media (max-width: 1100px) {
+    .csr-partner-band {
+        padding: 32px calc(var(--gutter) + 80px) 36px;
+    }
+
+    .csr-partner-banner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .csr-partner-banner__content {
+        padding: 70px 28px 24px;
+    }
+
+    .csr-partner-banner__logos {
+        flex: 1 1 auto;
+        gap: 32px;
+        margin: 0 28px 32px;
+        padding: 28px 24px 24px;
+    }
+
+    .csr-fund-logo__img {
+        height: 52px;
+    }
+
+    .csr-fund-logo__photo {
+        border-radius: 10px;
+    }
+
+    .csr-fund-logo__caption {
+        font-size: 12px;
+        letter-spacing: 1.2px;
+    }
+}
+
+@media (max-width: 640px) {
+    .csr-partner-banner__content {
+        padding: 66px 20px 20px;
+    }
+
+    .csr-partner-banner__logos {
+        flex-direction: column;
+        gap: 28px;
+        margin: 0 20px 28px;
+        padding: 24px 20px;
+    }
+
+    .csr-fund-logo__img {
+        height: 44px;
+        max-width: 100%;
+    }
+}
