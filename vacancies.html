@@ -303,6 +303,17 @@
     <script>
     // Try to load vacancies from API. If server is running — replace fallback HTML.
     // If server is off — fallback HTML stays as is.
+
+    // Vacancy texts come from the admin panel — escape them before putting into HTML
+    function escapeHtml(str) {
+        return String(str == null ? '' : str)
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
     (function() {
         const list = document.getElementById('vacancyList');
         const badge = document.querySelector('.vacancies-intro__badge-count');
@@ -321,8 +332,8 @@
                         <div class="vacancy-card__section">
                             <div class="vacancy-card__dot"></div>
                             <div class="vacancy-card__section-content">
-                                <span class="vacancy-card__section-title">${s.title}</span>
-                                <p class="vacancy-card__section-body">${s.body.replace(/\n/g, '<br>')}</p>
+                                <span class="vacancy-card__section-title">${escapeHtml(s.title)}</span>
+                                <p class="vacancy-card__section-body">${escapeHtml(s.body).replace(/\n/g, '<br>')}</p>
                             </div>
                         </div>
                     `).join('');
@@ -330,16 +341,16 @@
                         <div class="vacancy-card ${mod}">
                             <div class="vacancy-card__top">
                                 <div class="vacancy-card__info">
-                                    ${v.city ? `<span class="vacancy-card__city">${v.city}</span>` : ''}
-                                    <h3 class="vacancy-card__title">${v.title}</h3>
-                                    <p class="vacancy-card__subtitle">${v.subtitle}</p>
+                                    ${v.city ? `<span class="vacancy-card__city">${escapeHtml(v.city)}</span>` : ''}
+                                    <h3 class="vacancy-card__title">${escapeHtml(v.title)}</h3>
+                                    <p class="vacancy-card__subtitle">${escapeHtml(v.subtitle)}</p>
                                 </div>
                                 <button class="vacancy-card__btn">Подробнее</button>
                             </div>
                             <div class="vacancy-card__details">
                                 <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
                                 ${sectionsHtml}
-                                <button class="vacancy-card__apply-btn" data-vacancy-title="${v.title.replace(/"/g, '&quot;').replace(/</g, '&lt;')}" onclick="openApplyModal(this.dataset.vacancyTitle)">Откликнуться</button>
+                                <button class="vacancy-card__apply-btn" data-vacancy-title="${escapeHtml(v.title)}" onclick="openApplyModal(this.dataset.vacancyTitle)">Откликнуться</button>
                             </div>
                         </div>
                     `;

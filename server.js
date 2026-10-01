@@ -16,11 +16,20 @@ if (fs.existsSync(envPath)) {
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'vsa2026admin';
-const SESSION_SECRET = process.env.SESSION_SECRET || 'vsa-secret';
-const DATA_FILE = path.join(__dirname, 'data', 'vacancies.json');
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
+const DATA_DIR = path.join(__dirname, 'data');
+const DATA_FILE = path.join(DATA_DIR, 'vacancies.json');
 
-// Behind nginx: lets req.secure reflect the original HTTPS request (X-Forwarded-Proto)
+// No built-in fallback: a guessable default password would open the admin panel to anyone
+if (!ADMIN_PASSWORD) {
+    console.error('Не задан ADMIN_PASSWORD в файле .env — сервер не запущен. См. INSTALL.md, раздел 4.');
+    process.exit(1);
+}
+if (ADMIN_PASSWORD.length < 10) {
+    console.warn('Внимание: пароль админки короче 10 символов — задайте более надёжный в .env');
+}
+
+// Behind nginx: lets req.secure and req.ip reflect the original request (X-Forwarded-*)
 app.set('trust proxy', 1);
 
 app.use(express.json());
@@ -43,44 +52,144 @@ app.use((req, res, next) => {
 });
 
 // --- Session ---
+const SESSION_TTL = 24 * 60 * 60 * 1000;
 const sessions = {};
 
 function generateToken() {
     return crypto.randomBytes(32).toString('hex');
 }
 
+// A token is valid only while it exists and has not outlived SESSION_TTL
+function isValidSession(token) {
+    const session = token && sessions[token];
+    if (!session) return false;
+    if (Date.now() - session.createdAt > SESSION_TTL) {
+        delete sessions[token];
+        return false;
+    }
+    return true;
+}
+
+// Drop expired sessions so the in-memory store does not grow forever
+setInterval(() => {
+    const now = Date.now();
+    for (const [token, session] of Object.entries(sessions)) {
+        if (now - session.createdAt > SESSION_TTL) delete sessions[token];
+    }
+}, 60 * 60 * 1000).unref();
+
 function requireAuth(req, res, next) {
-    const token = req.cookies.session;
-    if (token && sessions[token]) {
+    if (isValidSession(req.cookies.session)) {
         next();
     } else {
         res.status(401).json({ error: 'Unauthorized' });
     }
 }
 
+// --- Login rate limit: 5 failed attempts per IP per 15 minutes ---
+const LOGIN_WINDOW = 15 * 60 * 1000;
+const LOGIN_MAX_FAILS = 5;
+const loginFails = new Map();
+
+function tooManyLoginFails(ip) {
+    const entry = loginFails.get(ip);
+    if (!entry) return false;
+    if (Date.now() - entry.first > LOGIN_WINDOW) {
+        loginFails.delete(ip);
+        return false;
+    }
+    return entry.count >= LOGIN_MAX_FAILS;
+}
+
+function registerLoginFail(ip) {
+    const entry = loginFails.get(ip);
+    if (!entry || Date.now() - entry.first > LOGIN_WINDOW) {
+        loginFails.set(ip, { first: Date.now(), count: 1 });
+    } else {
+        entry.count++;
+    }
+}
+
+// Constant-time comparison so the response time does not leak how much of the password matched
+function passwordMatches(input) {
+    if (typeof input !== 'string') return false;
+    const a = crypto.createHash('sha256').update(input).digest();
+    const b = crypto.createHash('sha256').update(ADMIN_PASSWORD).digest();
+    return crypto.timingSafeEqual(a, b);
+}
+
 // --- Data helpers ---
+
+// Writes to a temp file first and renames it, so an interrupted write never leaves a half-written file
+function writeFileAtomic(file, content) {
+    const tmp = file + '.' + crypto.randomBytes(4).toString('hex') + '.tmp';
+    fs.writeFileSync(tmp, content, 'utf-8');
+    fs.renameSync(tmp, file);
+}
+
+function writeJsonAtomic(file, data) {
+    fs.mkdirSync(path.dirname(file), { recursive: true });
+    writeFileAtomic(file, JSON.stringify(data, null, 2));
+}
+
 function readVacancies() {
     if (!fs.existsSync(DATA_FILE)) return [];
     return JSON.parse(fs.readFileSync(DATA_FILE, 'utf-8'));
 }
 
 function writeVacancies(data) {
-    fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2), 'utf-8');
+    writeJsonAtomic(DATA_FILE, data);
 }
 
 function generateId() {
     return 'v' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
 }
 
+const VACANCY_STATUSES = ['published', 'draft', 'closed'];
+const isString = v => typeof v === 'string';
+
+// Checks the vacancy fields present in the request body.
+// Returns { error } or { fields } with only the fields that were sent, trimmed.
+function pickVacancyFields(body) {
+    const fields = {};
+    for (const key of ['title', 'subtitle', 'city']) {
+        if (body[key] === undefined) continue;
+        if (!isString(body[key])) return { error: `Поле «${key}» должно быть строкой` };
+        fields[key] = body[key].trim();
+    }
+    if (body.sections !== undefined) {
+        const ok = Array.isArray(body.sections) && body.sections.every(s => s && isString(s.title) && isString(s.body));
+        if (!ok) return { error: 'Секции должны быть списком с заголовком и текстом' };
+        fields.sections = body.sections.map(s => ({ title: s.title.trim(), body: s.body.trim() }));
+    }
+    if (body.tags !== undefined) {
+        if (!Array.isArray(body.tags) || !body.tags.every(isString)) return { error: 'Теги должны быть списком строк' };
+        fields.tags = body.tags.map(t => t.trim()).filter(Boolean);
+    }
+    if (body.status !== undefined) {
+        if (!VACANCY_STATUSES.includes(body.status)) return { error: 'Неизвестный статус вакансии' };
+        fields.status = body.status;
+    }
+    if (body.order !== undefined) {
+        if (!Number.isInteger(body.order)) return { error: 'Порядок должен быть целым числом' };
+        fields.order = body.order;
+    }
+    return { fields };
+}
+
 // --- Auth API ---
 app.post('/api/login', (req, res) => {
-    const { password } = req.body;
-    if (password === ADMIN_PASSWORD) {
+    if (tooManyLoginFails(req.ip)) {
+        return res.status(429).json({ message: 'Слишком много попыток входа. Попробуйте через 15 минут.' });
+    }
+    if (passwordMatches(req.body && req.body.password)) {
+        loginFails.delete(req.ip);
         const token = generateToken();
         sessions[token] = { createdAt: Date.now() };
-        res.cookie('session', token, { httpOnly: true, sameSite: 'strict', secure: req.secure, maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('session', token, { httpOnly: true, sameSite: 'strict', secure: req.secure, maxAge: SESSION_TTL });
         res.json({ success: true });
     } else {
+        registerLoginFail(req.ip);
         res.status(401).json({ error: 'Wrong password' });
     }
 });
@@ -93,8 +202,7 @@ app.post('/api/logout', (req, res) => {
 });
 
 app.get('/api/auth/check', (req, res) => {
-    const token = req.cookies.session;
-    res.json({ authenticated: !!(token && sessions[token]) });
+    res.json({ authenticated: isValidSession(req.cookies.session) });
 });
 
 // --- Public API ---
@@ -114,17 +222,20 @@ app.get('/api/admin/vacancies', requireAuth, (req, res) => {
 });
 
 app.post('/api/admin/vacancies', requireAuth, (req, res) => {
+    const { error, fields } = pickVacancyFields(req.body || {});
+    if (error) return res.status(400).json({ message: error });
+
     const vacancies = readVacancies();
-    const { title, subtitle, city, sections, tags, status } = req.body;
     const now = new Date().toISOString().split('T')[0];
     const newVac = {
         id: generateId(),
-        title: title || '',
-        subtitle: subtitle || '',
-        city: city || '',
-        sections: sections || [],
-        tags: tags || [],
-        status: status || 'draft',
+        title: '',
+        subtitle: '',
+        city: '',
+        sections: [],
+        tags: [],
+        status: 'draft',
+        ...fields,
         order: vacancies.length + 1,
         createdAt: now,
         updatedAt: now
@@ -135,18 +246,14 @@ app.post('/api/admin/vacancies', requireAuth, (req, res) => {
 });
 
 app.put('/api/admin/vacancies/:id', requireAuth, (req, res) => {
+    const { error, fields } = pickVacancyFields(req.body || {});
+    if (error) return res.status(400).json({ message: error });
+
     const vacancies = readVacancies();
     const idx = vacancies.findIndex(v => v.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found' });
 
-    const { title, subtitle, city, sections, tags, status, order } = req.body;
-    if (title !== undefined) vacancies[idx].title = title;
-    if (subtitle !== undefined) vacancies[idx].subtitle = subtitle;
-    if (city !== undefined) vacancies[idx].city = city;
-    if (sections !== undefined) vacancies[idx].sections = sections;
-    if (tags !== undefined) vacancies[idx].tags = tags;
-    if (status !== undefined) vacancies[idx].status = status;
-    if (order !== undefined) vacancies[idx].order = order;
+    Object.assign(vacancies[idx], fields);
     vacancies[idx].updatedAt = new Date().toISOString().split('T')[0];
 
     writeVacancies(vacancies);
@@ -182,7 +289,7 @@ app.put('/api/admin/vacancies/:id/reorder', requireAuth, (req, res) => {
 });
 
 // --- Partners ---
-const PARTNERS_FILE = path.join(__dirname, 'data', 'partners.json');
+const PARTNERS_FILE = path.join(DATA_DIR, 'partners.json');
 const PARTNERS_HTML = path.join(__dirname, 'partners.html');
 const LOGO_DIR = path.join(__dirname, 'images', 'partners-logo');
 const LOGO_URL_PREFIX = 'images/partners-logo/';
@@ -204,31 +311,38 @@ function escapeHtml(str) {
         .replace(/'/g, '&#39;');
 }
 
-function renderPartnerCards(partners) {
+function renderPartnerCards(partners, eol) {
     const visible = partners.filter(p => p.visible).sort((a, b) => a.order - b.order);
     return visible.map((p, i) => {
         const logoClass = p.logoLarge ? 'partner-card__logo partner-card__logo--lg' : 'partner-card__logo';
-        return `
-            <a href="${escapeHtml(p.url)}" target="_blank" rel="noopener" class="partner-card" data-category="${escapeHtml(p.category)}" data-animate="fade-up" data-delay="${(i + 1) * 100}">
-                <img class="${logoClass}" src="${escapeHtml(p.logo)}" alt="${escapeHtml(p.name)}">
-                <div class="partner-card__info">
-                    <h3 class="partner-card__name">${escapeHtml(p.name)}</h3>
-                    <span class="partner-card__type">${escapeHtml(p.type)}</span>
-                    <p class="partner-card__desc">${escapeHtml(p.description)}</p>
-                </div>
-                <span class="partner-card__link">Подробнее &rarr;</span>
-            </a>
-`;
+        return [
+            '',
+            `            <a href="${escapeHtml(p.url)}" target="_blank" rel="noopener" class="partner-card" data-category="${escapeHtml(p.category)}" data-animate="fade-up" data-delay="${(i + 1) * 100}">`,
+            `                <img class="${logoClass}" src="${escapeHtml(p.logo)}" alt="${escapeHtml(p.name)}">`,
+            '                <div class="partner-card__info">',
+            `                    <h3 class="partner-card__name">${escapeHtml(p.name)}</h3>`,
+            `                    <span class="partner-card__type">${escapeHtml(p.type)}</span>`,
+            `                    <p class="partner-card__desc">${escapeHtml(p.description)}</p>`,
+            '                </div>',
+            '                <span class="partner-card__link">Подробнее &rarr;</span>',
+            '            </a>',
+            ''
+        ].join(eol);
     }).join('');
 }
 
-// Rebuilds the card block between PARTNERS:START and PARTNERS:END in partners.html
+// Rebuilds the card block between PARTNERS:START and PARTNERS:END in partners.html.
+// The page is rendered before anything is written, so JSON and HTML never get out of sync.
+// Works with both LF and CRLF line endings (files copied through Windows/git get CRLF).
 function writePartners(data) {
-    fs.writeFileSync(PARTNERS_FILE, JSON.stringify(data, null, 2), 'utf-8');
     const html = fs.readFileSync(PARTNERS_HTML, 'utf-8');
-    const re = /(<!-- PARTNERS:START[^>]*-->\n)[\s\S]*?(\n[ \t]*<!-- PARTNERS:END -->)/;
+    const eol = html.includes('\r\n') ? '\r\n' : '\n';
+    const re = /(<!-- PARTNERS:START[^>]*-->)[\s\S]*?(\r?\n[ \t]*<!-- PARTNERS:END -->)/;
     if (!re.test(html)) throw new Error('В partners.html не найдены метки PARTNERS:START / PARTNERS:END');
-    fs.writeFileSync(PARTNERS_HTML, html.replace(re, (_, start, end) => start + renderPartnerCards(data) + end), 'utf-8');
+    const newHtml = html.replace(re, (_, start, end) => start + eol + renderPartnerCards(data, eol) + end);
+
+    writeJsonAtomic(PARTNERS_FILE, data);
+    writeFileAtomic(PARTNERS_HTML, newHtml);
 }
 
 function isUploadedLogo(logo) {
@@ -252,17 +366,23 @@ function validatePartner(p) {
     return null;
 }
 
-const PARTNER_FIELDS = ['name', 'type', 'description', 'url', 'category', 'logo', 'logoLarge', 'visible'];
+const PARTNER_TEXT_FIELDS = ['name', 'type', 'description', 'url', 'category', 'logo'];
+const PARTNER_FLAG_FIELDS = ['logoLarge', 'visible'];
 
+// Returns { error } or { fields } with only the fields that were sent
 function pickPartnerFields(body) {
-    const out = {};
-    for (const key of PARTNER_FIELDS) {
+    const fields = {};
+    for (const key of PARTNER_TEXT_FIELDS) {
         if (body[key] === undefined) continue;
-        out[key] = typeof body[key] === 'string' ? body[key].trim() : body[key];
+        if (!isString(body[key])) return { error: `Поле «${key}» должно быть строкой` };
+        fields[key] = body[key].trim();
     }
-    if (out.logoLarge !== undefined) out.logoLarge = !!out.logoLarge;
-    if (out.visible !== undefined) out.visible = !!out.visible;
-    return out;
+    for (const key of PARTNER_FLAG_FIELDS) {
+        if (body[key] === undefined) continue;
+        if (typeof body[key] !== 'boolean') return { error: `Поле «${key}» должно быть да/нет` };
+        fields[key] = body[key];
+    }
+    return { fields };
 }
 
 const logoUpload = multer({
@@ -299,13 +419,16 @@ app.post('/api/admin/partners/logo', requireAuth, (req, res) => {
 });
 
 app.post('/api/admin/partners', requireAuth, (req, res) => {
+    const { error: fieldError, fields } = pickPartnerFields(req.body || {});
+    if (fieldError) return res.status(400).json({ message: fieldError });
+
     const partners = readPartners();
     const newPartner = {
         id: 'p' + Date.now().toString(36) + Math.random().toString(36).slice(2, 6),
         name: '', type: '', description: '', url: '', category: '', logo: '',
         logoLarge: false,
         visible: true,
-        ...pickPartnerFields(req.body),
+        ...fields,
         order: partners.length + 1
     };
     const error = validatePartner(newPartner);
@@ -317,12 +440,15 @@ app.post('/api/admin/partners', requireAuth, (req, res) => {
 });
 
 app.put('/api/admin/partners/:id', requireAuth, (req, res) => {
+    const { error: fieldError, fields } = pickPartnerFields(req.body || {});
+    if (fieldError) return res.status(400).json({ message: fieldError });
+
     const partners = readPartners();
     const idx = partners.findIndex(p => p.id === req.params.id);
     if (idx === -1) return res.status(404).json({ message: 'Партнёр не найден' });
 
     const oldLogo = partners[idx].logo;
-    const updated = { ...partners[idx], ...pickPartnerFields(req.body) };
+    const updated = { ...partners[idx], ...fields };
     const error = validatePartner(updated);
     if (error) return res.status(400).json({ message: error });
 
@@ -372,23 +498,6 @@ function cleanupOrphanLogos() {
         if (fs.statSync(file).mtimeMs < dayAgo) fs.unlinkSync(file);
     }
 }
-
-// --- Save map marker positions ---
-app.post('/api/save-markers', (req, res) => {
-    const { positions } = req.body;
-    if (!positions) return res.status(400).json({ error: 'No positions' });
-
-    const htmlPath = path.join(__dirname, 'index.html');
-    let html = fs.readFileSync(htmlPath, 'utf-8');
-
-    for (const [city, coords] of Object.entries(positions)) {
-        const regex = new RegExp(`(data-city="${city}"\\s+style=")top:[^;]+;left:[^"]+"`);
-        html = html.replace(regex, `$1top:${coords.top};left:${coords.left}"`);
-    }
-
-    fs.writeFileSync(htmlPath, html, 'utf-8');
-    res.json({ success: true });
-});
 
 app.listen(PORT, () => {
     console.log(`ВСА сервер запущен: http://localhost:${PORT}`);

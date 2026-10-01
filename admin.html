@@ -1206,8 +1206,10 @@
 
         async function checkAuth() {
             try {
-                await api('/api/auth/check');
-                showDashboard();
+                // The endpoint always answers 200 — the result is in the body
+                const { authenticated } = await api('/api/auth/check');
+                if (authenticated) showDashboard();
+                else showLogin();
             } catch {
                 showLogin();
             }
@@ -1229,7 +1231,8 @@
                 loginPassword.value = '';
                 showDashboard();
             } catch (err) {
-                loginError.textContent = 'Неверный пароль';
+                // 401 → wrong password; anything else (e.g. 429 too many attempts) carries its own message
+                loginError.textContent = err.message === 'Unauthorized' ? 'Неверный пароль' : err.message;
             }
         });
 
@@ -1313,7 +1316,7 @@
                             <button class="btn-action btn-action--status" title="Сменить статус" onclick="toggleStatus('${v._id || v.id}','${v.status}')">
                                 <i data-lucide="refresh-cw" style="width:16px;height:16px;"></i>
                             </button>
-                            <button class="btn-action btn-action--delete" title="Удалить" onclick="confirmDeleteVacancy('${v._id || v.id}','${escapeHtml(v.title || '')}')">
+                            <button class="btn-action btn-action--delete" title="Удалить" onclick="confirmDeleteVacancy('${v._id || v.id}')">
                                 <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
                             </button>
                         </div>
@@ -1324,10 +1327,14 @@
             lucide.createIcons();
         }
 
+        // Also escapes quotes: the result is used inside attribute values (value="...")
         function escapeHtml(str) {
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#39;');
         }
 
         // Search
@@ -1363,7 +1370,10 @@
         }
 
         // Delete
-        function confirmDeleteVacancy(id, title) {
+        // The title is looked up by id: passing it through an onclick string broke on apostrophes
+        function confirmDeleteVacancy(id) {
+            const v = vacancies.find(x => (x._id || x.id) === id);
+            const title = v ? (v.title || '') : '';
             deleteId = id;
             deleteKind = 'vacancy';
             confirmTitle.textContent = 'Удалить вакансию?';
