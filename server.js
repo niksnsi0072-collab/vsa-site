@@ -26,15 +26,21 @@ app.set('trust proxy', 1);
 app.use(express.json());
 app.use(cookieParser());
 
-// The site is served straight from the project folder, so keep server-side files private:
-// data/ holds draft and closed vacancies, the rest is source code and docs
-const PRIVATE_PATHS = /^\/(data|node_modules)(\/|$)|^\/(server\.js|package(-lock)?\.json|[^/]+\.md)$/i;
+// Static files are served from an allowlist, never the whole project folder:
+// data/ (draft vacancies), .env, server.js and node_modules must stay unreachable,
+// and a denylist can be bypassed with URL-encoded paths (/%64ata/...)
+const PUBLIC_DIRS = ['css', 'js', 'fonts', 'images', 'docs'];
+for (const dir of PUBLIC_DIRS) {
+    app.use('/' + dir, express.static(path.join(__dirname, dir)));
+}
+
+// Top-level pages: only plain "name.html" (and "/" → index.html)
+const PAGE_PATH = /^\/[A-Za-z0-9_-]+\.html$/;
+const servePages = express.static(__dirname, { index: 'index.html' });
 app.use((req, res, next) => {
-    if (PRIVATE_PATHS.test(req.path)) return res.status(404).end();
+    if (req.path === '/' || PAGE_PATH.test(req.path)) return servePages(req, res, next);
     next();
 });
-
-app.use(express.static(__dirname));
 
 // --- Session ---
 const sessions = {};
