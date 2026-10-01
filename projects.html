@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Реализованные проекты — ВСА ВолгаСвязьАвтоматика</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="css/fonts.css" rel="stylesheet">
+    <script src="js/vendor/lucide.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page-projects">
@@ -155,8 +153,13 @@
             </div>
             <div class="footer-divider"></div>
             <div class="footer-bottom">
-                <p class="footer-copyright">&copy; 2016–2025 ООО &laquo;ВСА&raquo; ВолгаСвязьАвтоматика. Все права защищены.</p>
-                <p class="footer-address">Москва, 2-й Верхний Михайловский проезд, д. 9, стр. 5</p>
+                <div class="footer-legal">
+                    <p class="footer-copyright">&copy; 2016–<span data-current-year>2026</span> ООО &laquo;ВСА&raquo; (ООО &laquo;ВолгаСвязьАвтоматика&raquo;). Все права защищены.</p>
+                    <p class="footer-requisites">ИНН 6450096536 &middot; ОГРН 1166451084018 &middot; 115419, г. Москва, 2-й Верхний Михайловский проезд, д. 9, стр. 5</p>
+                </div>
+                <div class="footer-docs">
+                    <a href="privacy.html" class="footer-doc-link">Политика обработки персональных данных</a>
+                </div>
             </div>
         </div>
     </footer>

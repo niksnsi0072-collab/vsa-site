@@ -4,10 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Вакансии — ВСА ВолгаСвязьАвтоматика</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+    <link href="css/fonts.css" rel="stylesheet">
+    <script src="js/vendor/lucide.min.js"></script>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="page-vacancies">
@@ -235,7 +233,7 @@
                     <input class="apply-modal__input" type="tel" name="phone" required placeholder="+7 (___) ___-__-__">
                 </div>
                 <div class="apply-modal__field">
-                    <label class="apply-modal__label">Email</label>
+                    <label class="apply-modal__label">Электронная почта</label>
                     <input class="apply-modal__input" type="email" name="email" placeholder="example@mail.ru">
                 </div>
                 <div class="apply-modal__field">
@@ -244,7 +242,11 @@
                 </div>
                 <div class="apply-modal__consent">
                     <input type="checkbox" id="applyConsent" name="consent" required>
-                    <label for="applyConsent">Я согласен с <a href="privacy.html" class="apply-modal__link">политикой конфиденциальности</a> и даю согласие на обработку персональных данных</label>
+                    <label for="applyConsent">Даю <a href="consent-applicant.html" class="apply-modal__link" target="_blank">согласие на обработку персональных данных</a> соискателя</label>
+                </div>
+                <div class="apply-modal__consent">
+                    <input type="checkbox" id="applyPolicy" name="policy" required>
+                    <label for="applyPolicy">Ознакомлен(а) с <a href="privacy.html" class="apply-modal__link" target="_blank">Политикой обработки персональных данных</a></label>
                 </div>
                 <button type="submit" class="apply-modal__submit">Отправить отклик</button>
             </form>
@@ -419,8 +421,13 @@
             </div>
             <div class="footer-divider"></div>
             <div class="footer-bottom">
-                <p class="footer-copyright">&copy; 2016–2025 ООО &laquo;ВСА&raquo; ВолгаСвязьАвтоматика. Все права защищены.</p>
-                <p class="footer-address">Москва, 2-й Верхний Михайловский проезд, д. 9, стр. 5</p>
+                <div class="footer-legal">
+                    <p class="footer-copyright">&copy; 2016–<span data-current-year>2026</span> ООО &laquo;ВСА&raquo; (ООО &laquo;ВолгаСвязьАвтоматика&raquo;). Все права защищены.</p>
+                    <p class="footer-requisites">ИНН 6450096536 &middot; ОГРН 1166451084018 &middot; 115419, г. Москва, 2-й Верхний Михайловский проезд, д. 9, стр. 5</p>
+                </div>
+                <div class="footer-docs">
+                    <a href="privacy.html" class="footer-doc-link">Политика обработки персональных данных</a>
+                </div>
             </div>
         </div>
     </footer>
