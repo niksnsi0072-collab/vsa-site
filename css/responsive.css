@@ -1,0 +1,1215 @@
+/*
+ * Адаптив для планшетов и телефонов.
+ * Подключается после style.css; десктопная вёрстка (> 1024px) здесь не меняется.
+ *
+ * Точки перелома:
+ *   ≤ 1024px — планшет горизонтально, небольшие ноутбуки (появляется бургер)
+ *   ≤ 768px  — планшет вертикально
+ *   ≤ 480px  — телефон
+ */
+
+/* =========================================================
+   Мобильное меню (элементы создаёт js/main.js)
+   ========================================================= */
+
+.burger {
+    display: none;
+    width: 44px;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.burger svg {
+    width: 28px;
+    height: 28px;
+}
+
+.header.scrolled .burger,
+.header--scrolled-init .burger {
+    color: var(--dark);
+}
+
+.mobile-menu {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: var(--dark);
+    display: flex;
+    flex-direction: column;
+    padding: 88px 24px 32px;
+    overflow-y: auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(100%);
+    transition: transform 0.35s ease, opacity 0.35s ease, visibility 0s linear 0.35s;
+}
+
+.mobile-menu.is-open {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+}
+
+.mobile-menu__close {
+    position: absolute;
+    top: 18px;
+    right: 18px;
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--white);
+    cursor: pointer;
+}
+
+.mobile-menu__close svg {
+    width: 28px;
+    height: 28px;
+}
+
+.mobile-menu__nav {
+    display: flex;
+    flex-direction: column;
+}
+
+.mobile-menu__link {
+    font-size: 22px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--white);
+    padding: 16px 0;
+    border-bottom: 1px solid var(--dark-light);
+    transition: color 0.3s ease;
+}
+
+.mobile-menu__link:hover,
+.mobile-menu__link--active {
+    color: var(--red);
+}
+
+.mobile-menu__footer {
+    margin-top: auto;
+    padding-top: 32px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.mobile-menu__cta {
+    text-align: center;
+    padding: 16px 24px;
+    font-size: 14px;
+    margin-bottom: 8px;
+}
+
+.mobile-menu__contact {
+    font-size: 15px;
+    color: var(--text-light);
+}
+
+body.menu-open {
+    overflow: hidden;
+}
+
+/* =========================================================
+   ≤ 1024px — планшет горизонтально
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .header-inner {
+        padding: 0 24px;
+    }
+
+    .nav,
+    .header-right .btn-cta {
+        display: none;
+    }
+
+    .burger {
+        display: flex;
+    }
+
+    /* Подвал: логотип сверху, колонки ссылок в ряд */
+    .footer-content {
+        padding: 40px 24px;
+        gap: 32px;
+    }
+
+    .footer-top {
+        flex-wrap: wrap;
+        gap: 32px 24px;
+    }
+
+    .footer-logo {
+        width: 100%;
+    }
+
+    .footer-col {
+        flex: 1 1 160px;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+}
+
+/* =========================================================
+   ≤ 768px — планшет вертикально
+   ========================================================= */
+
+@media (max-width: 768px) {
+}
+
+/* =========================================================
+   ≤ 480px — телефон
+   ========================================================= */
+
+@media (max-width: 480px) {
+    .header-inner {
+        padding: 0 16px;
+    }
+
+    .header {
+        height: 64px;
+    }
+
+    .logo-svg {
+        height: 52px;
+    }
+
+    .mobile-menu {
+        padding: 76px 16px 24px;
+    }
+
+    .mobile-menu__close {
+        top: 10px;
+        right: 10px;
+    }
+
+    .footer-content {
+        padding: 32px 16px;
+    }
+
+    .footer-col {
+        flex-basis: 100%;
+    }
+}
+
+/* =========================================================
+   Точечные правила блоков, перенесённые из style.css как есть
+   (главная: карта и КСО; о компании: сертификаты; КСО: направления и баннер фонда)
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .geo-columns {
+        flex-direction: column;
+        padding: 30px 20px 0;
+    }
+    .geo-left {
+        flex: none;
+        width: 100%;
+    }
+    .geo-map-wrapper {
+        width: 100%;
+        border-radius: 9px;
+    }
+}
+
+@media (max-width: 640px) {
+    .geo-columns {
+        padding: 32px 20px;
+    }
+    .geo-stats {
+        gap: 24px;
+    }
+    .geo-stat__number,
+    .geo-stat__plus {
+        font-size: 32px;
+    }
+}
+
+@media (max-width: 1024px) {
+    .kso {
+        padding: 60px 40px;
+    }
+    .kso__grid {
+        flex-direction: column;
+    }
+}
+
+@media (max-width: 640px) {
+    .kso {
+        padding: 48px 20px;
+    }
+    .kso__title {
+        font-size: 26px;
+    }
+}
+
+@media (max-width: 900px) {
+    .cert-card { flex-basis: 280px; }
+    .cert-carousel__nav { display: none; }
+}
+
+@media (max-width: 1100px) {
+    .csr-directions {
+        grid-template-columns: 1fr;
+        gap: 24px;
+    }
+
+    .csr-dir__photo {
+        height: 220px;
+    }
+}
+
+@media (max-width: 760px) {
+    .csr-dir__body {
+        padding: 22px 20px 24px;
+    }
+
+    .csr-dir__photo {
+        height: 180px;
+    }
+
+    .csr-dir__title {
+        font-size: 20px;
+    }
+}
+
+@media (max-width: 1100px) {
+    .csr-partner-band {
+        padding: 32px calc(var(--gutter) + 80px) 36px;
+    }
+
+    .csr-partner-banner {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .csr-partner-banner__content {
+        padding: 70px 28px 24px;
+    }
+
+    .csr-partner-banner__logos {
+        flex: 1 1 auto;
+        gap: 32px;
+        margin: 0 28px 32px;
+        padding: 28px 24px 24px;
+    }
+
+    .csr-fund-logo__img {
+        height: 52px;
+    }
+
+    .csr-fund-logo__photo {
+        border-radius: 10px;
+    }
+
+    .csr-fund-logo__caption {
+        font-size: 12px;
+        letter-spacing: 1.2px;
+    }
+}
+
+@media (max-width: 640px) {
+    .csr-partner-banner__content {
+        padding: 66px 20px 20px;
+    }
+
+    .csr-partner-banner__logos {
+        flex-direction: column;
+        gap: 28px;
+        margin: 0 20px 28px;
+        padding: 24px 20px;
+    }
+
+    .csr-fund-logo__img {
+        height: 44px;
+        max-width: 100%;
+    }
+}
+
+/* =========================================================
+   Внутренние страницы: первый экран (page-hero)
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .page-hero__content {
+        padding: 0 24px 40px;
+    }
+
+    .page-hero__title {
+        font-size: clamp(30px, 6vw, 44px);
+    }
+}
+
+@media (max-width: 480px) {
+    .page-hero {
+        height: 300px;
+    }
+
+    .page-hero__content {
+        padding: 0 16px 32px;
+    }
+
+    .page-hero__subtitle {
+        font-size: 15px;
+    }
+}
+
+/* =========================================================
+   Контакты
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .contact-cards {
+        flex-wrap: wrap;
+    }
+
+    .contact-card {
+        flex: 1 1 50%;
+        padding: 32px 16px;
+        border-bottom: 1px solid #F0F0F0;
+    }
+
+    .contact-card:nth-child(2n) {
+        border-right: none;
+    }
+
+    .contact-form-section {
+        padding: 56px 0;
+    }
+
+    .contact-form-header {
+        margin-bottom: 32px;
+        padding: 0 16px;
+        text-align: center;
+    }
+
+    .contact-form-header__title {
+        font-size: 28px;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-form {
+        max-width: none;
+        width: auto;
+        margin: 0 16px;
+    }
+
+    .contact-form__row {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .contact-form__row .contact-form__input {
+        flex: none;
+    }
+
+    .contact-form__submit {
+        align-self: stretch;
+        padding: 18px 24px;
+    }
+}
+
+/* =========================================================
+   Главная
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    /* Первый экран */
+    .hero {
+        padding-bottom: 64px;
+    }
+
+    .hero-content {
+        margin: 0 24px;
+        max-width: none;
+    }
+
+    .hero-title {
+        font-size: clamp(28px, 5.5vw, 44px);
+    }
+
+    /* О компании: из абсолютной раскладки в обычный поток */
+    .about {
+        height: auto;
+        padding: 64px 24px;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .about-content,
+    .about-photo {
+        position: relative;
+        left: auto;
+        right: auto;
+        top: auto;
+        width: 100%;
+    }
+
+    .about-title,
+    .about-desc {
+        max-width: none;
+    }
+
+    .about-photo {
+        height: auto;
+        aspect-ratio: 680 / 580;
+    }
+
+    .about-photo__border,
+    .about-dots {
+        display: none;
+    }
+
+    /* География: карта на всю ширину под списком городов */
+    .geo-map-wrapper {
+        top: 0;
+        margin: 0 0 30px;
+    }
+
+    .geo-map-img {
+        border-radius: 9px;
+    }
+
+    /* Проекты */
+    .projects {
+        padding: 64px 0;
+    }
+
+    .projects-inner {
+        padding: 0 24px;
+    }
+
+    .projects-grid .project-card__content,
+    .project-card__content {
+        left: 32px;
+        right: 32px;
+        bottom: 40px;
+        width: auto;
+    }
+
+    /* КСО и партнёры */
+    .kso {
+        padding: 60px 24px;
+    }
+
+    .partners {
+        padding: 56px 24px;
+    }
+
+    .section-title {
+        font-size: clamp(24px, 4.5vw, 32px);
+    }
+}
+
+@media (max-width: 768px) {
+    .projects-grid,
+    .kso__grid {
+        flex-direction: column;
+    }
+
+    /* На странице «Проекты» .projects-grid — CSS grid */
+    .projects-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .projects-grid .project-card {
+        height: 380px;
+    }
+
+    /* Оставляем место под круглую стрелку в правом нижнем углу */
+    .projects-grid .project-card__content,
+    .project-card__content {
+        bottom: 84px;
+    }
+
+    .project-card__title {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding-bottom: 48px;
+    }
+
+    .hero-content {
+        margin: 0 16px;
+        gap: 20px;
+    }
+
+    .hero-services {
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+
+    .hero-buttons {
+        flex-direction: column;
+        margin-top: 8px;
+    }
+
+    .hero-buttons a {
+        text-align: center;
+    }
+
+    .about {
+        padding: 48px 16px;
+    }
+
+    .about-title {
+        font-size: 26px;
+    }
+
+    .projects-inner {
+        padding: 0 16px;
+    }
+
+    .projects-grid .project-card {
+        height: 340px;
+    }
+
+    .projects-grid .project-card__content,
+    .project-card__content {
+        left: 20px;
+        right: 20px;
+        bottom: 76px;
+    }
+
+    .project-card__desc {
+        font-size: 14px;
+    }
+
+    .partners {
+        padding: 48px 16px;
+    }
+
+    .marquee-slide {
+        width: 120px;
+        height: 56px;
+    }
+
+    .geo-tags {
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+
+    .geo-tags-row {
+        display: contents;
+    }
+
+    .city-tag {
+        min-width: 0;
+        padding: 8px 14px;
+    }
+}
+
+/* =========================================================
+   О компании
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .about-content-section {
+        padding: 64px 24px;
+    }
+
+    /* Текст первым, фото и карточки под ним */
+    .about-content-inner {
+        flex-direction: column-reverse;
+        gap: 40px;
+    }
+
+    .about-content__left {
+        width: 100%;
+    }
+
+    .stats-bar__inner {
+        padding: 0 24px;
+    }
+
+    .stats-bar__number {
+        font-size: clamp(36px, 6vw, 64px);
+    }
+
+    .stats-bar__plus {
+        font-size: clamp(28px, 4.5vw, 48px);
+    }
+
+    .directions,
+    .licenses {
+        padding: 64px 0;
+    }
+
+    .directions__inner,
+    .licenses__inner {
+        padding: 0 24px;
+    }
+
+    .cert-carousel {
+        margin: 0 -24px 40px;
+    }
+
+    .licenses__title {
+        font-size: clamp(24px, 4.5vw, 32px);
+    }
+}
+
+@media (max-width: 768px) {
+    .about-content__photo {
+        height: 360px;
+    }
+
+    .about-content__title {
+        font-size: 24px;
+    }
+
+    /* Цифры в сетку 2×2, разделители не нужны */
+    .stats-bar__inner {
+        flex-wrap: wrap;
+        row-gap: 28px;
+    }
+
+    .stats-bar__item {
+        flex: 1 1 50%;
+    }
+
+    .stats-bar__divider {
+        display: none;
+    }
+
+    .directions__item {
+        gap: 20px;
+        padding: 28px 0;
+    }
+
+    .directions__number {
+        font-size: 40px;
+        width: 56px;
+    }
+
+    .directions__icon {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .about-content-section {
+        padding: 48px 16px;
+    }
+
+    .about-content__photo {
+        height: 260px;
+    }
+
+    .about-content__info-row {
+        flex-direction: column;
+    }
+
+    .about-content__text {
+        font-size: 15px;
+    }
+
+    .directions__inner,
+    .licenses__inner {
+        padding: 0 16px;
+    }
+
+    .directions__item {
+        align-items: flex-start;
+        gap: 14px;
+    }
+
+    .directions__number {
+        font-size: 32px;
+        width: 44px;
+    }
+
+    .directions__item-title {
+        font-size: 17px;
+    }
+
+    .directions__banner {
+        padding: 22px 20px;
+        align-items: flex-start;
+    }
+
+    .cert-carousel {
+        margin: 0 -16px 32px;
+    }
+
+    .cert-card {
+        flex-basis: 220px;
+    }
+
+    .licenses__item-text {
+        font-size: 16px;
+    }
+}
+
+/* =========================================================
+   Услуги
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .services-catalog {
+        padding: 56px 24px;
+    }
+
+    .services-catalog__heading {
+        font-size: clamp(24px, 4.5vw, 34px);
+    }
+
+    .service-card__content,
+    .service-card__content--wide {
+        width: 100%;
+    }
+
+    .works-section {
+        padding: 56px 24px;
+    }
+
+    .works-section__heading {
+        font-size: clamp(24px, 4.5vw, 36px);
+    }
+}
+
+/*
+ * На телефонах и сенсорных планшетах наведения нет, поэтому карточка услуги
+ * раскладывается в «фото сверху — текст снизу», и текст виден сразу.
+ */
+@media (max-width: 768px), (hover: none) and (max-width: 1024px) {
+    .service-card {
+        height: auto;
+        display: flex;
+        flex-direction: column;
+        background: var(--dark);
+    }
+
+    .service-card__bg {
+        position: relative;
+        inset: auto;
+        height: 200px;
+        flex-shrink: 0;
+    }
+
+    .service-card:hover .service-card__bg {
+        transform: none;
+    }
+
+    .service-card__overlay {
+        display: none;
+    }
+
+    .service-card__content {
+        position: relative;
+        height: auto;
+        padding: 24px 20px;
+        overflow: visible;
+        justify-content: flex-start;
+    }
+
+    .service-card__badge,
+    .service-card:hover .service-card__badge {
+        position: static;
+        transform: none;
+        margin-bottom: 6px;
+    }
+
+    .service-card__divider,
+    .service-card__title,
+    .service-card__subtitle,
+    .service-card__bullets,
+    .service-card__desc {
+        opacity: 1;
+        transform: none;
+    }
+
+    .service-card__desc,
+    .service-card__desc--wide {
+        max-width: none;
+    }
+}
+
+@media (max-width: 768px) {
+    .services-catalog__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .works-section__grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .services-catalog,
+    .works-section {
+        padding: 48px 16px;
+    }
+
+    .service-card__bg {
+        height: 170px;
+    }
+
+    .works-section__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .work-card__number {
+        font-size: 34px;
+    }
+}
+
+/* =========================================================
+   Партнёры (и общий красный CTA-блок внизу страниц)
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .partners-content {
+        padding: 56px 24px;
+    }
+
+    .partners-cta {
+        height: auto;
+        padding: 56px 24px;
+    }
+
+    .partners-cta__heading {
+        font-size: clamp(24px, 4.5vw, 32px);
+    }
+}
+
+@media (max-width: 768px) {
+    .partners-grid {
+        gap: 20px;
+    }
+
+    .partners-content__heading {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 600px) {
+    .partners-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .partners-content {
+        padding: 48px 16px;
+    }
+
+    /* Фильтры — в одну строку с горизонтальной прокруткой */
+    .partners-filters {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        margin: 0 -16px 28px;
+        padding: 0 16px 4px;
+        scrollbar-width: none;
+    }
+
+    .partners-filters::-webkit-scrollbar {
+        display: none;
+    }
+
+    .partners-filters__tab {
+        flex-shrink: 0;
+    }
+
+    .partner-card__logo {
+        height: 112px;
+        padding: 26px 32px 22px;
+    }
+
+    .partner-card__info {
+        padding: 20px 20px 10px;
+    }
+
+    .partner-card__link {
+        padding: 4px 20px 20px;
+    }
+
+    .partners-cta {
+        padding: 48px 16px;
+    }
+
+    .partners-cta__buttons {
+        flex-direction: column;
+        align-self: stretch;
+    }
+
+    .partners-cta__btn {
+        text-align: center;
+    }
+}
+
+/* =========================================================
+   Вакансии и окно отклика
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .vacancies-content {
+        padding: 56px 24px;
+    }
+}
+
+@media (max-width: 768px) {
+    .vacancies-intro {
+        gap: 24px;
+        align-items: flex-end;
+    }
+
+    .vacancies-intro__heading {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .vacancies-content {
+        padding: 48px 16px;
+    }
+
+    .vacancies-intro {
+        flex-direction: column;
+        align-items: flex-start;
+        margin-bottom: 32px;
+    }
+
+    .vacancy-card__top {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 16px;
+        padding: 18px 16px;
+    }
+
+    .vacancy-card__btn {
+        align-self: flex-start;
+    }
+
+    .vacancy-card__details {
+        padding: 18px 16px;
+    }
+
+    .vacancy-card__apply-btn {
+        display: block;
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Окно отклика почти на весь экран */
+    .apply-modal {
+        align-items: flex-end;
+    }
+
+    .apply-modal__card {
+        width: 100%;
+        max-height: 92vh;
+        padding: 32px 20px 24px;
+        border-radius: 16px 16px 0 0;
+    }
+
+    .apply-modal__title {
+        font-size: 20px;
+        padding-right: 32px;
+    }
+
+    .apply-modal__input,
+    .apply-modal__textarea {
+        font-size: 16px; /* меньше 16px — iOS увеличивает страницу при фокусе */
+    }
+}
+
+/* =========================================================
+   Проекты, страницы заказчиков (Газпром, РусХимАльянс)
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .projects-content,
+    .gazprom-content {
+        padding: 56px 24px;
+    }
+
+    .projects-intro__heading {
+        font-size: clamp(24px, 4.5vw, 32px);
+    }
+
+    .gazprom-section__title {
+        font-size: clamp(22px, 4vw, 28px);
+    }
+
+    .project-card__logo {
+        height: 180px;
+    }
+}
+
+@media (max-width: 480px) {
+    .projects-content,
+    .gazprom-content {
+        padding: 48px 16px;
+    }
+
+    .projects-intro__desc,
+    .gazprom-project__desc {
+        font-size: 14px;
+    }
+
+    .gazprom-project {
+        padding: 20px 16px;
+    }
+
+    .gazprom-project__name {
+        font-size: 16px;
+    }
+
+    .project-card__logo {
+        height: 130px;
+        left: 20px;
+    }
+}
+
+/* =========================================================
+   КСО
+   ========================================================= */
+
+@media (max-width: 1024px) {
+    .csr-content {
+        padding: 56px 24px;
+        gap: 48px;
+    }
+
+    .csr-section__title {
+        font-size: clamp(24px, 4.5vw, 32px);
+    }
+
+    .csr-principles-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    /* Полоса под баннером фонда тянется до краёв экрана */
+    .csr-partner-band {
+        margin: 0 -24px 32px;
+        padding: 32px 24px 36px;
+    }
+
+    .csr-partner-banner__logos {
+        flex-basis: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .csr-cards-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .csr-card__image {
+        height: 200px;
+    }
+
+    .csr-partner-banner__title {
+        font-size: 22px;
+    }
+}
+
+@media (max-width: 480px) {
+    .csr-content {
+        padding: 48px 16px;
+    }
+
+    .csr-section__desc,
+    .csr-card__desc {
+        font-size: 14px;
+    }
+
+    .csr-principles-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .csr-principle {
+        padding: 18px 16px;
+    }
+
+    .csr-partner-band {
+        margin: 0 -16px 28px;
+        padding: 28px 16px 32px;
+    }
+
+    .csr-partner-banner__links {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .csr-partner-banner__link {
+        justify-content: center;
+    }
+}
+
+/* =========================================================
+   Юридические документы
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .legal-doc {
+        padding: 48px 16px 40px;
+    }
+
+    .legal-doc h1 {
+        font-size: 22px;
+    }
+
+    /* Широкая таблица в политике прокручивается внутри себя */
+    .legal-doc table {
+        display: block;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .legal-doc th,
+    .legal-doc td {
+        min-width: 160px;
+    }
+}
+
+/* =========================================================
+   1025–1279px — небольшие ноутбуки: десктопная раскладка,
+   но блоки фиксированной ширины не помещаются
+   ========================================================= */
+
+@media (min-width: 1025px) and (max-width: 1279px) {
+    /* Главная, «О компании»: фото занимает место, оставшееся справа от текста */
+    .about-photo {
+        width: calc(100% - 680px);
+        height: auto;
+        aspect-ratio: 680 / 580;
+        top: 90px;
+    }
+
+    .about-dots {
+        display: none;
+    }
+
+    /* Текст карточек не шире самих карточек */
+    .service-card__content,
+    .service-card__content--wide {
+        width: 100%;
+    }
+
+    .projects-grid .project-card__content,
+    .project-card__content {
+        left: 40px;
+        right: 40px;
+        width: auto;
+    }
+}

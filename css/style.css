@@ -878,34 +878,6 @@ img {
 }
 
 /* Responsive */
-@media (max-width: 1024px) {
-    .geo-columns {
-        flex-direction: column;
-        padding: 30px 20px 0;
-    }
-    .geo-left {
-        flex: none;
-        width: 100%;
-    }
-    .geo-map-wrapper {
-        width: 100%;
-        border-radius: 9px;
-    }
-}
-
-@media (max-width: 640px) {
-    .geo-columns {
-        padding: 32px 20px;
-    }
-    .geo-stats {
-        gap: 24px;
-    }
-    .geo-stat__number,
-    .geo-stat__plus {
-        font-size: 32px;
-    }
-}
-
 /* Projects section */
 .projects {
     background: var(--white);
@@ -1312,24 +1284,6 @@ img {
 
 .kso__link:hover::before {
     width: 100%;
-}
-
-@media (max-width: 1024px) {
-    .kso {
-        padding: 60px 40px;
-    }
-    .kso__grid {
-        flex-direction: column;
-    }
-}
-
-@media (max-width: 640px) {
-    .kso {
-        padding: 48px 20px;
-    }
-    .kso__title {
-        font-size: 26px;
-    }
 }
 
 /* Footer */
@@ -2444,11 +2398,6 @@ img {
 
 .cert-card:hover .cert-card__action i {
     transform: translate(2px, -2px) rotate(8deg);
-}
-
-@media (max-width: 900px) {
-    .cert-card { flex-basis: 280px; }
-    .cert-carousel__nav { display: none; }
 }
 
 /* Licenses Banner */
@@ -4593,81 +4542,4 @@ img {
     background: var(--dir-accent);
 }
 
-@media (max-width: 1100px) {
-    .csr-directions {
-        grid-template-columns: 1fr;
-        gap: 24px;
-    }
-
-    .csr-dir__photo {
-        height: 220px;
-    }
-}
-
-@media (max-width: 760px) {
-    .csr-dir__body {
-        padding: 22px 20px 24px;
-    }
-
-    .csr-dir__photo {
-        height: 180px;
-    }
-
-    .csr-dir__title {
-        font-size: 20px;
-    }
-}
-
 /* Баннер БФ «Око Любви» — адаптив */
-@media (max-width: 1100px) {
-    .csr-partner-band {
-        padding: 32px calc(var(--gutter) + 80px) 36px;
-    }
-
-    .csr-partner-banner {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .csr-partner-banner__content {
-        padding: 70px 28px 24px;
-    }
-
-    .csr-partner-banner__logos {
-        flex: 1 1 auto;
-        gap: 32px;
-        margin: 0 28px 32px;
-        padding: 28px 24px 24px;
-    }
-
-    .csr-fund-logo__img {
-        height: 52px;
-    }
-
-    .csr-fund-logo__photo {
-        border-radius: 10px;
-    }
-
-    .csr-fund-logo__caption {
-        font-size: 12px;
-        letter-spacing: 1.2px;
-    }
-}
-
-@media (max-width: 640px) {
-    .csr-partner-banner__content {
-        padding: 66px 20px 20px;
-    }
-
-    .csr-partner-banner__logos {
-        flex-direction: column;
-        gap: 28px;
-        margin: 0 20px 28px;
-        padding: 24px 20px;
-    }
-
-    .csr-fund-logo__img {
-        height: 44px;
-        max-width: 100%;
-    }
-}

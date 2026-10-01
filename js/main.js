@@ -278,6 +278,80 @@ if (filterTabs.length && partnerCards.length) {
 }
 
 
+/* Mobile menu: burger button + full-screen panel built from the desktop .nav */
+const desktopNav = document.querySelector('.header .nav');
+const headerRight = document.querySelector('.header .header-right');
+
+if (desktopNav && headerRight) {
+    const burger = document.createElement('button');
+    burger.className = 'burger';
+    burger.type = 'button';
+    burger.setAttribute('aria-label', 'Открыть меню');
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-controls', 'mobileMenu');
+    burger.innerHTML = '<i data-lucide="menu"></i>';
+    headerRight.appendChild(burger);
+
+    const panel = document.createElement('div');
+    panel.className = 'mobile-menu';
+    panel.id = 'mobileMenu';
+    panel.setAttribute('role', 'dialog');
+    panel.setAttribute('aria-modal', 'true');
+    panel.setAttribute('aria-label', 'Меню сайта');
+    panel.innerHTML = `
+        <button class="mobile-menu__close" type="button" aria-label="Закрыть меню"><i data-lucide="x"></i></button>
+        <nav class="mobile-menu__nav"></nav>
+        <div class="mobile-menu__footer">
+            <a href="contacts.html" class="btn-cta mobile-menu__cta">СВЯЗАТЬСЯ</a>
+            <a href="tel:+78633200358" class="mobile-menu__contact">+7 (863) 320-03-58</a>
+            <a href="mailto:info@ooovsa.ru" class="mobile-menu__contact">info@ooovsa.ru</a>
+        </div>`;
+    const mobileNav = panel.querySelector('.mobile-menu__nav');
+    desktopNav.querySelectorAll('.nav-link').forEach(link => {
+        const item = document.createElement('a');
+        item.href = link.getAttribute('href');
+        item.className = 'mobile-menu__link' + (link.classList.contains('nav-link--active') ? ' mobile-menu__link--active' : '');
+        item.textContent = link.textContent.trim();
+        mobileNav.appendChild(item);
+    });
+    document.body.appendChild(panel);
+
+    const closeBtn = panel.querySelector('.mobile-menu__close');
+
+    const openMenu = () => {
+        panel.classList.add('is-open');
+        document.body.classList.add('menu-open');
+        burger.setAttribute('aria-expanded', 'true');
+        closeBtn.focus();
+    };
+
+    const closeMenu = () => {
+        panel.classList.remove('is-open');
+        document.body.classList.remove('menu-open');
+        burger.setAttribute('aria-expanded', 'false');
+    };
+
+    burger.addEventListener('click', openMenu);
+    closeBtn.addEventListener('click', () => {
+        closeMenu();
+        burger.focus();
+    });
+    // Same-page anchors (e.g. #about on the home page) need the panel closed to be visible
+    mobileNav.addEventListener('click', e => {
+        if (e.target.closest('a')) closeMenu();
+    });
+    document.addEventListener('keydown', e => {
+        if (e.key === 'Escape' && panel.classList.contains('is-open')) {
+            closeMenu();
+            burger.focus();
+        }
+    });
+    // Leaving the mobile layout (rotating a tablet, resizing) must not keep the page locked
+    window.matchMedia('(min-width: 1025px)').addEventListener('change', e => {
+        if (e.matches) closeMenu();
+    });
+}
+
 /* Lucide icons */
 if (typeof lucide !== 'undefined') {
     lucide.createIcons();
