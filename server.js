@@ -20,8 +20,20 @@ const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || 'vsa2026admin';
 const SESSION_SECRET = process.env.SESSION_SECRET || 'vsa-secret';
 const DATA_FILE = path.join(__dirname, 'data', 'vacancies.json');
 
+// Behind nginx: lets req.secure reflect the original HTTPS request (X-Forwarded-Proto)
+app.set('trust proxy', 1);
+
 app.use(express.json());
 app.use(cookieParser());
+
+// The site is served straight from the project folder, so keep server-side files private:
+// data/ holds draft and closed vacancies, the rest is source code and docs
+const PRIVATE_PATHS = /^\/(data|node_modules)(\/|$)|^\/(server\.js|package(-lock)?\.json|[^/]+\.md)$/i;
+app.use((req, res, next) => {
+    if (PRIVATE_PATHS.test(req.path)) return res.status(404).end();
+    next();
+});
+
 app.use(express.static(__dirname));
 
 // --- Session ---
@@ -60,7 +72,7 @@ app.post('/api/login', (req, res) => {
     if (password === ADMIN_PASSWORD) {
         const token = generateToken();
         sessions[token] = { createdAt: Date.now() };
-        res.cookie('session', token, { httpOnly: true, maxAge: 24 * 60 * 60 * 1000 });
+        res.cookie('session', token, { httpOnly: true, sameSite: 'strict', secure: req.secure, maxAge: 24 * 60 * 60 * 1000 });
         res.json({ success: true });
     } else {
         res.status(401).json({ error: 'Wrong password' });
