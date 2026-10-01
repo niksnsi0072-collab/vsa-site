@@ -78,13 +78,16 @@ const heroSection = document.querySelector('.hero');
 if (heroSection) {
     const heroContent = document.querySelector('.hero-content');
     const heroOverlay = document.querySelector('.hero-overlay');
+    // On narrow screens the content sits close to the hero's bottom edge, so pushing it
+    // down would clip the button against overflow:hidden — fade only, no parallax shift
+    const parallaxQuery = window.matchMedia('(min-width: 1025px)');
 
     window.addEventListener('scroll', () => {
         const scrollY = window.scrollY;
         const heroHeight = heroSection.offsetHeight;
         if (scrollY < heroHeight) {
             const progress = scrollY / heroHeight;
-            heroContent.style.transform = `translateY(${scrollY * 0.3}px)`;
+            heroContent.style.transform = parallaxQuery.matches ? `translateY(${scrollY * 0.3}px)` : '';
             heroContent.style.opacity = 1 - progress * 1.5;
             heroOverlay.style.background = `linear-gradient(90deg,
                 rgba(30,37,48,${0.93 + progress * 0.07}) 0%,

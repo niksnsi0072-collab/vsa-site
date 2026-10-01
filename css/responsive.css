@@ -426,8 +426,11 @@ body.menu-open {
    ========================================================= */
 
 @media (max-width: 1024px) {
-    /* Первый экран */
+    /* Первый экран: 100vh на телефонах не учитывает адресную строку браузера,
+       и низ блока (кнопка) уходит под край экрана; svh — видимая высота */
     .hero {
+        height: 100vh;
+        height: 100svh;
         padding-bottom: 64px;
     }
 
@@ -475,6 +478,8 @@ body.menu-open {
 
     /* География: карта на всю ширину под списком городов */
     .geo-map-wrapper {
+        flex: none; /* в колонке flex: 1 растягивал карту по высоте сверх пропорций */
+        min-height: 0; /* иначе высоту задаёт сама картинка (2862×2151), а не aspect-ratio */
         top: 0;
         margin: 0 0 30px;
     }
@@ -1211,5 +1216,65 @@ body.menu-open {
         left: 40px;
         right: 40px;
         width: auto;
+    }
+}
+
+/* =========================================================
+   Главная на телефоне и вертикальном планшете:
+   видео целиком (16:9) сверху, текст под ним; карта без пустоты
+   ========================================================= */
+
+@media (max-width: 768px) {
+    .hero {
+        height: auto;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 80px 0 0; /* под фиксированную шапку: белый логотип на тёмном фоне */
+        background: var(--dark);
+    }
+
+    .hero-video {
+        position: relative;
+        height: auto;
+        aspect-ratio: 16 / 9;
+    }
+
+    /* Затемнение и декоративные плюсы нужны только когда текст лежит поверх видео */
+    .hero-overlay,
+    .hero-plus,
+    .hero-cross {
+        display: none;
+    }
+
+    .hero-content {
+        margin: 0;
+        padding: 32px 24px 48px;
+    }
+
+    /*
+     * Карта: верхняя четверть картинки пустая. Точки городов стоят в процентах
+     * от блока карты, поэтому блок не меняем, а срезаем пустоту clip-path
+     * и подтягиваем карту вверх на ту же величину.
+     * 24.6% высоты блока = 12.8% его ширины (пропорции блока 957 / 497).
+     */
+    .geo-map-wrapper {
+        margin: calc(-12.8% - 5px) -20px 24px;
+        width: auto;
+        align-self: stretch;
+        clip-path: inset(24.6% 0 0 0);
+    }
+
+    .geo-map-img {
+        border-radius: 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero {
+        padding-top: 64px;
+    }
+
+    .hero-content {
+        padding: 28px 16px 40px;
     }
 }
