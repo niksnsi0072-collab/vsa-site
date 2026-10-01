@@ -80,140 +80,14 @@
                 <h2 class="vacancies-intro__heading">Требуются специалисты для реализации масштабного проекта</h2>
             </div>
             <div class="vacancies-intro__badge">
-                <span class="vacancies-intro__badge-count">7</span>
+                <span class="vacancies-intro__badge-count">—</span>
                 <span class="vacancies-intro__badge-label">вакансий</span>
             </div>
         </div>
 
-        <!-- Vacancy List - fallback HTML (shown when server is off) -->
+        <!-- Vacancy List — заполняется из /api/vacancies -->
         <div class="vacancy-list" id="vacancyList">
-
-            <div class="vacancy-card vacancy-card--odd" data-animate="fade-up">
-                <div class="vacancy-card__top">
-                    <div class="vacancy-card__info">
-                        <span class="vacancy-card__city">Усть-Луга</span>
-                        <h3 class="vacancy-card__title">Электромонтажник</h3>
-                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Оформление по ТК РФ &middot; Проживание и питание</p>
-                    </div>
-                    <button class="vacancy-card__btn">Подробнее</button>
-                </div>
-                <div class="vacancy-card__details">
-                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Монтаж кабельных линий и электрооборудования на промышленных объектах. Прокладка и подключение силовых и контрольных кабелей. Монтаж щитового оборудования. Работа по проектной документации.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Разряд от 4-го. Опыт работы от 2 лет. Умение читать электрические схемы. Группа допуска по электробезопасности.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахтовый метод 60/30. Оформление по ТК РФ. Проживание и питание за счёт компании. Достойная заработная плата.</p></div></div>
-                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Электромонтажник')">Откликнуться</button>
-                </div>
-            </div>
-
-            <div class="vacancy-card vacancy-card--even" data-animate="fade-up" data-delay="100">
-                <div class="vacancy-card__top">
-                    <div class="vacancy-card__info">
-                        <span class="vacancy-card__city">Усть-Луга</span>
-                        <h3 class="vacancy-card__title">Монтажник ТТ</h3>
-                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Опыт от 1 года &middot; Проживание и питание</p>
-                    </div>
-                    <button class="vacancy-card__btn">Подробнее</button>
-                </div>
-                <div class="vacancy-card__details">
-                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Монтаж трубных трасс КИПиА. Установка и обвязка первичных датчиков. Монтаж импульсных линий. Опрессовка и испытание смонтированных систем.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Опыт от 1 года в монтаже КИП. Знание нормативной документации. Умение работать с чертежами.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахта 60/30. Проживание и питание. Официальное оформление.</p></div></div>
-                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Монтажник ТТ')">Откликнуться</button>
-                </div>
-            </div>
-
-            <div class="vacancy-card vacancy-card--odd" data-animate="fade-up" data-delay="200">
-                <div class="vacancy-card__top">
-                    <div class="vacancy-card__info">
-                        <span class="vacancy-card__city">Усть-Луга</span>
-                        <h3 class="vacancy-card__title">Электросварщик</h3>
-                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Действующий НАКС &middot; Сварка трубопроводов</p>
-                    </div>
-                    <button class="vacancy-card__btn">Подробнее</button>
-                </div>
-                <div class="vacancy-card__details">
-                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Сварка технологических трубопроводов. Аргонодуговая сварка. Работа с различными марками стали. Контроль качества сварных соединений.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Действующие удостоверения НАКС. Опыт сварки трубопроводов. Разряд от 5-го.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахта 60/30. Конкурентная оплата. Проживание и питание за счёт работодателя.</p></div></div>
-                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Электросварщик')">Откликнуться</button>
-                </div>
-            </div>
-
-            <div class="vacancy-card vacancy-card--even" data-animate="fade-up" data-delay="300">
-                <div class="vacancy-card__top">
-                    <div class="vacancy-card__info">
-                        <span class="vacancy-card__city">Усть-Луга</span>
-                        <h3 class="vacancy-card__title">Инженер ПТО</h3>
-                        <p class="vacancy-card__subtitle">Подготовка документации &middot; Опыт в нефтегазовой отрасли</p>
-                    </div>
-                    <button class="vacancy-card__btn">Подробнее</button>
-                </div>
-                <div class="vacancy-card__details">
-                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">&bull; Подготовка исполнительной и рабочей документации<br>&bull; Контроль сроков и качества выполнения работ<br>&bull; Составление отчётов о ходе строительства<br>&bull; Взаимодействие с заказчиком и подрядчиками</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">&bull; Высшее техническое образование<br>&bull; Опыт работы в нефтегазовой отрасли от 3 лет<br>&bull; Знание нормативной документации (СНиП, ГОСТ)<br>&bull; Уверенное владение AutoCAD, MS Office</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">&bull; Оформление по ТК РФ<br>&bull; Конкурентная заработная плата<br>&bull; Возможность профессионального роста</p></div></div>
-                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Инженер ПТО')">Откликнуться</button>
-                </div>
-            </div>
-
-            <div class="vacancy-card vacancy-card--odd" data-animate="fade-up" data-delay="400">
-                <div class="vacancy-card__top">
-                    <div class="vacancy-card__info">
-                        <span class="vacancy-card__city">Усть-Луга</span>
-                        <h3 class="vacancy-card__title">Инженер входного контроля</h3>
-                        <p class="vacancy-card__subtitle">Проверка МТР &middot; Знание нормативной базы &middot; АИС НСК</p>
-                    </div>
-                    <button class="vacancy-card__btn">Подробнее</button>
-                </div>
-                <div class="vacancy-card__details">
-                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">&bull; Входной контроль поступающих МТР<br>&bull; Проверка соответствия сертификатов и паспортов качества<br>&bull; Оформление актов входного контроля<br>&bull; Ведение учёта и документации в АИС НСК</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">&bull; Высшее или среднее техническое образование<br>&bull; Знание нормативной базы (ГОСТ, ТУ)<br>&bull; Опыт работы с АИС НСК<br>&bull; Внимательность к деталям</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">&bull; Оформление по ТК РФ<br>&bull; Стабильная заработная плата<br>&bull; Профессиональное развитие и обучение</p></div></div>
-                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Инженер входного контроля')">Откликнуться</button>
-                </div>
-            </div>
-
-            <div class="vacancy-card vacancy-card--even" data-animate="fade-up" data-delay="500">
-                <div class="vacancy-card__top">
-                    <div class="vacancy-card__info">
-                        <span class="vacancy-card__city">Усть-Луга</span>
-                        <h3 class="vacancy-card__title">Наладчик КИПиА</h3>
-                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Опыт от 3 лет &middot; Нефтегазовые объекты</p>
-                    </div>
-                    <button class="vacancy-card__btn">Подробнее</button>
-                </div>
-                <div class="vacancy-card__details">
-                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Пусконаладочные работы систем КИПиА. Настройка и калибровка приборов. Диагностика и устранение неисправностей.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Опыт от 3 лет. Знание систем АСУ ТП. Высшее или среднее техническое образование.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахта 60/30. Оформление по ТК РФ. Проживание и питание.</p></div></div>
-                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Наладчик КИПиА')">Откликнуться</button>
-                </div>
-            </div>
-
-            <div class="vacancy-card vacancy-card--odd" data-animate="fade-up" data-delay="600">
-                <div class="vacancy-card__top">
-                    <div class="vacancy-card__info">
-                        <span class="vacancy-card__city">Усть-Луга</span>
-                        <h3 class="vacancy-card__title">Слесарь КИПиА</h3>
-                        <p class="vacancy-card__subtitle">Вахта 60/30 &middot; Разряд от 4-го &middot; Промышленные объекты</p>
-                    </div>
-                    <button class="vacancy-card__btn">Подробнее</button>
-                </div>
-                <div class="vacancy-card__details">
-                    <h4 class="vacancy-card__details-heading">Описание вакансии</h4>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Обязанности</span><p class="vacancy-card__section-body">Монтаж и обслуживание контрольно-измерительных приборов. Замена и ремонт датчиков. Работа с документацией.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Требования</span><p class="vacancy-card__section-body">Разряд от 4-го. Опыт работы от 1 года. Знание принципов работы КИП.</p></div></div>
-                    <div class="vacancy-card__section"><div class="vacancy-card__dot"></div><div class="vacancy-card__section-content"><span class="vacancy-card__section-title">Условия</span><p class="vacancy-card__section-body">Вахта 60/30. Проживание и питание. Официальное оформление.</p></div></div>
-                    <button class="vacancy-card__apply-btn" onclick="openApplyModal('Слесарь КИПиА')">Откликнуться</button>
-                </div>
-            </div>
-
+            <p class="vacancy-list__status" style="color:#6B7280;text-align:center;padding:40px;">Загрузка вакансий…</p>
         </div>
     </section>
 
@@ -249,12 +123,14 @@
                     <input type="checkbox" id="applyPolicy" name="policy" required>
                     <label for="applyPolicy">Ознакомлен(а) с <a href="privacy.html" class="apply-modal__link" target="_blank">Политикой обработки персональных данных</a></label>
                 </div>
-                <button type="submit" class="apply-modal__submit">Отправить отклик</button>
+                <p style="font-size:13px; color:#6B7280;">Отклик будет оформлен как письмо в вашей почтовой программе — останется нажать «Отправить» в ней.</p>
+                <button type="submit" class="apply-modal__submit">Подготовить письмо</button>
             </form>
             <div class="apply-modal__success" id="applySuccess" style="display:none;">
-                <div class="apply-modal__success-icon">&#10003;</div>
-                <h3>Отклик отправлен!</h3>
-                <p>Мы свяжемся с вами в ближайшее время</p>
+                <div class="apply-modal__success-icon">&#9993;</div>
+                <h3>Осталось отправить письмо</h3>
+                <p>Мы открыли письмо с откликом в вашей почтовой программе. Отклик дойдёт до нас только после того, как вы его отправите.</p>
+                <p>Если почтовая программа не открылась, напишите на <a href="mailto:hr_vsa@ooovsa.ru" class="apply-modal__link">hr_vsa@ooovsa.ru</a> или позвоните +7&nbsp;(863)&nbsp;320-03-58.</p>
                 <button class="apply-modal__submit" onclick="closeApplyModal()">Закрыть</button>
             </div>
         </div>
@@ -301,8 +177,8 @@
     </script>
 
     <script>
-    // Try to load vacancies from API. If server is running — replace fallback HTML.
-    // If server is off — fallback HTML stays as is.
+    // Vacancies come only from /api/vacancies: a list baked into the page would go stale
+    // and could show a vacancy already closed in the admin panel.
 
     // Vacancy texts come from the admin panel — escape them before putting into HTML
     function escapeHtml(str) {
@@ -358,8 +234,10 @@
                 initAccordion();
             })
             .catch(() => {
-                // Server not available — keep fallback HTML, just init accordion
-                initAccordion();
+                if (badge) badge.textContent = '—';
+                list.innerHTML = '<p class="vacancy-list__status" style="color:#6B7280;text-align:center;padding:40px;">' +
+                    'Список вакансий временно недоступен. Обновите страницу позже или напишите нам на ' +
+                    '<a href="mailto:hr_vsa@ooovsa.ru" style="color:#A01830;">hr_vsa@ooovsa.ru</a>.</p>';
             });
 
         function initAccordion() {

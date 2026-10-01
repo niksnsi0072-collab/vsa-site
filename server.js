@@ -47,13 +47,15 @@ for (const dir of PUBLIC_DIRS) {
 const PAGE_PATH = /^\/[A-Za-z0-9_-]+\.html$/;
 const servePages = express.static(__dirname, { index: 'index.html' });
 app.use((req, res, next) => {
+    if (req.path === '/partners.html' && (req.method === 'GET' || req.method === 'HEAD')) return servePartnersPage(req, res, next);
     if (req.path === '/' || PAGE_PATH.test(req.path)) return servePages(req, res, next);
     next();
 });
 
 // --- Session ---
 const SESSION_TTL = 24 * 60 * 60 * 1000;
-const sessions = {};
+// A Map, not a plain object: a cookie like "__proto__" or "constructor" must not match an inherited property
+const sessions = new Map();
 
 function generateToken() {
     return crypto.randomBytes(32).toString('hex');
@@ -61,10 +63,10 @@ function generateToken() {
 
 // A token is valid only while it exists and has not outlived SESSION_TTL
 function isValidSession(token) {
-    const session = token && sessions[token];
-    if (!session) return false;
-    if (Date.now() - session.createdAt > SESSION_TTL) {
-        delete sessions[token];
+    if (typeof token !== 'string' || !sessions.has(token)) return false;
+    const { createdAt } = sessions.get(token);
+    if (!Number.isFinite(createdAt) || Date.now() - createdAt > SESSION_TTL) {
+        sessions.delete(token);
         return false;
     }
     return true;
@@ -73,8 +75,8 @@ function isValidSession(token) {
 // Drop expired sessions so the in-memory store does not grow forever
 setInterval(() => {
     const now = Date.now();
-    for (const [token, session] of Object.entries(sessions)) {
-        if (now - session.createdAt > SESSION_TTL) delete sessions[token];
+    for (const [token, session] of sessions) {
+        if (now - session.createdAt > SESSION_TTL) sessions.delete(token);
     }
 }, 60 * 60 * 1000).unref();
 
@@ -177,6 +179,18 @@ function pickVacancyFields(body) {
     return { fields };
 }
 
+// Checks the whole vacancy after the request is applied; the admin form's checks can be bypassed
+function validateVacancy(v) {
+    if (!v.title) return 'Укажите название вакансии';
+    return null;
+}
+
+// Accepts only an explicit 'up' or 'down'; returns null for anything else
+function readDirection(body) {
+    const direction = body && body.direction;
+    return direction === 'up' || direction === 'down' ? direction : null;
+}
+
 // --- Auth API ---
 app.post('/api/login', (req, res) => {
     if (tooManyLoginFails(req.ip)) {
@@ -185,7 +199,7 @@ app.post('/api/login', (req, res) => {
     if (passwordMatches(req.body && req.body.password)) {
         loginFails.delete(req.ip);
         const token = generateToken();
-        sessions[token] = { createdAt: Date.now() };
+        sessions.set(token, { createdAt: Date.now() });
         res.cookie('session', token, { httpOnly: true, sameSite: 'strict', secure: req.secure, maxAge: SESSION_TTL });
         res.json({ success: true });
     } else {
@@ -196,7 +210,7 @@ app.post('/api/login', (req, res) => {
 
 app.post('/api/logout', (req, res) => {
     const token = req.cookies.session;
-    if (token) delete sessions[token];
+    if (typeof token === 'string') sessions.delete(token);
     res.clearCookie('session');
     res.json({ success: true });
 });
@@ -240,6 +254,9 @@ app.post('/api/admin/vacancies', requireAuth, (req, res) => {
         createdAt: now,
         updatedAt: now
     };
+    const invalid = validateVacancy(newVac);
+    if (invalid) return res.status(400).json({ message: invalid });
+
     vacancies.push(newVac);
     writeVacancies(vacancies);
     res.json(newVac);
@@ -253,8 +270,10 @@ app.put('/api/admin/vacancies/:id', requireAuth, (req, res) => {
     const idx = vacancies.findIndex(v => v.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found' });
 
-    Object.assign(vacancies[idx], fields);
-    vacancies[idx].updatedAt = new Date().toISOString().split('T')[0];
+    const updated = { ...vacancies[idx], ...fields, updatedAt: new Date().toISOString().split('T')[0] };
+    const invalid = validateVacancy(updated);
+    if (invalid) return res.status(400).json({ message: invalid });
+    vacancies[idx] = updated;
 
     writeVacancies(vacancies);
     res.json(vacancies[idx]);
@@ -271,8 +290,10 @@ app.delete('/api/admin/vacancies/:id', requireAuth, (req, res) => {
 
 // Reorder
 app.put('/api/admin/vacancies/:id/reorder', requireAuth, (req, res) => {
+    const direction = readDirection(req.body);
+    if (!direction) return res.status(400).json({ message: 'Направление должно быть up или down' });
+
     const vacancies = readVacancies();
-    const { direction } = req.body; // 'up' or 'down'
     vacancies.sort((a, b) => a.order - b.order);
     const idx = vacancies.findIndex(v => v.id === req.params.id);
     if (idx === -1) return res.status(404).json({ error: 'Not found' });
@@ -331,18 +352,30 @@ function renderPartnerCards(partners, eol) {
     }).join('');
 }
 
-// Rebuilds the card block between PARTNERS:START and PARTNERS:END in partners.html.
-// The page is rendered before anything is written, so JSON and HTML never get out of sync.
+// data/partners.json is the only source of partner data. partners.html is never rewritten:
+// the cards between PARTNERS:START and PARTNERS:END are filled in on every request,
+// so the admin panel and the public page cannot show different data.
 // Works with both LF and CRLF line endings (files copied through Windows/git get CRLF).
-function writePartners(data) {
-    const html = fs.readFileSync(PARTNERS_HTML, 'utf-8');
-    const eol = html.includes('\r\n') ? '\r\n' : '\n';
-    const re = /(<!-- PARTNERS:START[^>]*-->)[\s\S]*?(\r?\n[ \t]*<!-- PARTNERS:END -->)/;
-    if (!re.test(html)) throw new Error('В partners.html не найдены метки PARTNERS:START / PARTNERS:END');
-    const newHtml = html.replace(re, (_, start, end) => start + eol + renderPartnerCards(data, eol) + end);
+const PARTNERS_BLOCK = /(<!-- PARTNERS:START[^>]*-->)[\s\S]*?(\r?\n[ \t]*<!-- PARTNERS:END -->)/;
 
+function writePartners(data) {
     writeJsonAtomic(PARTNERS_FILE, data);
-    writeFileAtomic(PARTNERS_HTML, newHtml);
+}
+
+function servePartnersPage(req, res, next) {
+    let html;
+    try {
+        html = fs.readFileSync(PARTNERS_HTML, 'utf-8');
+        if (fs.existsSync(PARTNERS_FILE) && PARTNERS_BLOCK.test(html)) {
+            const eol = html.includes('\r\n') ? '\r\n' : '\n';
+            const cards = renderPartnerCards(readPartners(), eol);
+            html = html.replace(PARTNERS_BLOCK, (_, start, end) => start + eol + cards + end);
+        }
+    } catch (e) {
+        return next(e);
+    }
+    res.set('Cache-Control', 'no-cache');
+    res.type('html').send(html);
 }
 
 function isUploadedLogo(logo) {
@@ -356,11 +389,36 @@ function removeLogoIfUnused(logo, partners) {
     if (fs.existsSync(file)) fs.unlinkSync(file);
 }
 
+// The logo must be an existing file directly inside images/partners-logo/
+function logoFileExists(logo) {
+    if (!logo.startsWith(LOGO_URL_PREFIX)) return false;
+    const name = logo.slice(LOGO_URL_PREFIX.length);
+    if (!/^[^\\/.][^\\/]*$/.test(name)) return false;
+    try {
+        return fs.statSync(path.join(LOGO_DIR, name)).isFile();
+    } catch {
+        return false;
+    }
+}
+
+// The MIME type is declared by the browser and can be anything — check the file's first bytes
+function hasImageSignature(file, mimetype) {
+    const buf = Buffer.alloc(12);
+    const fd = fs.openSync(file, 'r');
+    let read;
+    try { read = fs.readSync(fd, buf, 0, 12, 0); } finally { fs.closeSync(fd); }
+    if (read < 12) return false;
+    if (mimetype === 'image/png') return buf.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A]));
+    if (mimetype === 'image/jpeg') return buf[0] === 0xFF && buf[1] === 0xD8 && buf[2] === 0xFF;
+    if (mimetype === 'image/webp') return buf.toString('ascii', 0, 4) === 'RIFF' && buf.toString('ascii', 8, 12) === 'WEBP';
+    return false;
+}
+
 // Returns an error message, or null if the fields are valid
 function validatePartner(p) {
     if (!p.name || !p.name.trim()) return 'Укажите название партнёра';
     if (!p.logo) return 'Загрузите логотип';
-    if (!p.logo.startsWith(LOGO_URL_PREFIX) || p.logo.includes('..')) return 'Некорректный путь к логотипу';
+    if (!logoFileExists(p.logo)) return 'Файл логотипа не найден — загрузите его заново';
     if (!/^https?:\/\/\S+$/i.test(p.url || '')) return 'Ссылка должна начинаться с http:// или https://';
     if (!PARTNER_CATEGORIES.includes(p.category)) return 'Выберите категорию';
     return null;
@@ -414,6 +472,12 @@ app.post('/api/admin/partners/logo', requireAuth, (req, res) => {
             return res.status(400).json({ message });
         }
         if (!req.file) return res.status(400).json({ message: 'Нужен файл PNG, JPG или WebP' });
+        let isImage = false;
+        try { isImage = hasImageSignature(req.file.path, req.file.mimetype); } catch {}
+        if (!isImage) {
+            fs.unlink(req.file.path, () => {});
+            return res.status(400).json({ message: 'Файл не является изображением PNG, JPG или WebP' });
+        }
         res.json({ logo: LOGO_URL_PREFIX + req.file.filename });
     });
 });
@@ -471,8 +535,10 @@ app.delete('/api/admin/partners/:id', requireAuth, (req, res) => {
 });
 
 app.put('/api/admin/partners/:id/reorder', requireAuth, (req, res) => {
+    const direction = readDirection(req.body);
+    if (!direction) return res.status(400).json({ message: 'Направление должно быть up или down' });
+
     const partners = readPartners();
-    const { direction } = req.body; // 'up' or 'down'
     partners.sort((a, b) => a.order - b.order);
     const idx = partners.findIndex(p => p.id === req.params.id);
     if (idx === -1) return res.status(404).json({ message: 'Партнёр не найден' });
