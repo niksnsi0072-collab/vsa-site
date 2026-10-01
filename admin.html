@@ -728,6 +728,113 @@
             background: #a93226;
         }
 
+        /* Tabs */
+        .admin-tabs {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 28px;
+        }
+
+        .admin-tab {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 20px;
+            background: #fff;
+            color: #1E2530;
+            border: 2px solid #dde0e4;
+            border-radius: 10px;
+            font-family: 'Inter', sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: border-color 0.2s, background 0.2s, color 0.2s;
+        }
+
+        .admin-tab:hover {
+            border-color: #A01830;
+        }
+
+        .admin-tab--active {
+            background: #1E2530;
+            border-color: #1E2530;
+            color: #fff;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+
+        .tab-panel.active {
+            display: block;
+        }
+
+        /* Partners */
+        .td-logo {
+            width: 110px;
+        }
+
+        .td-logo img {
+            display: block;
+            max-width: 90px;
+            max-height: 40px;
+            object-fit: contain;
+        }
+
+        .badge--hidden {
+            background: #f0f2f5;
+            color: #8a93a1;
+        }
+
+        .logo-upload {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        .logo-preview {
+            width: 160px;
+            height: 80px;
+            border: 2px dashed #dde0e4;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-size: 12px;
+            text-align: center;
+            flex-shrink: 0;
+            overflow: hidden;
+        }
+
+        .logo-preview img {
+            max-width: 140px;
+            max-height: 64px;
+            object-fit: contain;
+        }
+
+        .logo-upload__hint {
+            font-size: 12px;
+            color: #8a93a1;
+            margin-top: 6px;
+        }
+
+        .form-group .form-check {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            text-transform: none;
+            letter-spacing: 0;
+            color: #1E2530;
+            cursor: pointer;
+        }
+
+        .form-group .form-check input {
+            width: auto;
+        }
+
         /* Scrollbar styling */
         .modal::-webkit-scrollbar {
             width: 6px;
@@ -772,6 +879,19 @@
         </header>
 
         <div class="admin-content">
+            <!-- Tabs -->
+            <div class="admin-tabs">
+                <button class="admin-tab admin-tab--active" data-tab="tabVacancies">
+                    <i data-lucide="briefcase" style="width:16px;height:16px;"></i>
+                    Вакансии
+                </button>
+                <button class="admin-tab" data-tab="tabPartners">
+                    <i data-lucide="handshake" style="width:16px;height:16px;"></i>
+                    Партнёры
+                </button>
+            </div>
+
+            <div class="tab-panel active" id="tabVacancies">
             <!-- Stats -->
             <div class="stats-bar">
                 <div class="stat-card">
@@ -822,6 +942,103 @@
                     <i data-lucide="inbox" style="width:48px;height:48px;color:#ccc;"></i>
                     <p>Вакансий пока нет</p>
                 </div>
+            </div>
+            </div>
+
+            <div class="tab-panel" id="tabPartners">
+                <div class="action-bar">
+                    <button class="btn-add" id="btnAddPartner">
+                        <i data-lucide="plus" style="width:18px;height:18px;"></i>
+                        Добавить партнёра
+                    </button>
+                    <input type="text" class="search-input" id="partnerSearchInput" placeholder="Поиск по названию...">
+                </div>
+
+                <div class="vacancies-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th style="width:50px">#</th>
+                                <th>Логотип</th>
+                                <th>Название</th>
+                                <th>Категория</th>
+                                <th>На сайте</th>
+                                <th style="width:200px">Действия</th>
+                            </tr>
+                        </thead>
+                        <tbody id="partnersBody">
+                        </tbody>
+                    </table>
+                    <div class="empty-state" id="partnersEmptyState" style="display:none;">
+                        <i data-lucide="inbox" style="width:48px;height:48px;color:#ccc;"></i>
+                        <p>Партнёров пока нет</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Partner modal -->
+    <div class="modal-overlay" id="partnerModalOverlay">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 id="partnerModalTitle">Добавить партнёра</h2>
+                <button class="modal-close" id="partnerModalClose">
+                    <i data-lucide="x" style="width:18px;height:18px;"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Логотип</label>
+                    <div class="logo-upload">
+                        <div class="logo-preview" id="partnerLogoPreview">Нет логотипа</div>
+                        <div>
+                            <input type="file" id="partnerLogoInput" accept="image/png,image/jpeg,image/webp">
+                            <div class="logo-upload__hint">PNG, JPG или WebP, до 2 МБ</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-check">
+                        <input type="checkbox" id="partnerLogoLarge">
+                        Крупный логотип (для вытянутых по горизонтали)
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Название</label>
+                    <input type="text" id="partnerName" placeholder="Например: СКБ Термоприбор">
+                </div>
+                <div class="form-group">
+                    <label>Тип деятельности</label>
+                    <input type="text" id="partnerType" placeholder="Например: Производство датчиков температуры">
+                </div>
+                <div class="form-group">
+                    <label>Описание</label>
+                    <textarea id="partnerDescription" placeholder="Пара предложений о компании"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Ссылка на сайт</label>
+                    <input type="url" id="partnerUrl" placeholder="https://example.ru/">
+                </div>
+                <div class="form-group">
+                    <label>Категория</label>
+                    <select id="partnerCategory">
+                        <option value="measuring">Измерительные приборы</option>
+                        <option value="analytics">Аналитические системы</option>
+                        <option value="communications">Связь и ПО</option>
+                        <option value="fittings">Обвязка и пробоотбор</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="form-check">
+                        <input type="checkbox" id="partnerVisible" checked>
+                        Показывать на сайте
+                    </label>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn-cancel" id="partnerBtnCancel">Отмена</button>
+                <button class="btn-save" id="partnerBtnSave">Сохранить</button>
             </div>
         </div>
     </div>
@@ -879,7 +1096,7 @@
     <!-- Confirm dialog -->
     <div class="confirm-overlay" id="confirmOverlay">
         <div class="confirm-dialog">
-            <h3>Удалить вакансию?</h3>
+            <h3 id="confirmTitle">Удалить вакансию?</h3>
             <p id="confirmText">Это действие нельзя отменить.</p>
             <div class="confirm-actions">
                 <button class="btn-confirm-cancel" id="confirmCancel">Отмена</button>
@@ -896,6 +1113,7 @@
         let vacancies = [];
         let editingId = null;
         let deleteId = null;
+        let deleteKind = 'vacancy';
         let searchQuery = '';
 
         // DOM
@@ -925,6 +1143,7 @@
         const confirmCancel = document.getElementById('confirmCancel');
         const confirmDelete = document.getElementById('confirmDelete');
         const confirmText = document.getElementById('confirmText');
+        const confirmTitle = document.getElementById('confirmTitle');
         const toastContainer = document.getElementById('toastContainer');
 
         // Stats
@@ -984,6 +1203,7 @@
             dashboard.classList.add('active');
             lucide.createIcons();
             loadVacancies();
+            loadPartners();
         }
 
         async function checkAuth() {
@@ -1147,6 +1367,8 @@
         // Delete
         function confirmDeleteVacancy(id, title) {
             deleteId = id;
+            deleteKind = 'vacancy';
+            confirmTitle.textContent = 'Удалить вакансию?';
             confirmText.textContent = `Вакансия "${title}" будет удалена. Это действие нельзя отменить.`;
             confirmOverlay.classList.add('active');
         }
@@ -1159,6 +1381,15 @@
         confirmDelete.addEventListener('click', async () => {
             confirmOverlay.classList.remove('active');
             if (!deleteId) return;
+            if (deleteKind === 'partner') {
+                try {
+                    await api(`/api/admin/partners/${deleteId}`, { method: 'DELETE' });
+                    showToast('Партнёр удалён', 'success');
+                    deleteId = null;
+                    await loadPartners();
+                } catch {}
+                return;
+            }
             try {
                 await api(`/api/admin/vacancies/${deleteId}`, { method: 'DELETE' });
                 showToast('Вакансия удалена', 'success');
@@ -1306,6 +1537,229 @@
                 }
                 closeModal();
                 await loadVacancies();
+            } catch {}
+        });
+
+        // Tabs
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.toggle('admin-tab--active', t === tab));
+                document.querySelectorAll('.tab-panel').forEach(p => p.classList.toggle('active', p.id === tab.dataset.tab));
+            });
+        });
+
+        // Partners
+        const PARTNER_CATEGORY_LABELS = {
+            measuring: 'Измерительные приборы',
+            analytics: 'Аналитические системы',
+            communications: 'Связь и ПО',
+            fittings: 'Обвязка и пробоотбор'
+        };
+
+        let partners = [];
+        let editingPartnerId = null;
+        let partnerLogo = '';
+        let partnerSearchQuery = '';
+
+        const partnersBody = document.getElementById('partnersBody');
+        const partnersEmptyState = document.getElementById('partnersEmptyState');
+        const partnerModalOverlay = document.getElementById('partnerModalOverlay');
+        const partnerModalTitle = document.getElementById('partnerModalTitle');
+        const partnerLogoPreview = document.getElementById('partnerLogoPreview');
+        const partnerLogoInput = document.getElementById('partnerLogoInput');
+        const partnerLogoLarge = document.getElementById('partnerLogoLarge');
+        const partnerName = document.getElementById('partnerName');
+        const partnerType = document.getElementById('partnerType');
+        const partnerDescription = document.getElementById('partnerDescription');
+        const partnerUrl = document.getElementById('partnerUrl');
+        const partnerCategory = document.getElementById('partnerCategory');
+        const partnerVisible = document.getElementById('partnerVisible');
+        const partnerBtnSave = document.getElementById('partnerBtnSave');
+
+        async function loadPartners() {
+            try {
+                partners = await api('/api/admin/partners');
+                renderPartners();
+            } catch {}
+        }
+
+        function renderPartners() {
+            const query = partnerSearchQuery.toLowerCase();
+            const filtered = partners.filter(p => !query || (p.name || '').toLowerCase().includes(query));
+
+            if (filtered.length === 0) {
+                partnersBody.innerHTML = '';
+                partnersEmptyState.style.display = 'block';
+                return;
+            }
+
+            partnersEmptyState.style.display = 'none';
+            partnersBody.innerHTML = filtered.map(p => `
+                <tr>
+                    <td class="td-order">${p.order}</td>
+                    <td class="td-logo"><img src="/${escapeHtml(p.logo)}" alt=""></td>
+                    <td class="td-title">${escapeHtml(p.name)}</td>
+                    <td class="td-subtitle">${PARTNER_CATEGORY_LABELS[p.category] || '—'}</td>
+                    <td>${p.visible
+                        ? '<span class="badge badge--published">Показан</span>'
+                        : '<span class="badge badge--hidden">Скрыт</span>'}</td>
+                    <td>
+                        <div class="actions">
+                            <button class="btn-action" title="Редактировать" onclick="openPartnerEdit('${p.id}')">
+                                <i data-lucide="pencil" style="width:16px;height:16px;"></i>
+                            </button>
+                            <button class="btn-action" title="Вверх" onclick="reorderPartner('${p.id}','up')">
+                                <i data-lucide="arrow-up" style="width:16px;height:16px;"></i>
+                            </button>
+                            <button class="btn-action" title="Вниз" onclick="reorderPartner('${p.id}','down')">
+                                <i data-lucide="arrow-down" style="width:16px;height:16px;"></i>
+                            </button>
+                            <button class="btn-action btn-action--status" title="${p.visible ? 'Скрыть с сайта' : 'Показать на сайте'}" onclick="togglePartnerVisible('${p.id}')">
+                                <i data-lucide="${p.visible ? 'eye-off' : 'eye'}" style="width:16px;height:16px;"></i>
+                            </button>
+                            <button class="btn-action btn-action--delete" title="Удалить" onclick="confirmDeletePartner('${p.id}')">
+                                <i data-lucide="trash-2" style="width:16px;height:16px;"></i>
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+
+            lucide.createIcons();
+        }
+
+        document.getElementById('partnerSearchInput').addEventListener('input', (e) => {
+            partnerSearchQuery = e.target.value;
+            renderPartners();
+        });
+
+        async function reorderPartner(id, direction) {
+            try {
+                await api(`/api/admin/partners/${id}/reorder`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ direction })
+                });
+                showToast('Порядок обновлён', 'success');
+                await loadPartners();
+            } catch {}
+        }
+
+        async function togglePartnerVisible(id) {
+            const p = partners.find(x => x.id === id);
+            if (!p) return;
+            try {
+                await api(`/api/admin/partners/${id}`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ visible: !p.visible })
+                });
+                showToast(p.visible ? 'Партнёр скрыт с сайта' : 'Партнёр показан на сайте', 'success');
+                await loadPartners();
+            } catch {}
+        }
+
+        function confirmDeletePartner(id) {
+            const p = partners.find(x => x.id === id);
+            if (!p) return;
+            deleteId = id;
+            deleteKind = 'partner';
+            confirmTitle.textContent = 'Удалить партнёра?';
+            confirmText.textContent = `Партнёр "${p.name}" будет удалён с сайта. Это действие нельзя отменить. Если нужно убрать его временно, используйте кнопку «Скрыть».`;
+            confirmOverlay.classList.add('active');
+        }
+
+        function setPartnerLogo(logo) {
+            partnerLogo = logo;
+            partnerLogoPreview.innerHTML = logo
+                ? `<img src="/${escapeHtml(logo)}" alt="">`
+                : 'Нет логотипа';
+        }
+
+        function openPartnerModal(p) {
+            editingPartnerId = p ? p.id : null;
+            partnerModalTitle.textContent = p ? 'Редактировать партнёра' : 'Добавить партнёра';
+            setPartnerLogo(p ? p.logo : '');
+            partnerLogoInput.value = '';
+            partnerLogoLarge.checked = p ? !!p.logoLarge : false;
+            partnerName.value = p ? p.name : '';
+            partnerType.value = p ? p.type : '';
+            partnerDescription.value = p ? p.description : '';
+            partnerUrl.value = p ? p.url : '';
+            partnerCategory.value = p ? p.category : 'measuring';
+            partnerVisible.checked = p ? !!p.visible : true;
+            partnerModalOverlay.classList.add('active');
+        }
+
+        function openPartnerEdit(id) {
+            const p = partners.find(x => x.id === id);
+            if (p) openPartnerModal(p);
+        }
+
+        function closePartnerModal() {
+            partnerModalOverlay.classList.remove('active');
+            editingPartnerId = null;
+        }
+
+        document.getElementById('btnAddPartner').addEventListener('click', () => openPartnerModal(null));
+        document.getElementById('partnerModalClose').addEventListener('click', closePartnerModal);
+        document.getElementById('partnerBtnCancel').addEventListener('click', closePartnerModal);
+        partnerModalOverlay.addEventListener('click', (e) => {
+            if (e.target === partnerModalOverlay) closePartnerModal();
+        });
+
+        partnerLogoInput.addEventListener('change', async () => {
+            const file = partnerLogoInput.files[0];
+            if (!file) return;
+            if (file.size > 2 * 1024 * 1024) {
+                showToast('Файл больше 2 МБ', 'error');
+                partnerLogoInput.value = '';
+                return;
+            }
+            const formData = new FormData();
+            formData.append('logo', file);
+            partnerBtnSave.disabled = true;
+            try {
+                // Empty headers so the browser sets the multipart boundary itself
+                const data = await api('/api/admin/partners/logo', { method: 'POST', headers: {}, body: formData });
+                setPartnerLogo(data.logo);
+            } catch {
+                partnerLogoInput.value = '';
+            } finally {
+                partnerBtnSave.disabled = false;
+            }
+        });
+
+        partnerBtnSave.addEventListener('click', async () => {
+            const payload = {
+                name: partnerName.value.trim(),
+                type: partnerType.value.trim(),
+                description: partnerDescription.value.trim(),
+                url: partnerUrl.value.trim(),
+                category: partnerCategory.value,
+                logo: partnerLogo,
+                logoLarge: partnerLogoLarge.checked,
+                visible: partnerVisible.checked
+            };
+
+            if (!payload.logo) return showToast('Загрузите логотип', 'error');
+            if (!payload.name) {
+                partnerName.focus();
+                return showToast('Укажите название партнёра', 'error');
+            }
+            if (!/^https?:\/\/\S+$/i.test(payload.url)) {
+                partnerUrl.focus();
+                return showToast('Ссылка должна начинаться с http:// или https://', 'error');
+            }
+
+            try {
+                if (editingPartnerId) {
+                    await api(`/api/admin/partners/${editingPartnerId}`, { method: 'PUT', body: JSON.stringify(payload) });
+                    showToast('Партнёр обновлён', 'success');
+                } else {
+                    await api('/api/admin/partners', { method: 'POST', body: JSON.stringify(payload) });
+                    showToast('Партнёр добавлен', 'success');
+                }
+                closePartnerModal();
+                await loadPartners();
             } catch {}
         });
 
